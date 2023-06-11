@@ -33,7 +33,7 @@ shadowJar {
     dependencies {
         include(project(':common'))
     }
-    relocate('com.google.gson', 'ca.sperrer.p0t4t0sandwich.lppronouns.lib.gson')
+    relocate('com.google.gson', 'ca.sperrer.p0t4t0sandwich.tatercomms.lib.gson')
 
     destinationDir(file('../target'))
     archiveName("TaterComms-${version}-forge-${minecraftVersion}.jar")

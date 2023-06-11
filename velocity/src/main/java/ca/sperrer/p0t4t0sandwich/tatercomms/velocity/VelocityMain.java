@@ -3,6 +3,7 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerLoginListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerMessageListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -61,6 +62,7 @@ public class VelocityMain {
 
         // Register event listener
         server.getEventManager().register(this, new VelocityPlayerLoginListener());
+        server.getEventManager().register(this, new VelocityPlayerMessageListener());
 
         // Register commands
         server.getCommandManager().register("template", new VelocityTemplateCommand());

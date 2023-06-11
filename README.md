@@ -47,3 +47,18 @@ storage:
     username: root
     password: password
 ```
+
+## TODO
+
+- chat listeners
+- chat formatter/relay
+- global chat options
+- Chat pass-through to the backend server
+- Staff chat
+- custom group chats
+- Learn JDA
+- discord channel config
+- discord channel listeners
+- account linking system
+- discord channels accessible from in game, chatroom style (for linked users)
+- sync chats across servers/proxies in remote configuration
