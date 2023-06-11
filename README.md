@@ -62,3 +62,4 @@ storage:
 - account linking system
 - discord channels accessible from in game, chatroom style (for linked users)
 - sync chats across servers/proxies in remote configuration
+- mail system

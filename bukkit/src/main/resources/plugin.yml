@@ -2,7 +2,7 @@ name: TaterComms
 version: '${version}'
 author: p0t4t0sandwich
 description: A simple, cross API plugin that bridges communication between servers.
-main: ca.sperrer.p0t4t0sandwich.template.bukkit.BukkitMain
+main: ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.BukkitMain
 depend: []
 folia-supported: true
 commands:

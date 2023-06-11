@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeTemplateCommand;
+import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerMessageListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgeServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerLoginListener;
@@ -31,16 +32,17 @@ public class ForgeMain {
         // Singleton instance
         instance = this;
 
-        logger.info("[Template]: Template is running on " + getServerType() + ".");
+        logger.info("[TaterComms]: TaterComms is running on " + getServerType() + ".");
 
         // Register event listeners
         MinecraftForge.EVENT_BUS.register(new ForgeServerStartedListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerLoginListener());
+        MinecraftForge.EVENT_BUS.register(new ForgePlayerMessageListener());
 
         // Register commands
         MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
 
         // Mod enable message
-        logger.info("[Template]: Template has been enabled!");
+        logger.info("[TaterComms]: TaterComms has been enabled!");
     }
 }

@@ -1,5 +1,6 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.DataSource;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.Database;
 import dev.dejvokep.boostedyaml.YamlDocument;
@@ -20,7 +21,7 @@ public class TaterComms {
     private final Object logger;
     private static TaterComms singleton = null;
     private boolean STARTED = false;
-    public Database database;
+    private MessageRelay messageRelay = null;
 
     /**
      * Constructor for the TaterComms class.
@@ -76,7 +77,9 @@ public class TaterComms {
         STARTED = true;
 
         String type = config.getString("storage.type");
-        database = DataSource.getDatabase(type, config);
+//        database = DataSource.getDatabase(type, config);
+
+        messageRelay = new MessageRelay();
 
         useLogger("TaterComms has been started!");
     }
@@ -87,5 +90,13 @@ public class TaterComms {
      */
     public static String getServerName() {
         return config.getString("server.name");
+    }
+
+    /**
+     * Get the message relay
+     * @return The message relay
+     */
+    public MessageRelay getMessageRelay() {
+        return messageRelay;
     }
 }
