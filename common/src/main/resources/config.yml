@@ -1,13 +1,22 @@
 ---
 version: 1
 
-# Database configuration
-# Supported storage types: mongodb, mysql
-storage:
-  type: mongodb
-  config:
-    host: localhost
-    port: 27017
-    database: template
-    username: root
-    password: password
+# Discord bot configuration
+discord:
+  enabled: true
+  token: ""
+  guildId: ""
+
+  # Server to Discord Channel mapping
+  channels:
+    # in the format of: serverName: channelId
+    example: "123456789012345678"
+
+# Remote
+remote:
+
+
+# ServerName for standalone servers (Bukkit, Fabric, or Forge)
+server:
+  name: "example"
+

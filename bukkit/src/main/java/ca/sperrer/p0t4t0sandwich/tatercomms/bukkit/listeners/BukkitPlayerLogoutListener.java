@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
-public class BukkitPlayerLoginListener implements Listener {
+public class BukkitPlayerLogoutListener implements Listener {
     BukkitMain plugin = BukkitMain.getInstance();
 
     @EventHandler
@@ -23,11 +23,11 @@ public class BukkitPlayerLoginListener implements Listener {
                 // Create a TaterPlayer object
                 BukkitTaterPlayer taterPlayer = new BukkitTaterPlayer(event.getPlayer());
 
-                // Add the TaterPlayer to the cache
-                relay.setTaterPlayerInCache(taterPlayer.getUUID(), taterPlayer);
+                // Relay the quit message
+                relay.sendPlayerLogout(taterPlayer, server);
 
-                // Relay the join message
-                relay.sendPlayerLogin(taterPlayer, server);
+                // Add the TaterPlayer to the cache
+                relay.removeTaterPlayerFromCache(taterPlayer.getUUID());
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

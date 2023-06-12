@@ -41,5 +41,10 @@ subprojects {
             name = "papermc-repo"
             url = "https://repo.papermc.io/repository/maven-public/"
         }
+
+        // JDA
+        maven {
+            url "https://m2.dv8tion.net/releases"
+        }
     }
 }

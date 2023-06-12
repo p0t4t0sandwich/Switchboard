@@ -10,7 +10,7 @@ import net.md_5.bungee.event.EventPriority;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
-public class BungeePlayerLoginListener implements Listener {
+public class BungeePlayerLogoutListener implements Listener {
     BungeeMain plugin = BungeeMain.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -28,7 +28,7 @@ public class BungeePlayerLoginListener implements Listener {
                 relay.setTaterPlayerInCache(taterPlayer.getUUID(), taterPlayer);
 
                 // Relay the join message
-                relay.sendPlayerLogin(taterPlayer, server);
+                relay.sendPlayerLogout(taterPlayer, server);
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

@@ -1,12 +1,16 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.DiscordBot;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.DataSource;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.Database;
 import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.Block;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TaterComms {
@@ -21,6 +25,7 @@ public class TaterComms {
     private final Object logger;
     private static TaterComms singleton = null;
     private boolean STARTED = false;
+    private DiscordBot discord = null;
     private MessageRelay messageRelay = null;
 
     /**
@@ -79,7 +84,27 @@ public class TaterComms {
         String type = config.getString("storage.type");
 //        database = DataSource.getDatabase(type, config);
 
-        messageRelay = new MessageRelay();
+        // Get the Discord token and guild ID from the config
+        String token = config.getString("discord.token");
+        String guildId = config.getString("discord.guildId");
+        if (token == null || token.equals("")) {
+            useLogger("No Discord token found in config.yml!");
+            return;
+        } else if (guildId == null || guildId.equals("")) {
+            useLogger("No Discord guild ID found in config.yml!");
+            return;
+        }
+
+        // Get server-channel mappings from the config
+        HashMap<String, String> serverChannels = getServerChannels();
+        if (serverChannels.isEmpty()) {
+            useLogger("No server-channel mappings found in config.yml!");
+            return;
+        }
+
+        discord = new DiscordBot(token, guildId, serverChannels);
+
+        messageRelay = new MessageRelay(discord);
 
         useLogger("TaterComms has been started!");
     }
@@ -90,6 +115,22 @@ public class TaterComms {
      */
     public static String getServerName() {
         return config.getString("server.name");
+    }
+
+    /**
+     * Get server channels from the config file.
+     * @return The map of server channels
+     */
+    public HashMap<String, String> getServerChannels() {
+        HashMap<String, String> serverChannels = new HashMap<>();
+
+        HashMap<String, Block> channelConfig = (HashMap<String, Block>) config.getBlock("discord.channels").getStoredValue();
+
+        for (Map.Entry<String, Block> entry: channelConfig.entrySet()) {
+            serverChannels.put(entry.getKey(), (String) entry.getValue().getStoredValue());
+        }
+
+        return serverChannels;
     }
 
     /**

@@ -8,9 +8,11 @@ import java.util.UUID;
 
 public class BungeeTaterPlayer implements TaterPlayer {
     private ProxiedPlayer player;
+    private String serverName;
 
     public BungeeTaterPlayer(ProxiedPlayer player) {
         this.player = player;
+        this.serverName = player.getServer().getInfo().getName();
     }
 
     @Override
@@ -26,6 +28,16 @@ public class BungeeTaterPlayer implements TaterPlayer {
     @Override
     public String getDisplayName() {
         return player.getDisplayName();
+    }
+
+    @Override
+    public String getServerName() {
+        return serverName;
+    }
+
+    @Override
+    public void setServerName(String server) {
+        this.serverName = server;
     }
 
     @Override

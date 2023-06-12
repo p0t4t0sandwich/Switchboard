@@ -9,5 +9,9 @@ public interface TaterPlayer {
 
     String getDisplayName();
 
+    String getServerName();
+
+    void setServerName(String serverName);
+
     void sendMessage(String message);
 }

@@ -8,9 +8,14 @@ import java.util.UUID;
 
 public class VelocityTaterPlayer implements TaterPlayer {
     private Player player;
+    private String serverName;
 
     public VelocityTaterPlayer(Player player) {
         this.player = player;
+        if (!player.getCurrentServer().isPresent()) {
+            this.serverName = "null";
+        }
+        this.serverName = player.getCurrentServer().get().getServerInfo().getName();
     }
 
     @Override
@@ -26,6 +31,16 @@ public class VelocityTaterPlayer implements TaterPlayer {
     @Override
     public String getDisplayName() {
         return player.getUsername();
+    }
+
+    @Override
+    public String getServerName() {
+        return serverName;
+    }
+
+    @Override
+    public void setServerName(String server) {
+        this.serverName = server;
     }
 
     @Override
