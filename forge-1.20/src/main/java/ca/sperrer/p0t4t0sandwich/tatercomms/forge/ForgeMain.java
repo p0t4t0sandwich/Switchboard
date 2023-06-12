@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeTemplateCommand;
+import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerMessageListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgeServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
@@ -35,9 +36,10 @@ public class ForgeMain {
         logger.info("[TaterComms]: TaterComms is running on " + getServerType() + ".");
 
         // Register event listeners
-        MinecraftForge.EVENT_BUS.register(new ForgeServerStartedListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerLoginListener());
+        MinecraftForge.EVENT_BUS.register(new ForgePlayerLogoutListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerMessageListener());
+        MinecraftForge.EVENT_BUS.register(new ForgeServerStartedListener());
 
         // Register commands
         MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
