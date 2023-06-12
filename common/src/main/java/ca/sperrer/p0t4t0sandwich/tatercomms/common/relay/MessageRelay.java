@@ -85,7 +85,7 @@ public class MessageRelay {
      */
     public void sendPlayerLogin(TaterPlayer player, String server) {
         // Relay player join to Discord
-        this.sendMessage(player, server, player.getName() + " joined the game");
+        this.sendMessage(player, server, "joined the game");
     }
 
     /**
@@ -95,7 +95,7 @@ public class MessageRelay {
      */
     public void sendPlayerLogout(TaterPlayer player, String server) {
         // Relay player quit to Discord
-        this.sendMessage(player, server, player.getName() + " left the game");
+        this.sendMessage(player, server,  "left the game");
     }
 
     /**

@@ -11,7 +11,7 @@ import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
 public class BungeePlayerLoginListener extends PlayerLoginListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPostLogin(PostLoginEvent event) {
+    public void onPlayerLogin(PostLoginEvent event) {
         runTaskAsync(() -> {
             try {
                 // Pass TaterPlayer to helper function
