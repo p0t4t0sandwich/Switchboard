@@ -10,16 +10,21 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.util.HashMap;
 
 public class DiscordBot extends ListenerAdapter  {
     private final HashMap<String, String> serverChannels;
-    private final Guild guild;
+    private final JDA api;
+    private final String guildId;
+    private Guild guild;
 
-    public DiscordBot(String token, String guildID, HashMap<String, String> serverChannels) {
+    public DiscordBot(String token, String guildId, HashMap<String, String> serverChannels) {
         this.serverChannels = serverChannels;
+        this.guildId = guildId;
 
         // Check for nulls
         if (token == null || token.equals("")) {
@@ -29,16 +34,20 @@ public class DiscordBot extends ListenerAdapter  {
         }
 
         // Create the JDA instance
-        JDA api = JDABuilder.createDefault(token).build();
-
-        // Get the guild
-        guild = api.getGuildById(guildID);
-        if (guild == null) {
-            throw new RuntimeException("Guild not found, please check the guild ID in the config!");
-        }
+        api = JDABuilder.createDefault(token).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
 
         // Add the listener
         api.addEventListener(this);
+    }
+
+    @Override
+    public void onReady(ReadyEvent event) {
+        System.out.println("Discord bot is ready!");
+        // Get the guild
+        guild = api.getGuildById(guildId);
+        if (guild == null) {
+            System.err.println("Guild not found, please check that the bot is in the guild, and that the guild ID is correct in the config!");
+        }
     }
 
     /**
