@@ -3,7 +3,9 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerLoginListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityServerSwitchListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -16,7 +18,7 @@ import org.slf4j.Logger;
         name = "TaterComms",
         version = "1.0.0",
         authors = "p0t4t0sandwich",
-        description = "A simple, cross API plugin that bridges communication between servers.",
+        description = "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.",
         url = "https://github.com/p0t4t0sandwich/TaterComms",
         dependencies = {}
 )
@@ -62,7 +64,9 @@ public class VelocityMain {
 
         // Register event listener
         server.getEventManager().register(this, new VelocityPlayerLoginListener());
+        server.getEventManager().register(this, new VelocityPlayerLogoutListener());
         server.getEventManager().register(this, new VelocityPlayerMessageListener());
+        server.getEventManager().register(this, new VelocityServerSwitchListener());
 
         // Register commands
         server.getCommandManager().register("template", new VelocityTemplateCommand());

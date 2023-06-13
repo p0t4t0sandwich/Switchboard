@@ -1,6 +1,6 @@
 # TaterComms
 
-A simple, cross API plugin that bridges communication between servers.
+A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
 
 Link to our support: [Discord](https://discord.gg/jec2jpdj7A)
 

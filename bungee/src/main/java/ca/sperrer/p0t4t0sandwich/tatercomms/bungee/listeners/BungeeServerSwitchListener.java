@@ -1,8 +1,6 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.ServerSwitchListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.player.BungeeTaterPlayer;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;

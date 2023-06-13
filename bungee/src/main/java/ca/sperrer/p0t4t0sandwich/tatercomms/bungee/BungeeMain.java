@@ -4,6 +4,7 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.commands.BungeeTemplateComman
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.BungeePlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.BungeePlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.BungeePlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.BungeeServerSwitchListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -35,6 +36,7 @@ public class BungeeMain extends Plugin {
         getProxy().getPluginManager().registerListener(this, new BungeePlayerLoginListener());
         getProxy().getPluginManager().registerListener(this, new BungeePlayerLogoutListener());
         getProxy().getPluginManager().registerListener(this, new BungeePlayerMessageListener());
+        getProxy().getPluginManager().registerListener(this, new BungeeServerSwitchListener());
 
         // Register commands
         getProxy().getPluginManager().registerCommand(this, new BungeeTemplateCommand());

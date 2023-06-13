@@ -1,6 +1,6 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.fabric.listeners;
 
-
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.PlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.fabric.player.FabricTaterPlayer;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;

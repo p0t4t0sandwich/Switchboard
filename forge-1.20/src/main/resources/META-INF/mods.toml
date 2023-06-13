@@ -15,7 +15,7 @@ credits="p0t4t0sandwich"
 authors="p0t4t0sandwich"
 displayTest="IGNORE_SERVER_VERSION"
 description = '''
-A simple, cross API plugin that bridges communication between servers.
+A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
 '''
 
 # Forge Dependency

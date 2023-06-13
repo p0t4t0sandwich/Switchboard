@@ -15,7 +15,7 @@ import static net.minecraft.commands.Commands.literal;
 
 
 public final class ForgeTemplateCommand {
-    private static final ForgeMain mod = ForgeMain.getInstance();
+    private static final ForgeMain plugin = ForgeMain.getInstance();
 
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
@@ -33,7 +33,7 @@ public final class ForgeTemplateCommand {
                                 String text = "";
                                 ((ServerPlayer) entity).displayClientMessage(Component.empty().append(text), false);
                             } else {
-                                mod.logger.info(ansiiParser("§cYou must be a player to use this command."));
+                                plugin.logger.info(ansiiParser("§cYou must be a player to use this command."));
                             }
                         } catch (Exception e) {
                             System.err.println(e);

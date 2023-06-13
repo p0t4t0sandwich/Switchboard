@@ -6,14 +6,14 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ForgeServerStartedListener {
-    ForgeMain mod = ForgeMain.getInstance();
+    ForgeMain plugin = ForgeMain.getInstance();
 
     @SubscribeEvent
     public void onServerStart(ServerStartingEvent event) {
         try {
             // Start Template
-            mod.taterComms = new TaterComms("config", mod.logger);
-            mod.taterComms.start();
+            plugin.taterComms = new TaterComms("config", plugin.logger);
+            plugin.taterComms.start();
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();

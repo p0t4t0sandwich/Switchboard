@@ -17,7 +17,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 
 public final class FabricTemplateCommand {
-    private static final FabricMain mod = FabricMain.getInstance();
+    private static final FabricMain plugin = FabricMain.getInstance();
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(literal("pronouns")
@@ -34,7 +34,7 @@ public final class FabricTemplateCommand {
                             String text = "";
                             entity.sendMessage(Text.literal(text));
                         } else {
-                            mod.logger.info(ansiiParser("§cYou must be a player to use this command."));
+                            plugin.logger.info(ansiiParser("§cYou must be a player to use this command."));
                         }
                     } catch (Exception e) {
                         System.err.println(e);

@@ -6,7 +6,6 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ForgePlayerMessageListener extends PlayerMessageListener {
-
     @SubscribeEvent
     void onPlayerMessage(ServerChatEvent event) {
         try {

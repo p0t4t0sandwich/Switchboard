@@ -1,6 +1,6 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.PlayerLoginListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.PlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.player.ForgeTaterPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
