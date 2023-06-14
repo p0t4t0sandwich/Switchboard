@@ -1,18 +1,17 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.fabric.player;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
-import ca.sperrer.p0t4t0sandwich.tatercomms.fabric.FabricMain;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 public class FabricTaterPlayer implements TaterPlayer {
-    FabricMain mod = FabricMain.getInstance();
-    private ServerPlayerEntity player;
+    private final ServerPlayerEntity player;
     private String serverName;
 
     public FabricTaterPlayer(ServerPlayerEntity player) {
         this.player = player;
-        this.serverName = mod.taterComms.getServerName();
+        this.serverName = TaterComms.getServerName();
     }
 
     @Override
@@ -22,12 +21,12 @@ public class FabricTaterPlayer implements TaterPlayer {
 
     @Override
     public String getName() {
-        return player.getName().toString();
+        return player.getName().getString();
     }
 
     @Override
     public String getDisplayName() {
-        return player.getDisplayName().toString();
+        return player.getDisplayName().getString();
     }
 
     @Override

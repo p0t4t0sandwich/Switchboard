@@ -4,9 +4,9 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 
 public class PlayerLoginListener {
-    private final MessageRelay relay = MessageRelay.getInstance();
-
     public void taterPlayerLogin(TaterPlayer taterPlayer) {
+        MessageRelay relay = MessageRelay.getInstance();
+
         // Add the TaterPlayer to the cache
         relay.setTaterPlayerInCache(taterPlayer.getUUID(), taterPlayer);
 

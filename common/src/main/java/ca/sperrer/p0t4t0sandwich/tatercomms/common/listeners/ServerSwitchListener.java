@@ -6,11 +6,14 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import java.util.UUID;
 
 public class ServerSwitchListener {
-    private final MessageRelay relay = MessageRelay.getInstance();
+    public void taterServerSwitch(TaterPlayer taterPlayer, String toServer) {
+        MessageRelay relay = MessageRelay.getInstance();
 
-    public void taterServerSwitch(UUID playerUUID, String toServer) {
         // Get TaterPlayer from cache
-        TaterPlayer taterPlayer = relay.getTaterPlayerFromCache(playerUUID);
+        TaterPlayer cachedTaterPlayer = relay.getTaterPlayerFromCache(taterPlayer.getUUID());
+        if (cachedTaterPlayer == null) {
+            return;
+        }
 
         // Get fromServer
         String fromServer = taterPlayer.getServerName();

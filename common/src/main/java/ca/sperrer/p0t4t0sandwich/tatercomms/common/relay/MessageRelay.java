@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common.relay;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.DiscordBot;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.player.DiscordTaterPlayer;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class MessageRelay {
         singleton = this;
         // Config option: relay.discord
         // Config option: relay.remote
+        // Config option: relay.global
 
         this.discord = discord;
     }
@@ -105,8 +107,10 @@ public class MessageRelay {
      * @param toServer The server the player is switching to
      */
     public void sendPlayerServerSwitch(TaterPlayer player, String fromServer, String toServer) {
-        // Relay player logout to Discord
-        this.sendPlayerLogout(player, fromServer);
+        if (fromServer != null) {
+            // Relay player logout to Discord
+            this.sendPlayerLogout(player, fromServer);
+        }
 
         // Relay player login to Discord
         this.sendPlayerLogin(player, toServer);
@@ -120,7 +124,11 @@ public class MessageRelay {
         // Relay message to each TaterPlayer on the server
         for (TaterPlayer taterPlayer : this.taterPlayerCache.values()) {
             if (taterPlayer.getServerName().equals(server)) {
-                taterPlayer.sendMessage(message);
+                if (player instanceof DiscordTaterPlayer) {
+                    taterPlayer.sendMessage("[Discord] " + player.getDisplayName() + ": " + message);
+                } else {
+                    taterPlayer.sendMessage("[Remote] " + player.getDisplayName() + ": " + message);
+                }
             }
         }
     }

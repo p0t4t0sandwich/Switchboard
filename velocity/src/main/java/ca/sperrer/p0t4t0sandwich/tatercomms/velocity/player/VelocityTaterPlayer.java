@@ -7,15 +7,17 @@ import net.kyori.adventure.text.Component;
 import java.util.UUID;
 
 public class VelocityTaterPlayer implements TaterPlayer {
-    private Player player;
+    private final Player player;
     private String serverName;
 
     public VelocityTaterPlayer(Player player) {
         this.player = player;
-        if (!player.getCurrentServer().isPresent()) {
-            this.serverName = "null";
+
+        if (player.getCurrentServer().isPresent()) {
+            this.serverName = player.getCurrentServer().get().getServerInfo().getName();
+        } else {
+            this.serverName = null;
         }
-        this.serverName = player.getCurrentServer().get().getServerInfo().getName();
     }
 
     @Override

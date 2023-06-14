@@ -1,18 +1,17 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge.player;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.ForgeMain;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class ForgeTaterPlayer implements TaterPlayer {
-    ForgeMain mod = ForgeMain.getInstance();
-    private ServerPlayer player;
+    private final ServerPlayer player;
     private String serverName;
 
     public ForgeTaterPlayer(ServerPlayer player) {
         this.player = player;
-        this.serverName = mod.taterComms.getServerName();
+        this.serverName = TaterComms.getServerName();
     }
 
     @Override

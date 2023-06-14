@@ -27,7 +27,7 @@ dependencies {
 
 shadowJar {
     dependencies {
-        exclude(dependency("org.slf4j:slf4j-api:2.0.5"))
+        exclude(dependency("org.slf4j:slf4j-api:1.7.36"))
         // Feck it -- include all dependencies, I give up for now
 //        // YAML
 //        include(dependency("dev.dejvokep:boosted-yaml:1.3"))

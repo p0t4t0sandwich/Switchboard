@@ -11,7 +11,7 @@ public class FabricServerStartedListener implements ServerLifecycleEvents.Server
     @Override
     public void onServerStarted(MinecraftServer server) {
         try {
-            // Start LPPronouns
+            // Start TaterComms
             plugin.taterComms = new TaterComms("config", plugin.logger);
             plugin.taterComms.start();
         } catch (Exception e) {

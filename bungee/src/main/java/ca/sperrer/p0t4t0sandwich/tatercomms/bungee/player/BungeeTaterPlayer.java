@@ -12,7 +12,11 @@ public class BungeeTaterPlayer implements TaterPlayer {
 
     public BungeeTaterPlayer(ProxiedPlayer player) {
         this.player = player;
-        this.serverName = player.getServer().getInfo().getName();
+        if (player.getServer() != null) {
+            this.serverName = player.getServer().getInfo().getName();
+        } else {
+            this.serverName = null;
+        }
     }
 
     @Override
