@@ -21,18 +21,16 @@ public class BungeePlayerMessageListener extends PlayerMessageListener implement
         runTaskAsync(() -> {
             try {
                 // If cancelled, or is a command, ignore
-                if (event.isCancelled() || event.isCommand() || event.isProxyCommand()) {
-                    return;
-                }
-
-                // Check if sender is a player
-                Connection sender = event.getSender();
-                if (!(sender instanceof ProxiedPlayer)) {
+                if (event.isCancelled()
+                        || event.isCommand()
+                        || event.isProxyCommand()
+                        // Check if sender is a player
+                        || !(event.getSender() instanceof ProxiedPlayer)) {
                     return;
                 }
 
                 // Get player, message and server
-                ProxiedPlayer player = (ProxiedPlayer) sender;
+                ProxiedPlayer player = (ProxiedPlayer) event.getSender();
                 String server = player.getServer().getInfo().getName();
                 String message = event.getMessage();
 

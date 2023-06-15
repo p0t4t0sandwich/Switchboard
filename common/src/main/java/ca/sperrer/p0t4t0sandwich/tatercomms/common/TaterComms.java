@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
+
 public class TaterComms {
     /**
      * Properties of the TaterComms class.
@@ -39,7 +41,7 @@ public class TaterComms {
 
         // Config
         try {
-            config = YamlDocument.create(new File("./" + configPath + "/TaterComms", "config.yml"),
+            config = YamlDocument.create(new File("." + File.separator + configPath + File.separator + "TaterComms", "config.yml"),
                     Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("config.yml"))
             );
             config.reload();
@@ -75,38 +77,46 @@ public class TaterComms {
      * Start TaterComms
      */
     public void start() {
-        if (STARTED) {
-            useLogger("TaterComms has already started!");
-            return;
-        }
-        STARTED = true;
+        runTaskAsync(() -> {
+            try {
+                if (STARTED) {
+                    useLogger("TaterComms has already started!");
+                    return;
+                }
+                STARTED = true;
 
-        String type = config.getString("storage.type");
-//        database = DataSource.getDatabase(type, config);
+                String type = config.getString("storage.type");
+        //        database = DataSource.getDatabase(type, config);
 
-        // Get the Discord token and guild ID from the config
-        String token = config.getString("discord.token");
-        String guildId = config.getString("discord.guildId");
-        if (token == null || token.equals("")) {
-            useLogger("No Discord token found in config.yml!");
-            return;
-        } else if (guildId == null || guildId.equals("")) {
-            useLogger("No Discord guild ID found in config.yml!");
-            return;
-        }
+                // Get the Discord token and guild ID from the config
+                String token = config.getString("discord.token");
+                String guildId = config.getString("discord.guildId");
+                if (token == null || token.equals("")) {
+                    useLogger("No Discord token found in config.yml!");
+                    return;
+                } else if (guildId == null || guildId.equals("")) {
+                    useLogger("No Discord guild ID found in config.yml!");
+                    return;
+                }
 
-        // Get server-channel mappings from the config
-        HashMap<String, String> serverChannels = getServerChannels();
-        if (serverChannels.isEmpty()) {
-            useLogger("No server-channel mappings found in config.yml!");
-            return;
-        }
+                // Get server-channel mappings from the config
+                HashMap<String, String> serverChannels = getServerChannels();
+                if (serverChannels.isEmpty()) {
+                    useLogger("No server-channel mappings found in config.yml!");
+                    return;
+                }
 
-        discord = new DiscordBot(token, guildId, serverChannels);
+                discord = new DiscordBot(token, guildId, serverChannels);
 
-        messageRelay = new MessageRelay(discord);
+                messageRelay = new MessageRelay(discord);
 
-        useLogger("TaterComms has been started!");
+                useLogger("TaterComms has been started!");
+            } catch (Exception e) {
+                useLogger("Failed to start TaterComms!");
+                System.err.println(e);
+                e.printStackTrace();
+            }
+        });
     }
 
     /**

@@ -27,7 +27,8 @@ dependencies {
 
 shadowJar {
     dependencies {
-        exclude(dependency("org.slf4j:slf4j-api:1.7.36"))
+//        exclude(dependency("org.slf4j:slf4j-api:1.7.36"))
+
         // Feck it -- include all dependencies, I give up for now
 //        // YAML
 //        include(dependency("dev.dejvokep:boosted-yaml:1.3"))
@@ -47,27 +48,29 @@ shadowJar {
 //        // Websocket
 //        include(dependency("com.neovisionaries:nv-websocket-client:2.14"))
     }
-    // YAML
-    relocate("dev.dejvokep", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dejvokep")
-
-    // MySQL
-    relocate("com.zaxxer.hikari", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.hikari")
-    relocate("com.mysql", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mysql")
-
-    // MongoDB
-    relocate("com.mongodb", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mongodb")
-    relocate("org.bson", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.bson")
-
-    // JDA
-    relocate("net.dv8tion", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dv8tion")
-    relocate("org.apache", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.apache")
-    relocate("okhttp3", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.okhttp3")
-    relocate("com.iwebpp", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.iwebpp")
-    relocate("kotlin", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.kotlin")
-    relocate("com.fasterxml.jackson", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.jackson")
-
-    // Websocket
-    relocate("com.neovisionaries", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.neovisionaries")
+//    // YAML
+//    relocate("dev.dejvokep", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dejvokep")
+//
+//    // MySQL
+//    relocate("com.zaxxer.hikari", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.hikari")
+//    relocate("com.mysql", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mysql")
+//
+//    // MongoDB
+//    relocate("com.mongodb", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mongodb")
+//    relocate("org.bson", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.bson")
+//
+//    // JDA
+//    relocate("net.dv8tion", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dv8tion")
+//    relocate("org.apache", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.apache")
+//    relocate("okhttp3", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.okhttp3")
+//    relocate("com.iwebpp", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.iwebpp")
+//    relocate("kotlin", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.kotlin")
+//    relocate("com.fasterxml.jackson", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.jackson")
+//    relocate("gnu.trove", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.trove")
+//    relocate("okio", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.okio")
+//
+//    // Websocket
+//    relocate("com.neovisionaries", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.neovisionaries")
 
     destinationDir(file("../target"))
     archiveName("TaterComms-${version}-common.jar")

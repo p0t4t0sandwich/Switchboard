@@ -71,6 +71,13 @@ public class MessageRelay {
      * @param message The message
      */
     public void sendMessage(TaterPlayer player, String server, String message) {
+        // Relay message to each TaterPlayer on every other server (Global chat)
+        for (TaterPlayer taterPlayer : this.taterPlayerCache.values()) {
+            if (!taterPlayer.getServerName().equals(server)) {
+                taterPlayer.sendMessage("§a[G] §r" + player.getDisplayName() + ": " + message);
+            }
+        }
+
         // Relay message to Discord
         if (this.discord != null) {
             this.discord.sendMessage(player, server, message);
@@ -125,9 +132,10 @@ public class MessageRelay {
         for (TaterPlayer taterPlayer : this.taterPlayerCache.values()) {
             if (taterPlayer.getServerName().equals(server)) {
                 if (player instanceof DiscordTaterPlayer) {
-                    taterPlayer.sendMessage("[Discord] " + player.getDisplayName() + ": " + message);
+                    // TODO: placeholers for messages
+                    taterPlayer.sendMessage("§9[D] §r" + player.getDisplayName() + ": " + message);
                 } else {
-                    taterPlayer.sendMessage("[Remote] " + player.getDisplayName() + ": " + message);
+                    taterPlayer.sendMessage("§c[R] §r" + player.getDisplayName() + ": " + message);
                 }
             }
         }
