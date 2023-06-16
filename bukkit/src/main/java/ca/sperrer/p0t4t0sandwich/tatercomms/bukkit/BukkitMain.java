@@ -1,10 +1,12 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.commands.BukkitTemplateCommand;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerAdvancementListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerLoginListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerLogoutListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerAdvancementListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerLoginListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerLogoutListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStartedListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStoppedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,22 +52,28 @@ public class BukkitMain extends JavaPlugin {
         taterComms = new TaterComms("plugins", getLogger());
         taterComms.start();
 
-        // Register event listener
+        // Register player event listeners
         getServer().getPluginManager().registerEvents(new BukkitPlayerAdvancementListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerLogoutListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerMessageListener(), this);
 
+        // Register server event listeners
+        getServer().getPluginManager().registerEvents(new BukkitServerStartedListener(), this);
+
         // Register commands
         getCommand("template").setExecutor(new BukkitTemplateCommand());
 
         // Plugin enable message
-        getLogger().info("Template has been enabled!");
+        getLogger().info("TaterComms has been enabled!");
     }
 
     @Override
     public void onDisable() {
+        // Server stopped listener
+        (new BukkitServerStoppedListener()).onServerStopped();
+
         // Plugin disable message
-        getLogger().info("Template has been disabled!");
+        getLogger().info("TaterComms has been disabled!");
     }
 }

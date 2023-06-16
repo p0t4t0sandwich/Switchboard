@@ -8,7 +8,7 @@
   "client": [
   ],
   "server": [
-    "FabricPlayerAdvancementListener"
+    "listeners.player.FabricPlayerAdvancementListener"
   ],
   "injectors": {
     "defaultRequire": 1

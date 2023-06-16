@@ -2,10 +2,12 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityTemplateCommand;
-import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerLoginListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerLogoutListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityPlayerMessageListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.VelocityServerSwitchListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLoginListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLogoutListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerServerSwitchListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.server.VelocityServerStartedListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.server.VelocityServerStoppedListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -58,15 +60,21 @@ public class VelocityMain {
 
         this.logger.info("TaterComms is running on " + getServerType() + ".");
 
-        // Start LPPronouns
+        // Start TaterComms
         taterComms = new TaterComms("plugins", getLogger());
         taterComms.start();
 
-        // Register event listener
+        // Server started listener
+        (new VelocityServerStartedListener()).onServerStarted();
+
+        // Register player event listeners
         server.getEventManager().register(this, new VelocityPlayerLoginListener());
         server.getEventManager().register(this, new VelocityPlayerLogoutListener());
         server.getEventManager().register(this, new VelocityPlayerMessageListener());
-        server.getEventManager().register(this, new VelocityServerSwitchListener());
+        server.getEventManager().register(this, new VelocityPlayerServerSwitchListener());
+
+        // Register server event listeners
+        server.getEventManager().register(this, new VelocityServerStoppedListener());
 
         // Register commands
         server.getCommandManager().register("template", new VelocityTemplateCommand());

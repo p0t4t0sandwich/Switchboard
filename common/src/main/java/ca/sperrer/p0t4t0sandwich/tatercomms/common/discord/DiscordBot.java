@@ -81,11 +81,11 @@ public class DiscordBot extends ListenerAdapter  {
     }
 
     /**
-     * Sends a message to a Discord channel.
+     * Send system message to a Discord channel.
      * @param server The server to send the message to
      * @param message The message to send
      */
-    public void sendMessage(TaterPlayer player, String server, String message) {
+    public void sendSystemMessage(String server, String message) {
         // Get the channel
         String channelGuildId = serverChannels.get(server);
         if (channelGuildId == null) {
@@ -104,10 +104,20 @@ public class DiscordBot extends ListenerAdapter  {
             return;
         }
 
+        // Send the message
+        channel.sendMessage(message).queue();
+    }
+
+    /**
+     * Sends a message to a Discord channel.
+     * @param server The server to send the message to
+     * @param message The message to send
+     */
+    public void sendPlayerMessage(TaterPlayer player, String server, String message) {
         // Format the message
         String msg = "**" + player.getDisplayName() + "**: " + message;
 
         // Send the message
-        channel.sendMessage(msg).queue();
+        sendSystemMessage(server, msg);
     }
 }

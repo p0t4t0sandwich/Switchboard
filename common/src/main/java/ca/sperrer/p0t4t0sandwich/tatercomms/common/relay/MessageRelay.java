@@ -80,11 +80,25 @@ public class MessageRelay {
 
         // Relay message to Discord
         if (this.discord != null) {
-            this.discord.sendMessage(player, server, message);
+            this.discord.sendPlayerMessage(player, server, message);
         }
 
         // Relay message to remote server
         // TODO: Relay message to remote server
+    }
+
+    /**
+     * Relay a system message from the Minecraft server to Discord.
+     * @param server The server
+     * @param message The message
+     */
+    public void sendSystemMessage(String server, String message) {
+        // Relay system message to Discord
+        if (this.discord != null) {
+            this.discord.sendSystemMessage(server, message);
+        }
+
+        // TODO: Relay system message to remote server
     }
 
     /**
