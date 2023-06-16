@@ -1,13 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ca.sperrer.p0t4t0sandwich.template.fabric.mixin",
+  "package": "ca.sperrer.p0t4t0sandwich.tatercomms.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
   ],
   "server": [
+    "FabricPlayerAdvancementListener"
   ],
   "injectors": {
     "defaultRequire": 1

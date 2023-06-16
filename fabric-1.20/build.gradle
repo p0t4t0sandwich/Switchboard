@@ -29,9 +29,10 @@ dependencies {
             'fabric-networking-api-v1'
     ]
 
-    apiModules.forEach {
-        modImplementation(fabricApi.module(it, project.fabric_version))
-    }
+//    apiModules.forEach {
+//        modImplementation(fabricApi.module(it, project.fabric_version))
+//    }
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 }
 
 processResources {

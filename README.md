@@ -60,7 +60,7 @@ storage:
 - sync chats across servers/proxies in remote configuration
 - mail system
 - Advancement listener
-  - Fabric needs mixin
+  - Filter specific advancement roots?
   - Proxies would need a plugin channel to pass the event up
 - Server starting/stopping listeners
 - placeholders
