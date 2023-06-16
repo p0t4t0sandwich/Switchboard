@@ -4,7 +4,6 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.BungeeMain;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.player.BungeeTaterPlayer;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.PlayerMessageListener;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;

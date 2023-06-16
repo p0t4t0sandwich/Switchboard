@@ -59,3 +59,15 @@ storage:
 - discord channels accessible from in game, chatroom style (for linked users)
 - sync chats across servers/proxies in remote configuration
 - mail system
+- Advancement listener
+  - Fabric needs mixin
+  - Proxies would need a plugin channel to pass the event up
+- Server starting/stopping listeners
+- placeholders
+  - serverName
+  - playerName
+  - playerDisplayName
+  - playerPrefix
+  - playerSuffix
+  - message
+  - advancementName

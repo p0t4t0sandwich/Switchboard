@@ -2,7 +2,6 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.PlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.player.ForgeTaterPlayer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -14,7 +13,7 @@ public class ForgePlayerLogoutListener extends PlayerLogoutListener {
         runTaskAsync(() -> {
             try {
                 // Pass TaterPlayer to helper function
-                taterPlayerLogout(new ForgeTaterPlayer((ServerPlayer) event.getEntity()));
+                taterPlayerLogout(new ForgeTaterPlayer(event.getEntity()));
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

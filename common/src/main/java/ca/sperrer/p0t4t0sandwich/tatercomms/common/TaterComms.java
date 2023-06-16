@@ -94,9 +94,6 @@ public class TaterComms {
                 if (token == null || token.equals("")) {
                     useLogger("No Discord token found in config.yml!");
                     return;
-                } else if (guildId == null || guildId.equals("")) {
-                    useLogger("No Discord guild ID found in config.yml!");
-                    return;
                 }
 
                 // Get server-channel mappings from the config

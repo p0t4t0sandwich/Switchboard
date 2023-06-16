@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.commands.BukkitTemplateCommand;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerAdvancementListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.BukkitPlayerMessageListener;
@@ -50,6 +51,7 @@ public class BukkitMain extends JavaPlugin {
         taterComms.start();
 
         // Register event listener
+        getServer().getPluginManager().registerEvents(new BukkitPlayerAdvancementListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerLogoutListener(), this);
         getServer().getPluginManager().registerEvents(new BukkitPlayerMessageListener(), this);

@@ -1,11 +1,8 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeTemplateCommand;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerLogoutListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerMessageListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgeServerStartedListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.*;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.ForgePlayerLoginListener;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -36,10 +33,12 @@ public class ForgeMain {
         logger.info("[TaterComms]: TaterComms is running on " + getServerType() + ".");
 
         // Register event listeners
+        MinecraftForge.EVENT_BUS.register(new ForgePlayerAdvancementListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerLoginListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerLogoutListener());
         MinecraftForge.EVENT_BUS.register(new ForgePlayerMessageListener());
         MinecraftForge.EVENT_BUS.register(new ForgeServerStartedListener());
+        MinecraftForge.EVENT_BUS.register(new ForgeServerStartingListener());
 
         // Register commands
         MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
