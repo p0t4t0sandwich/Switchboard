@@ -50,9 +50,11 @@ storage:
 
 ## TODO
 
+- Log received messages to the console
 - global chat options
 - chat formatting options (placeholders in the config)
-- grab the prefix + suffix from LuckPerms
+- grab the prefix + suffix from LuckPerms (add to taterplayer)
+- Complete chat management + passthrough configs
 - Staff chat
 - custom group chats
 - account linking system
