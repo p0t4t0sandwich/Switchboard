@@ -4,6 +4,9 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
+/**
+ * Represents a MongoDB database.
+ */
 public class MongoDBDatabase extends Database<MongoClient> {
     /**
      * Constructor for the MongoDBDataSource class

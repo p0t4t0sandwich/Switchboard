@@ -5,7 +5,14 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logouts and sends them to the message relay.
+ */
 public interface PlayerServerSwitchListener {
+    /**
+     * Called when a player logs out, and sends it to the message relay.
+     * @param taterPlayer The player.
+     */
     default void taterServerSwitch(TaterPlayer taterPlayer, String toServer) {
         runTaskAsync(() -> {
             try {

@@ -10,19 +10,33 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.server.BungeeServer
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import net.md_5.bungee.api.plugin.Plugin;
 
+/**
+ * Main class for BungeeCord.
+ */
 public class BungeeMain extends Plugin {
     public TaterComms taterComms;
 
-    // Get server type
+    /**
+     * Gets the server type.
+     * @return The server type.
+     */
     public String getServerType() {
         return "BungeeCord";
     }
 
-    // Singleton instance
     private static BungeeMain instance;
+
+    /**
+     * Gets the singleton instance.
+     * @return The singleton instance.
+     */
     public static BungeeMain getInstance() {
         return instance;
     }
+
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onEnable() {
         // Singleton instance
@@ -50,6 +64,9 @@ public class BungeeMain extends Plugin {
         getLogger().info("TaterComms has been enabled!");
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onDisable() {
         // Server stopped listener

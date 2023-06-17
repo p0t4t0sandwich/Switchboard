@@ -9,7 +9,16 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logins and sends them to the message relay.
+ */
 public class FabricPlayerLoginListener implements ServerPlayConnectionEvents.Join, PlayerLoginListener {
+    /**
+     * Called when a player logs in, and sends it to the message relay.
+     * @param handler The player's network handler
+     * @param sender The packet sender
+     * @param server The server
+     */
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         runTaskAsync(() -> {

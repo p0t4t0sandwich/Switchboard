@@ -7,7 +7,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player login and sends it to the message relay.
+ */
 public class ForgePlayerLoginListener implements PlayerLoginListener {
+    /**
+     * Called when a player logs in, and sends it to the message relay.
+     * @param event The player login event
+     */
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         runTaskAsync(() -> {

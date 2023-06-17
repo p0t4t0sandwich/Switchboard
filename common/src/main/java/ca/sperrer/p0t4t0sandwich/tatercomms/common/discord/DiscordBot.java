@@ -16,12 +16,19 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.util.HashMap;
 
-import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
-
+/**
+ * The Discord bot.
+ */
 public class DiscordBot extends ListenerAdapter  {
     private final HashMap<String, String> serverChannels;
     private JDA api;
 
+    /**
+     * Constructor.
+     * @param token The Discord bot token
+     * @param guildId The Discord guild ID
+     * @param serverChannels The server channels
+     */
     public DiscordBot(String token, String guildId, HashMap<String, String> serverChannels) {
         this.serverChannels = serverChannels;
 
@@ -38,6 +45,9 @@ public class DiscordBot extends ListenerAdapter  {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onReady(ReadyEvent event) {
         System.out.println("Discord bot is ready!");

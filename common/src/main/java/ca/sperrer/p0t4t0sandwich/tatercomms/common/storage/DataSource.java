@@ -4,7 +4,9 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 
 import java.util.Arrays;
 
-
+/**
+ * Represents a data source.
+ */
 public class DataSource {
     /**
      * Get the database

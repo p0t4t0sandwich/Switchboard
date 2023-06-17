@@ -15,6 +15,9 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 
+/**
+ * The main class for the Velocity plugin.
+ */
 @Plugin(
         id = "tatercomms",
         name = "TaterComms",
@@ -33,26 +36,45 @@ public class VelocityMain {
     @Inject
     private Logger logger;
 
-    // Get logger
+    /**
+     * Get the logger.
+     * @return The logger
+     */
     public Logger getLogger() {
         return this.logger;
     }
 
-    // Get server type
+    /**
+     * Get the server type.
+     * @return The server type
+     */
     public String getServerType() {
         return "Velocity";
     }
 
     // Singleton instance
     private static VelocityMain instance;
+
+    /**
+     * Get the singleton instance.
+     * @return The singleton instance
+     */
     public static VelocityMain getInstance() {
         return instance;
     }
 
+    /**
+     * Get the proxy server.
+     * @return The proxy server
+     */
     public ProxyServer getServer() {
         return this.server;
     }
 
+    /**
+     * Called when the proxy is initialized.
+     * @param event The proxy initialization event
+     */
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Singleton instance

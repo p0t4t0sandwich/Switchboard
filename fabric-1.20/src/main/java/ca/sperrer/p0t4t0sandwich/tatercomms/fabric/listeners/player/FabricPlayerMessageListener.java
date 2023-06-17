@@ -7,7 +7,16 @@ import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+/**
+ * Listens for player messages and sends them to the message relay.
+ */
 public class FabricPlayerMessageListener implements ServerMessageEvents.ChatMessage, PlayerMessageListener {
+    /**
+     * Called when a player sends a message, and sends it to the message relay.
+     * @param message the broadcast message with message decorators applied; use {@code message.getSignedContent()} to get the text
+     * @param sender  the player that sent the message
+     * @param params the {@link MessageType.Parameters}
+     */
     @Override
     public void onChatMessage(SignedMessage message, ServerPlayerEntity sender, MessageType.Parameters params) {
         try {

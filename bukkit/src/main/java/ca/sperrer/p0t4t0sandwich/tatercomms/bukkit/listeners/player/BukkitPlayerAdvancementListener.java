@@ -7,7 +7,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
+/**
+ * Listens for player advancements and sends them to the message relay.
+ */
 public class BukkitPlayerAdvancementListener implements Listener, PlayerAdvancementListener {
+    /**
+     * Called when a player completes an advancement.
+     * @param event The event.
+     */
     @EventHandler
     public void onPlayerAdvancement(PlayerAdvancementDoneEvent event) {
         Advancement advancement = event.getAdvancement();

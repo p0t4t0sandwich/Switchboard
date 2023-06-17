@@ -7,7 +7,14 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logout and sends it to the message relay.
+ */
 public class VelocityPlayerLogoutListener implements PlayerLogoutListener {
+    /**
+     * Called when a player logs out, and sends it to the message relay.
+     * @param event The player logout event
+     */
     @Subscribe
     public void onPlayerLogout(DisconnectEvent event) {
         runTaskAsync(() -> {

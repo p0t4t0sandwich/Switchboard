@@ -12,6 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.*;
 
+/**
+ * Main class for the Bukkit plugin.
+ */
 public class BukkitMain extends JavaPlugin {
     public TaterComms taterComms;
 
@@ -21,6 +24,10 @@ public class BukkitMain extends JavaPlugin {
         return instance;
     }
 
+    /**
+     * Returns the server type.
+     * @return The server type.
+     */
     public String getServerType() {
         if (isMagma()) {
             return "Magma";
@@ -41,6 +48,9 @@ public class BukkitMain extends JavaPlugin {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onEnable() {
         // Singleton instance
@@ -68,6 +78,9 @@ public class BukkitMain extends JavaPlugin {
         getLogger().info("TaterComms has been enabled!");
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onDisable() {
         // Server stopped listener

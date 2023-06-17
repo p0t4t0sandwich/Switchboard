@@ -12,9 +12,16 @@ import net.md_5.bungee.event.EventPriority;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player messages and sends them to the message relay.
+ */
 public class BungeePlayerMessageListener implements Listener, PlayerMessageListener {
     BungeeMain plugin = BungeeMain.getInstance();
 
+    /**
+     * Called when a player sends a message.
+     * @param event The event.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMessage(ChatEvent event) {
         runTaskAsync(() -> {
@@ -34,6 +41,7 @@ public class BungeePlayerMessageListener implements Listener, PlayerMessageListe
                 String message = event.getMessage();
 
                 // Send message to all other players, except those on the same server
+                // TODO: Replace this when we cancel the event
                 plugin.getProxy().getPlayers().stream()
                         .filter(p -> !p.getServer().getInfo().getName().equals(server))
                         .forEach(p -> p.sendMessage(new ComponentBuilder(String.format("[%s] %s: %s", server, player.getName(), message)).create()));

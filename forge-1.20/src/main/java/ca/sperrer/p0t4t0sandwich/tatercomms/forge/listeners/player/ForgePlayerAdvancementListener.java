@@ -6,7 +6,14 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+/**
+ * Listens for player advancement and sends it to the message relay.
+ */
 public class ForgePlayerAdvancementListener implements PlayerAdvancementListener {
+    /**
+     * Called when a player advances, and sends it to the message relay.
+     * @param event The advancement event
+     */
     @SubscribeEvent
     public void onPlayerAdvancement(AdvancementEvent event) {
         DisplayInfo display = event.getAdvancement().getDisplay();

@@ -9,7 +9,14 @@ import net.md_5.bungee.event.EventPriority;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logouts and sends them to the message relay.
+ */
 public class BungeePlayerLogoutListener implements Listener, PlayerLogoutListener {
+    /**
+     * Called when a player logs out.
+     * @param event The event.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerLogout(PlayerDisconnectEvent event) {
         runTaskAsync(() -> {

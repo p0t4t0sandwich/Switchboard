@@ -10,8 +10,14 @@ import net.md_5.bungee.event.EventPriority;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player server switches and sends them to the message relay.
+ */
 public class BungeePlayerServerSwitchListener implements Listener, PlayerServerSwitchListener {
-
+    /**
+     * Called when a player switches servers.
+     * @param event The event.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerSwitch(ServerSwitchEvent event) {
         runTaskAsync(() -> {

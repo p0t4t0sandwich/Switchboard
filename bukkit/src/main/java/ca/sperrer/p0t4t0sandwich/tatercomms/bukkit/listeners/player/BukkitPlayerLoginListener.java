@@ -8,7 +8,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logins and sends them to the message relay.
+ */
 public class BukkitPlayerLoginListener implements Listener, PlayerLoginListener {
+    /**
+     * Called when a player logs in.
+     * @param event The event.
+     */
     @EventHandler
     public void onPlayerLogin(PlayerJoinEvent event) {
         runTaskAsync(() -> {

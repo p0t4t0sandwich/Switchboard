@@ -16,23 +16,37 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The main class for the Fabric plugin.
+ */
 public class FabricMain implements DedicatedServerModInitializer {
     public TaterComms taterComms;
 
     // Logger
     public final Logger logger = LoggerFactory.getLogger("tatercomms");
 
-    // Get server type
+    /**
+     * Gets the server type.
+     * @return The server type
+     */
     public String getServerType() {
         return "Fabric";
     }
 
     // Singleton instance
     private static FabricMain instance;
+
+    /**
+     * Gets the singleton instance.
+     * @return The singleton instance
+     */
     public static FabricMain getInstance() {
         return instance;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void onInitializeServer() {
         // Singleton instance

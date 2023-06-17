@@ -5,7 +5,14 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.forge.player.ForgeTaterPlayer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+/**
+ * Listens for player messages and sends it to the message relay.
+ */
 public class ForgePlayerMessageListener implements PlayerMessageListener {
+    /**
+     * Called when a player sends a message, and sends it to the message relay.
+     * @param event The player message event
+     */
     @SubscribeEvent
     void onPlayerMessage(ServerChatEvent event) {
         try {

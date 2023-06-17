@@ -8,7 +8,15 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logouts and sends them to the message relay.
+ */
 public class FabricPlayerLogoutListener implements ServerPlayConnectionEvents.Disconnect, PlayerLogoutListener {
+    /**
+     * Called when a player logs out, and sends it to the message relay.
+     * @param handler The player's network handler
+     * @param server The server
+     */
     @Override
     public void onPlayDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
         runTaskAsync(() -> {

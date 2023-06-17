@@ -8,6 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+/**
+ * Represents a MySQL database.
+ */
 public class MySQLDatabase extends Database<Connection> {
     /**
      * Class used to abstract the SQL data source.
@@ -46,6 +49,9 @@ public class MySQLDatabase extends Database<Connection> {
         setDatabase(database);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public Connection getConnection() {
         try {

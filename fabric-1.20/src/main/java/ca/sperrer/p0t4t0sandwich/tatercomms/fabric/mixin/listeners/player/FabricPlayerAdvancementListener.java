@@ -13,11 +13,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Listens for player advancements and sends them to the message relay.
+ */
 @Mixin(PlayerAdvancementTracker.class)
 public abstract class FabricPlayerAdvancementListener implements PlayerAdvancementListener {
     @Shadow private ServerPlayerEntity owner;
     @Shadow public abstract AdvancementProgress getProgress(Advancement advancement);
 
+    /**
+     * Called when a player completes an advancement, and sends it to the message relay.
+     * @param advancement The advancement
+     * @param ci Callback info
+     */
     @Inject(method = "endTrackingCompleted", at = @At("HEAD"))
     public void onPlayerAdvancement(Advancement advancement, CallbackInfo ci) {
         AdvancementDisplay display = advancement.getDisplay();

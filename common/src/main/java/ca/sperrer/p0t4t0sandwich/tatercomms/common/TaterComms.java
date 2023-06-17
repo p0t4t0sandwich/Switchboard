@@ -15,6 +15,9 @@ import java.util.Objects;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Main class for the TaterComms plugin.
+ */
 public class TaterComms {
     /**
      * Properties of the TaterComms class.

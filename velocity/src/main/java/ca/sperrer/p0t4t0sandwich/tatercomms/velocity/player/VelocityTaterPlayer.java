@@ -6,10 +6,17 @@ import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
 
+/**
+ * Abstracts a Velocity player to a TaterPlayer.
+ */
 public class VelocityTaterPlayer implements TaterPlayer {
     private final Player player;
     private String serverName;
 
+    /**
+     * Constructor.
+     * @param player The Velocity player.
+     */
     public VelocityTaterPlayer(Player player) {
         this.player = player;
 
@@ -20,31 +27,49 @@ public class VelocityTaterPlayer implements TaterPlayer {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public UUID getUUID() {
         return player.getUniqueId();
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public String getName() {
         return player.getUsername();
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public String getDisplayName() {
         return player.getUsername();
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public String getServerName() {
         return serverName;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void setServerName(String server) {
         this.serverName = server;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void sendMessage(String message) {
         player.sendMessage(Component.text(message));

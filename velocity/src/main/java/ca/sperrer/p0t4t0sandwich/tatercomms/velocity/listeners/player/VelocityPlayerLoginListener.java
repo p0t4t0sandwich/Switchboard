@@ -8,7 +8,14 @@ import com.velocitypowered.api.proxy.Player;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player login and sends it to the message relay.
+ */
 public class VelocityPlayerLoginListener implements PlayerLoginListener {
+    /**
+     * Called when a player logs in, and sends it to the message relay.
+     * @param event The player login event
+     */
     @Subscribe
     public void onPlayerLogin(ServerConnectedEvent event) {
         runTaskAsync(() -> {

@@ -5,7 +5,15 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player messages and sends them to the message relay.
+ */
 public interface PlayerMessageListener {
+    /**
+     * Called when a player sends a message, and sends it to the message relay.
+     * @param taterPlayer The player.
+     * @param message The message.
+     */
     default void taterPlayerMessage(TaterPlayer taterPlayer, String message) {
         runTaskAsync(() -> {
             try {

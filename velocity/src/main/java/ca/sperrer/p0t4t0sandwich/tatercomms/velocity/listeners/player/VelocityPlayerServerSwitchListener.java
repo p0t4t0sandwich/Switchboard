@@ -8,7 +8,14 @@ import com.velocitypowered.api.proxy.Player;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player server switch and sends it to the message relay.
+ */
 public class VelocityPlayerServerSwitchListener implements PlayerServerSwitchListener {
+    /**
+     * Called when a player switches servers, and sends it to the message relay.
+     * @param event The player server switch event
+     */
     @Subscribe
     public void onServerSwitch(ServerConnectedEvent event) {
         runTaskAsync(() -> {

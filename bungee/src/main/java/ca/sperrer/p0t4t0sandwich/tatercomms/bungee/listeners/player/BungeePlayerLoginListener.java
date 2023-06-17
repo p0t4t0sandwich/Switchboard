@@ -10,7 +10,14 @@ import net.md_5.bungee.event.EventPriority;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player logins and sends them to the message relay.
+ */
 public class BungeePlayerLoginListener implements Listener, PlayerLoginListener {
+    /**
+     * Called when a player logs in.
+     * @param event The event.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerLogin(ServerSwitchEvent event) {
         runTaskAsync(() -> {

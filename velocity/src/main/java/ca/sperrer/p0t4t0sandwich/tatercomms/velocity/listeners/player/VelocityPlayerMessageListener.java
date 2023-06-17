@@ -11,9 +11,16 @@ import net.kyori.adventure.text.Component;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
+/**
+ * Listens for player messages and sends it to the message relay.
+ */
 public class VelocityPlayerMessageListener implements PlayerMessageListener {
     VelocityMain plugin = VelocityMain.getInstance();
 
+    /**
+     * Called when a player sends a message, and sends it to the message relay.
+     * @param event The player message event
+     */
     @Subscribe(order = PostOrder.LAST)
     public void onPlayerMessage(PlayerChatEvent event) {
         runTaskAsync(() -> {
@@ -27,6 +34,7 @@ public class VelocityPlayerMessageListener implements PlayerMessageListener {
             String server = player.getCurrentServer().get().getServerInfo().getName();
 
             // Send message to all other players, except those on the same server
+            // TODO: Replace this when we cancel the event
             plugin.getServer().getAllPlayers().stream()
                     .filter(p -> !p.getCurrentServer().isPresent() || !p.getCurrentServer().get().getServerInfo().getName().equals(server))
                     .forEach(p -> p.sendMessage(Component.text(String.format("[%s] %s: %s", server, player.getUsername(), message))));
