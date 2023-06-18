@@ -1,5 +1,6 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerAdvancementListener;
@@ -65,7 +66,7 @@ public class ForgeMain {
         MinecraftForge.EVENT_BUS.register(new ForgeServerStoppedListener());
 
         // Register commands
-        MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
+//        MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
 
         // Mod enable message
         logger.info("[TaterComms]: TaterComms has been enabled!");

@@ -16,6 +16,23 @@ public class Utils {
     }
 
     /**
+     * Run a task asynchronously, after a delay.
+     * @param run: The task to run asynchronously.
+     * @param delay: The delay in ticks to wait before running the task.
+     */
+    public static void runTaskLaterAsync(Runnable run, Long delay) {
+        ForkJoinPool.commonPool().submit(() -> {
+            try {
+                Thread.sleep(delay * 1000 / 20);
+            } catch (InterruptedException e) {
+                System.err.println(e);
+                e.printStackTrace();
+            }
+            run.run();
+        });
+    }
+
+    /**
      * Run a task asynchronously, repeating it every period seconds.
      * @param run The task to run asynchronously.
      * @param delay The delay in seconds to wait before running the task.
@@ -26,12 +43,14 @@ public class Utils {
             try {
                 Thread.sleep(delay * 1000 / 20);
             } catch (InterruptedException e) {
+                System.err.println(e);
                 e.printStackTrace();
             }
             while (true) {
                 try {
                     Thread.sleep(period * 1000 / 20);
                 } catch (InterruptedException e) {
+                    System.err.println(e);
                     e.printStackTrace();
                 }
                 run.run();

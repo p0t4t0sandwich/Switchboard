@@ -33,3 +33,11 @@ mandatory = true
 versionRange = "[1.20,1.21)"
 ordering = "NONE"
 side = "BOTH"
+
+# LuckPerms Dependency
+[[dependencies.tatercomms]]
+modId = "luckperms"
+mandatory = false
+versionRange = "[5.3.0,)"
+ordering = "NONE"
+side = "SERVER"

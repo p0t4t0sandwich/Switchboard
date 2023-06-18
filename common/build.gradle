@@ -25,12 +25,12 @@ dependencies {
     implementation("com.neovisionaries:nv-websocket-client:2.14")
 
     // Logging
-    compileOnly("org.slf4j:slf4j-api:2.0.5")
+    compileOnly("org.slf4j:slf4j-api:1.7.36")
 }
 
 shadowJar {
     dependencies {
-        exclude(dependency("org.slf4j:slf4j-api:2.0.5"))
+        exclude(dependency("org.slf4j:slf4j-api:1.7.36"))
     }
 
     // YAML

@@ -51,7 +51,7 @@ public interface TaterPlayer {
      */
     default String getPrefix() {
         LuckPermsHook luckPermsHook = LuckPermsHook.getInstance();
-        return luckPermsHook != null ? luckPermsHook.getPrefix(this) : "";
+        return (luckPermsHook != null && luckPermsHook.getPrefix(this) != null) ? luckPermsHook.getPrefix(this) : "";
     }
 
     /**
@@ -60,7 +60,7 @@ public interface TaterPlayer {
      */
     default String getSuffix() {
         LuckPermsHook luckPermsHook = LuckPermsHook.getInstance();
-        return luckPermsHook != null ? luckPermsHook.getSuffix(this) : "";
+        return (luckPermsHook != null && luckPermsHook.getSuffix(this) != null) ? luckPermsHook.getSuffix(this) : "";
     }
 
     default PlaceholderParser parsePlaceholders(String input) {

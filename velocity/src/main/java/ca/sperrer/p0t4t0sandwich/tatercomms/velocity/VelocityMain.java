@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLogoutListener;
@@ -100,6 +101,12 @@ public class VelocityMain {
 
         // Register commands
         server.getCommandManager().register("template", new VelocityTemplateCommand());
+
+        // Register LuckPerms hook
+        if (getServer().getPluginManager().getPlugin("LuckPerms").isPresent()) {
+            getLogger().info("LuckPerms detected, enabling LuckPerms hook.");
+            TaterComms.addHook(new LuckPermsHook());
+        }
 
         // Plugin enable message
         this.logger.info("TaterComms has been enabled!");

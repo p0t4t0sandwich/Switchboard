@@ -26,7 +26,7 @@ public class FabricServerStartingListener implements ServerLifecycleEvents.Serve
 
             // Register LuckPerms hook
             if (FabricLoader.getInstance().isModLoaded("luckperms")) {
-                TaterComms.useLogger("LuckPerms detected, enabling LuckPerms hook.");
+                TaterComms.useLogger("[TaterComms] LuckPerms detected, enabling LuckPerms hook.");
                 TaterComms.addHook(new LuckPermsHook());
             }
         } catch (Exception e) {

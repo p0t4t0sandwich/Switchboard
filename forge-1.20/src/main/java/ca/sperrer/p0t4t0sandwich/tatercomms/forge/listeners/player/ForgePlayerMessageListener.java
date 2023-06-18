@@ -15,12 +15,8 @@ public class ForgePlayerMessageListener implements PlayerMessageListener {
      */
     @SubscribeEvent
     void onPlayerMessage(ServerChatEvent event) {
-        try {
-            // Send message to message relay
-            taterPlayerMessage(new ForgeTaterPlayer(event.getPlayer()), event.getMessage().getString());
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
-        }
+        // Send message to message relay
+        taterPlayerMessage(new ForgeTaterPlayer(event.getPlayer()), event.getMessage().getString(), true);
+        event.setCanceled(true);
     }
 }

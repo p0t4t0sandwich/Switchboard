@@ -1,12 +1,10 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.commands.BukkitTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.*;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStoppedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,7 +69,7 @@ public class BukkitMain extends JavaPlugin {
         pluginManager.registerEvents(new BukkitPlayerMessageListener(), this);
 
         // Register server event listeners
-        Bukkit.getScheduler().runTaskLater(this, () -> new BukkitServerStartedListener().onServerStarted(), 100);
+        runTaskLaterAsync(() -> new BukkitServerStartedListener().onServerStarted(), 100L);
 
         // Register commands
 //        getCommand("template").setExecutor(new BukkitTemplateCommand());
