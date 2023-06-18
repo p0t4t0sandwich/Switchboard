@@ -123,11 +123,8 @@ public class DiscordBot extends ListenerAdapter  {
      * @param server The server to send the message to
      * @param message The message to send
      */
-    public void sendPlayerMessage(TaterPlayer player, String server, String message) {
-        // Format the message
-        String msg = "**" + player.getDisplayName() + "**: " + message;
-
+    public void sendPlayerMessage(String server, String message) {
         // Send the message
-        sendSystemMessage(server, msg);
+        sendSystemMessage(server, message);
     }
 }

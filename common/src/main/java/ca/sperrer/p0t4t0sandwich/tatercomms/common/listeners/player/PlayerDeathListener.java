@@ -6,23 +6,20 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
 /**
- * Listens for player logouts and sends them to the message relay.
+ * Listens for player deaths and sends them to the message relay.
  */
-public interface PlayerLogoutListener {
+public interface PlayerDeathListener {
     /**
-     * Called when a player logs out, and sends it to the message relay.
+     * Called when a player dies, and sends it to the message relay.
      * @param taterPlayer The player.
+     * @param deathMessage The death message.
      */
-    default void taterPlayerLogout(TaterPlayer taterPlayer) {
+    default void taterPlayerDeath(TaterPlayer taterPlayer, String deathMessage) {
         runTaskAsync(() -> {
             try {
                 MessageRelay relay = MessageRelay.getInstance();
-
-                // Add the TaterPlayer to the cache
-                relay.removeTaterPlayerFromCache(taterPlayer.getUUID());
-
-                // Relay the logout message
-                relay.sendSystemMessage(taterPlayer.getServerName(), taterPlayer.getDisplayName() + " left the game");
+                // Send death message through relay
+                relay.sendSystemMessage(taterPlayer.getServerName(), deathMessage);
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

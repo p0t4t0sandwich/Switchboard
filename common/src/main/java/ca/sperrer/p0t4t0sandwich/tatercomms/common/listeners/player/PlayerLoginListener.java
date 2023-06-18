@@ -22,7 +22,7 @@ public interface PlayerLoginListener {
                 relay.setTaterPlayerInCache(taterPlayer.getUUID(), taterPlayer);
 
                 // Relay the login message
-                relay.sendPlayerLogin(taterPlayer, taterPlayer.getServerName());
+                relay.sendSystemMessage(taterPlayer.getServerName(), taterPlayer.getDisplayName() + " joined the game");
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

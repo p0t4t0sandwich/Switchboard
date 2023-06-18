@@ -36,43 +36,76 @@ This plugin requires [Dependency]() to function.
 ## Configuration
 
 ```yaml
-# Database configuration
-# Supported storage types: mongodb, mysql
-storage:
-  type: mongodb
-  config:
-    host: localhost
-    port: 27017
-    database: template
-    username: root
-    password: password
+---
+version: 1
+
+# Discord bot configuration
+# You only need one of these per server network, assuming you're running a primary proxy/websocket to handle chats
+# If you're running a standalone server, or this is the main server/proxy in your network,
+# set primary to true and set the channel mappings accordingly.
+discord:
+  enabled: true
+  token: ""
+
+  # Server to Discord Channel mapping
+  channels:
+    # in the format of: serverName: guildID/channelId
+    example: "123456789012345678/123456789012345678"
+
+# ServerName for standalone servers (Bukkit, Fabric, or Forge)
+# Proxies will use the server names defined in the config
+server:
+  name: "example"
+
+formatting:
+  # %player% - Player name
+  # %message% - Message
+  # %server% - Server name
+  # %prefix% - Player prefix
+  # %suffix% - Player suffix
+  # %displayname% - Player display name
+
+  # Global chat formatting
+  global: "§a[G]§r %displayname% >> %message%"
+  # Local chat formatting
+  local: "§a[L]§r %displayname% >> %message%"
+  # Staff chat formatting
+  staff: "§1[S]§r %displayname% >> %message%"
+  # Discord chat formatting
+  discord: "§9[D]§r %displayname% >> %message%"
+  # Remote chat formatting
+  remote: "§4[%server%]§r %displayname% >> %message%"
+
+# Remote websocket configuration (for servers that you can't run behind a proxy)
+# Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
+# Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works.
+remote:
+  enabled: false
+  primary: false
+  url: "ws://localhost:5483"
 ```
 
 ## TODO
 
-- Log received messages to the console
-- global chat options
-- chat formatting options (placeholders in the config)
-- grab the prefix + suffix from LuckPerms (add to taterplayer)
-- Complete chat management + passthrough configs
-- Staff chat
-- custom group chats
+## Listeners
+- Player Advancement
+  - Filter specific advancement roots?
+  - Proxies need a plugin channel to pass the event up
+- Player Death
+  - Proxies need a plugin channel to pass the event up
+
+## Discord additions
 - account linking system
 - discord channels accessible from in game, chatroom style (for linked users)
-- sync chats across servers/proxies in remote configuration
-- mail system
 - configurable embeds
   - use player head as icon
     - cache the head
 - option to use webhooks for discord
-- Advancement listener
-  - Filter specific advancement roots?
-  - Proxies would need a plugin channel to pass the event up
-- placeholders
-  - serverName
-  - playerName
-  - playerDisplayName
-  - playerPrefix
-  - playerSuffix
-  - message
-  - advancementName
+
+## Chat additions
+- Complete chat management + passthrough configs
+- Staff chat
+- custom group chats
+- sync chats across servers/proxies in remote configuration
+- mail system
+- RGB support for chat colors

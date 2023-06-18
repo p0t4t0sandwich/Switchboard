@@ -8,7 +8,9 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.player.BungeePlayer
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.server.BungeeServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.server.BungeeServerStoppedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
 
 /**
  * Main class for BungeeCord.
@@ -49,16 +51,23 @@ public class BungeeMain extends Plugin {
         taterComms.start();
 
         // Server started listener
-        (new BungeeServerStartedListener()).onServerStarted();
+        new BungeeServerStartedListener().onServerStarted();
 
         // Register event listener
-        getProxy().getPluginManager().registerListener(this, new BungeePlayerLoginListener());
-        getProxy().getPluginManager().registerListener(this, new BungeePlayerLogoutListener());
-        getProxy().getPluginManager().registerListener(this, new BungeePlayerMessageListener());
-        getProxy().getPluginManager().registerListener(this, new BungeePlayerServerSwitchListener());
+        PluginManager pluginManager = getProxy().getPluginManager();
+        pluginManager.registerListener(this, new BungeePlayerLoginListener());
+        pluginManager.registerListener(this, new BungeePlayerLogoutListener());
+        pluginManager.registerListener(this, new BungeePlayerMessageListener());
+        pluginManager.registerListener(this, new BungeePlayerServerSwitchListener());
 
         // Register commands
-        getProxy().getPluginManager().registerCommand(this, new BungeeTemplateCommand());
+//        getProxy().getPluginManager().registerCommand(this, new BungeeTemplateCommand());
+
+        // Register LuckPerms hook
+        if (getProxy().getPluginManager().getPlugin("LuckPerms") != null) {
+            getLogger().info("LuckPerms detected, enabling LuckPerms hook.");
+            TaterComms.addHook(new LuckPermsHook());
+        }
 
         // Plugin enable message
         getLogger().info("TaterComms has been enabled!");
@@ -70,7 +79,7 @@ public class BungeeMain extends Plugin {
     @Override
     public void onDisable() {
         // Server stopped listener
-        (new BungeeServerStoppedListener()).onServerStopped();
+        new BungeeServerStoppedListener().onServerStopped();
 
         // Plugin disable message
         getLogger().info("TaterComms has been disabled!");

@@ -14,6 +14,30 @@ discord:
     # in the format of: serverName: guildID/channelId
     example: "123456789012345678/123456789012345678"
 
+# ServerName for standalone servers (Bukkit, Fabric, or Forge)
+# Proxies will use the server names defined in the config
+server:
+  name: "example"
+
+formatting:
+  # %player% - Player name
+  # %message% - Message
+  # %server% - Server name
+  # %prefix% - Player prefix
+  # %suffix% - Player suffix
+  # %displayname% - Player display name
+
+  # Global chat formatting
+  global: "§a[G]§r %displayname% >> %message%"
+  # Local chat formatting
+  local: "§a[L]§r %displayname% >> %message%"
+  # Staff chat formatting
+  staff: "§1[S]§r %displayname% >> %message%"
+  # Discord chat formatting
+  discord: "§9[D]§r %displayname% >> %message%"
+  # Remote chat formatting
+  remote: "§4[%server%]§r %displayname% >> %message%"
+
 # Remote websocket configuration (for servers that you can't run behind a proxy)
 # Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
 # Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works.
@@ -21,10 +45,3 @@ remote:
   enabled: false
   primary: false
   url: "ws://localhost:5483"
-
-
-# ServerName for standalone servers (Bukkit, Fabric, or Forge)
-# Proxies will use the server names defined in the config
-server:
-  name: "example"
-

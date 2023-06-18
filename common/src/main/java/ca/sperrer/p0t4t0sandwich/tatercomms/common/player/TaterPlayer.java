@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common.player;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.placeholder.PlaceholderParser;
 
 import java.util.UUID;
 
@@ -60,5 +61,15 @@ public interface TaterPlayer {
     default String getSuffix() {
         LuckPermsHook luckPermsHook = LuckPermsHook.getInstance();
         return luckPermsHook != null ? luckPermsHook.getSuffix(this) : "";
+    }
+
+    default PlaceholderParser parsePlaceholders(String input) {
+        return new PlaceholderParser(input)
+                .parseString("player", this.getName())
+                .parseString("displayname", this.getDisplayName())
+                .parseString("prefix", this.getPrefix())
+                .parseString("suffix", this.getSuffix())
+                .parseString("server", this.getServerName())
+                .parseSectionSign();
     }
 }

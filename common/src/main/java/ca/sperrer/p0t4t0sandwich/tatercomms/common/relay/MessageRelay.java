@@ -1,12 +1,17 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common.relay;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.DiscordBot;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.player.DiscordTaterPlayer;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.placeholder.PlaceholderParser;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
 
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * Class for relaying messages between the server and Discord.
+ */
 public class MessageRelay {
     /**
      * Properties of the MessageRelay class.
@@ -16,17 +21,19 @@ public class MessageRelay {
      */
     private static MessageRelay singleton = null;
     private final HashMap<UUID, TaterPlayer> taterPlayerCache = new HashMap<>();
+    private final HashMap<String, String> formatting;
     private final DiscordBot discord;
 
     /**
      * Constructor for the MessageRelay class.
      */
-    public MessageRelay(DiscordBot discord) {
+    public MessageRelay(HashMap<String, String> formatting, DiscordBot discord) {
         singleton = this;
         // Config option: relay.discord
         // Config option: relay.remote
         // Config option: relay.global
 
+        this.formatting = formatting;
         this.discord = discord;
     }
 
@@ -71,16 +78,31 @@ public class MessageRelay {
      * @param message The message
      */
     public void sendMessage(TaterPlayer player, String server, String message) {
+        this.sendMessage(player, server, message, true);
+    }
+
+    /**
+     * Relays a message from the Minecraft server to Discord, or to a remote server.
+     * @param player The player
+     * @param server The server
+     * @param message The message
+     * @param isCancelled Whether the message was cancelled
+     */
+    public void sendMessage(TaterPlayer player, String server, String message, boolean isCancelled) {
+        // Message
+        String formattedMessage = player.parsePlaceholders(this.formatting.get("global")).parseString("message", message).getResult();
+        TaterComms.useLogger(PlaceholderParser.stripSectionSign(formattedMessage));
+
         // Relay message to each TaterPlayer on every other server (Global chat)
         for (TaterPlayer taterPlayer : this.taterPlayerCache.values()) {
-            if (!taterPlayer.getServerName().equals(server)) {
-                taterPlayer.sendMessage("§a[G] §r" + player.getDisplayName() + ": " + message);
+            if (isCancelled || !taterPlayer.getServerName().equals(server)) {
+                taterPlayer.sendMessage(formattedMessage);
             }
         }
 
         // Relay message to Discord
         if (this.discord != null) {
-            this.discord.sendPlayerMessage(player, server, message);
+            this.discord.sendPlayerMessage(server, PlaceholderParser.stripSectionSign(formattedMessage));
         }
 
         // Relay message to remote server
@@ -102,26 +124,6 @@ public class MessageRelay {
     }
 
     /**
-     * Relay a player join event from the Minecraft server to Discord.
-     * @param player The player
-     * @param server The server
-     */
-    public void sendPlayerLogin(TaterPlayer player, String server) {
-        // Relay player join to Discord
-        this.sendMessage(player, server, "joined the game");
-    }
-
-    /**
-     * Relay a player quit event from the Minecraft server to Discord.
-     * @param player The player
-     * @param server The server
-     */
-    public void sendPlayerLogout(TaterPlayer player, String server) {
-        // Relay player quit to Discord
-        this.sendMessage(player, server,  "left the game");
-    }
-
-    /**
      * Relay a player switch event from the Minecraft server to Discord.
      * @param player The player
      * @param fromServer The server the player is switching from
@@ -130,11 +132,11 @@ public class MessageRelay {
     public void sendPlayerServerSwitch(TaterPlayer player, String fromServer, String toServer) {
         if (fromServer != null) {
             // Relay player logout to Discord
-            this.sendPlayerLogout(player, fromServer);
+            this.sendSystemMessage(player.getServerName(), player.getDisplayName() + " left the game");
         }
 
         // Relay player login to Discord
-        this.sendPlayerLogin(player, toServer);
+        this.sendSystemMessage(player.getServerName(), player.getDisplayName() + " joined the game");
     }
 
     /**
@@ -142,15 +144,18 @@ public class MessageRelay {
      * @param message The message
      */
     public void receiveMessage(TaterPlayer player, String server, String message) {
+        String formattedMessage;
+        if (player instanceof DiscordTaterPlayer) {
+            formattedMessage = player.parsePlaceholders(this.formatting.get("discord")).parseString("message", message).getResult();
+        } else {
+            formattedMessage = player.parsePlaceholders(this.formatting.get("remote")).parseString("message", message).getResult();
+        }
+        TaterComms.useLogger(PlaceholderParser.stripSectionSign(formattedMessage));
+
         // Relay message to each TaterPlayer on the server
         for (TaterPlayer taterPlayer : this.taterPlayerCache.values()) {
             if (taterPlayer.getServerName().equals(server)) {
-                if (player instanceof DiscordTaterPlayer) {
-                    // TODO: placeholers for messages
-                    taterPlayer.sendMessage("§9[D] §r" + player.getDisplayName() + ": " + message);
-                } else {
-                    taterPlayer.sendMessage("§c[R] §r" + player.getDisplayName() + ": " + message);
-                }
+                taterPlayer.sendMessage(formattedMessage);
             }
         }
     }

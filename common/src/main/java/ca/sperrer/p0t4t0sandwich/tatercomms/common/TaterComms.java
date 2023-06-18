@@ -9,6 +9,7 @@ import dev.dejvokep.boostedyaml.block.Block;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,9 +28,10 @@ public class TaterComms {
      * STARTED: Whether the PanelServerManager has been started
      */
     private static YamlDocument config;
-    private final Object logger;
+    private static Object logger;
     private static TaterComms singleton = null;
     private boolean STARTED = false;
+    private static ArrayList<Object> hooks = new ArrayList<>();
     private DiscordBot discord = null;
     private MessageRelay messageRelay = null;
 
@@ -40,7 +42,7 @@ public class TaterComms {
      */
     public TaterComms(String configPath, Object logger) {
         singleton = this;
-        this.logger = logger;
+        TaterComms.logger = logger;
 
         // Config
         try {
@@ -66,7 +68,7 @@ public class TaterComms {
      * Use whatever logger is being used.
      * @param message The message to log
      */
-    public void useLogger(String message) {
+    public static void useLogger(String message) {
         if (logger instanceof java.util.logging.Logger) {
             ((java.util.logging.Logger) logger).info(message);
         } else if (logger instanceof org.slf4j.Logger) {
@@ -106,9 +108,16 @@ public class TaterComms {
                     return;
                 }
 
+                HashMap<String, String> formatting = new HashMap<>();
+                formatting.put("global", config.getString("formatting.global"));
+                formatting.put("local", config.getString("formatting.local"));
+                formatting.put("staff", config.getString("formatting.staff"));
+                formatting.put("discord", config.getString("formatting.discord"));
+                formatting.put("remote", config.getString("formatting.remote"));
+
                 discord = new DiscordBot(token, guildId, serverChannels);
 
-                messageRelay = new MessageRelay(discord);
+                messageRelay = new MessageRelay(formatting, discord);
 
                 useLogger("TaterComms has been started!");
             } catch (Exception e) {
@@ -149,5 +158,13 @@ public class TaterComms {
      */
     public MessageRelay getMessageRelay() {
         return messageRelay;
+    }
+
+    /**
+     * Add a hook to the list of hooks
+     * @param hook The hook to add
+     */
+    public static void addHook(Object hook) {
+        hooks.add(hook);
     }
 }

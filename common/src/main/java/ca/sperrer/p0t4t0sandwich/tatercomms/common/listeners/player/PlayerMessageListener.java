@@ -10,17 +10,35 @@ import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
  */
 public interface PlayerMessageListener {
     /**
-     * Called when a player sends a message, and sends it to the message relay.
-     * @param taterPlayer The player.
-     * @param message The message.
+     * Called when a player sends a message, and sends it to the message relay
+     * @param taterPlayer The player
+     * @param message The message
      */
     default void taterPlayerMessage(TaterPlayer taterPlayer, String message) {
         runTaskAsync(() -> {
             try {
                 MessageRelay relay = MessageRelay.getInstance();
-
                 // Send message through relay
                 relay.sendMessage(taterPlayer, taterPlayer.getServerName(), message);
+            } catch (Exception e) {
+                System.err.println(e);
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Called when a player sends a message, and sends it to the message relay.
+     * @param taterPlayer The player
+     * @param message The message
+     * @param isCancelled Whether the message was cancelled
+     */
+    default void taterPlayerMessage(TaterPlayer taterPlayer, String message, boolean isCancelled) {
+        runTaskAsync(() -> {
+            try {
+                MessageRelay relay = MessageRelay.getInstance();
+                // Send message through relay
+                relay.sendMessage(taterPlayer, taterPlayer.getServerName(), message, isCancelled);
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

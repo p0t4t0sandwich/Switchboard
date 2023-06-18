@@ -1,13 +1,13 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.commands.BukkitTemplateCommand;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerAdvancementListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerLoginListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerLogoutListener;
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.BukkitPlayerMessageListener;
+import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player.*;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.server.BukkitServerStoppedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.*;
@@ -63,16 +63,24 @@ public class BukkitMain extends JavaPlugin {
         taterComms.start();
 
         // Register player event listeners
-        getServer().getPluginManager().registerEvents(new BukkitPlayerAdvancementListener(), this);
-        getServer().getPluginManager().registerEvents(new BukkitPlayerLoginListener(), this);
-        getServer().getPluginManager().registerEvents(new BukkitPlayerLogoutListener(), this);
-        getServer().getPluginManager().registerEvents(new BukkitPlayerMessageListener(), this);
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new BukkitPlayerAdvancementListener(), this);
+        pluginManager.registerEvents(new BukkitPlayerDeathListener(), this);
+        pluginManager.registerEvents(new BukkitPlayerLoginListener(), this);
+        pluginManager.registerEvents(new BukkitPlayerLogoutListener(), this);
+        pluginManager.registerEvents(new BukkitPlayerMessageListener(), this);
 
         // Register server event listeners
-        getServer().getPluginManager().registerEvents(new BukkitServerStartedListener(), this);
+        Bukkit.getScheduler().runTaskLater(this, () -> new BukkitServerStartedListener().onServerStarted(), 100);
 
         // Register commands
-        getCommand("template").setExecutor(new BukkitTemplateCommand());
+//        getCommand("template").setExecutor(new BukkitTemplateCommand());
+
+        // Register LuckPerms hook
+        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            getLogger().info("LuckPerms detected, enabling LuckPerms hook.");
+            TaterComms.addHook(new LuckPermsHook());
+        }
 
         // Plugin enable message
         getLogger().info("TaterComms has been enabled!");
@@ -84,7 +92,7 @@ public class BukkitMain extends JavaPlugin {
     @Override
     public void onDisable() {
         // Server stopped listener
-        (new BukkitServerStoppedListener()).onServerStopped();
+        new BukkitServerStoppedListener().onServerStopped();
 
         // Plugin disable message
         getLogger().info("TaterComms has been disabled!");

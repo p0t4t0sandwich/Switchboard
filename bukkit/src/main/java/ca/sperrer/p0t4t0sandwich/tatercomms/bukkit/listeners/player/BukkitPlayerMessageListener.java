@@ -2,6 +2,7 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.listeners.player;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.player.BukkitTaterPlayer;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.player.PlayerMessageListener;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -18,15 +19,9 @@ public class BukkitPlayerMessageListener implements Listener, PlayerMessageListe
      */
     @EventHandler
     public void onPlayerMessage(AsyncPlayerChatEvent event) {
-        runTaskAsync(() -> {
-            try {
-                // TODO: Cancel event and send message to message relay, relay will format message and send it back to the server
-                // Send message to message relay
-                taterPlayerMessage(new BukkitTaterPlayer(event.getPlayer()), event.getMessage());
-            } catch (Exception e) {
-                System.err.println(e);
-                e.printStackTrace();
-            }
-        });
+        // TODO: Get weather or not the event should be cancelled from the message relay
+        // Send message to message relay
+        taterPlayerMessage(new BukkitTaterPlayer(event.getPlayer()), event.getMessage());
+        event.setCancelled(true);
     }
 }
