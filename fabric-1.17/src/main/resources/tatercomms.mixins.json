@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ca.sperrer.p0t4t0sandwich.tatercomms.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "server": [
+    "listeners.player.FabricPlayerAdvancementListener",
+    "listeners.player.FabricPlayerMessageListener"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
