@@ -7,7 +7,7 @@ Link to our support: [Discord](https://discord.gg/jec2jpdj7A)
 ## Download
 
 - [GitHub](https://github.com/p0t4t0sandwich/TaterComms/releases)
-- [Spigot](https://www.spigotmc.org/resources/template.xxxxxx/)
+- [Spigot](https://www.spigotmc.org/resources/tatercomms.110592/)
 - [Hangar](https://hangar.papermc.io/p0t4t0sandwich/TaterComms)
 - [Modrinth](https://modrinth.com/plugin/tatercomms)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tatercomms)

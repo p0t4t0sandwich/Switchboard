@@ -2,7 +2,7 @@
 
 PROJ_ID=tatercomms
 PROJ_NAME=TaterComms
-VERSION=1.0.0
+VERSION=1.0.1
 GROUP_ID=ca/sperrer/p0t4t0sandwich
 
 # Make directories
