@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
  */
 public class FabricPlayerDeathListener implements ServerLivingEntityEvents.AfterDeath, PlayerDeathListener {
     /**
-     * Called after a player dies, and sends it to the message relay.
+     * Called when a player dies.
      * @param entity The entity.
      * @param damageSource The damage source.
      */

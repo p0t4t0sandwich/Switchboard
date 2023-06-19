@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
  */
 public class FabricServerStoppedListener implements ServerLifecycleEvents.ServerStopped, ServerStoppedListener {
     /**
-     * Called when the server stops, and sends it to the message relay.
+     * Called when the server stops.
      * @param server The server
      */
     @Override

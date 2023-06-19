@@ -26,12 +26,14 @@ public class TaterComms {
      * logger: The logger
      * singleton: The singleton instance of the TaterComms class
      * STARTED: Whether the PanelServerManager has been started
+     * hooks: The hooks
+     * discord: The Discord bot
      */
     private static YamlDocument config;
     private static Object logger;
     private static TaterComms singleton = null;
     private boolean STARTED = false;
-    private static ArrayList<Object> hooks = new ArrayList<>();
+    private static final ArrayList<Object> hooks = new ArrayList<>();
     private DiscordBot discord = null;
     private MessageRelay messageRelay = null;
 
@@ -150,14 +152,6 @@ public class TaterComms {
         }
 
         return serverChannels;
-    }
-
-    /**
-     * Get the message relay
-     * @return The message relay
-     */
-    public MessageRelay getMessageRelay() {
-        return messageRelay;
     }
 
     /**

@@ -2,24 +2,31 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.fabric.mixin.listeners.player;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.listeners.player.PlayerMessageListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.fabric.player.FabricTaterPlayer;
-import net.minecraft.network.message.MessageType;
-import net.minecraft.network.message.SignedMessage;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(net.minecraft.network.message.SentMessage.Chat.class)
-public class FabricPlayerMessageListener implements PlayerMessageListener {
-    @Shadow @Final private SignedMessage message;
+/**
+ * Listens for player messages and sends them to the message relay.
+ */
+@Mixin(ServerPlayNetworkHandler.class)
+public abstract class FabricPlayerMessageListener implements PlayerMessageListener {
+    @Shadow public abstract ServerPlayerEntity getPlayer();
 
-    @Inject(method = "send", at = @At("HEAD"), cancellable = true)
-    public void send(ServerPlayerEntity sender, boolean filterMaskEnabled, MessageType.Parameters params, CallbackInfo ci) {
+    /**
+     * Called when a player sends a message.
+     * @param packet The packet.
+     * @param ci The callback info.
+     */
+    @Inject(method = "onChatMessage", at = @At("HEAD"), cancellable = true)
+    public void onPlayerMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {
         // Send message to message relay
-        taterPlayerMessage(new FabricTaterPlayer(sender), message.getSignedContent());
+        taterPlayerMessage(new FabricTaterPlayer(getPlayer()), packet.chatMessage(), true);
         ci.cancel();
     }
 }

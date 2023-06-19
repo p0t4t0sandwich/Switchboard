@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class ForgeServerStartedListener implements ServerStartedListener {
     /**
-     * Called when the server starts, and sends it to the message relay.
+     * Called when the server starts.
      * @param event The server started event
      */
     @SubscribeEvent

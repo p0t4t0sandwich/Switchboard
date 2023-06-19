@@ -2,7 +2,6 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
-import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerMessageListener;
@@ -10,6 +9,7 @@ import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPl
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.server.VelocityServerStartedListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.server.VelocityServerStoppedListener;
 import com.google.inject.Inject;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -91,16 +91,17 @@ public class VelocityMain {
         (new VelocityServerStartedListener()).onServerStarted();
 
         // Register player event listeners
-        server.getEventManager().register(this, new VelocityPlayerLoginListener());
-        server.getEventManager().register(this, new VelocityPlayerLogoutListener());
-        server.getEventManager().register(this, new VelocityPlayerMessageListener());
-        server.getEventManager().register(this, new VelocityPlayerServerSwitchListener());
+        EventManager eventManager = server.getEventManager();
+        eventManager.register(this, new VelocityPlayerLoginListener());
+        eventManager.register(this, new VelocityPlayerLogoutListener());
+        eventManager.register(this, new VelocityPlayerMessageListener());
+        eventManager.register(this, new VelocityPlayerServerSwitchListener());
 
         // Register server event listeners
-        server.getEventManager().register(this, new VelocityServerStoppedListener());
+        eventManager.register(this, new VelocityServerStoppedListener());
 
         // Register commands
-        server.getCommandManager().register("template", new VelocityTemplateCommand());
+//        server.getCommandManager().register("template", new VelocityTemplateCommand());
 
         // Register LuckPerms hook
         if (getServer().getPluginManager().getPlugin("LuckPerms").isPresent()) {

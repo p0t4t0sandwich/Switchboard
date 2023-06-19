@@ -38,6 +38,7 @@ formatting:
   # Remote chat formatting
   remote: "§4[%server%]§r %displayname% >> %message%"
 
+# WORK IN PROGRESS - DO NOT USE
 # Remote websocket configuration (for servers that you can't run behind a proxy)
 # Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
 # Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works.

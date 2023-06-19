@@ -1,7 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common.discord;
 
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.player.DiscordTaterPlayer;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.player.TaterPlayer;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -50,7 +50,7 @@ public class DiscordBot extends ListenerAdapter  {
      */
     @Override
     public void onReady(ReadyEvent event) {
-        System.out.println("Discord bot is ready!");
+        TaterComms.useLogger("[TaterComms] Discord bot is ready!");
     }
 
     /**
@@ -116,15 +116,5 @@ public class DiscordBot extends ListenerAdapter  {
 
         // Send the message
         channel.sendMessage(message).queue();
-    }
-
-    /**
-     * Sends a message to a Discord channel.
-     * @param server The server to send the message to
-     * @param message The message to send
-     */
-    public void sendPlayerMessage(String server, String message) {
-        // Send the message
-        sendSystemMessage(server, message);
     }
 }

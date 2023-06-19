@@ -1,6 +1,5 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bungee;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.commands.BungeeTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.player.BungeePlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.player.BungeePlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.bungee.listeners.player.BungeePlayerMessageListener;
@@ -61,7 +60,7 @@ public class BungeeMain extends Plugin {
         pluginManager.registerListener(this, new BungeePlayerServerSwitchListener());
 
         // Register commands
-//        getProxy().getPluginManager().registerCommand(this, new BungeeTemplateCommand());
+//        pluginManager.registerCommand(this, new BungeeTemplateCommand());
 
         // Register LuckPerms hook
         if (getProxy().getPluginManager().getPlugin("LuckPerms") != null) {

@@ -18,7 +18,7 @@ public interface PlayerAdvancementListener {
         runTaskAsync(() -> {
             try {
                 MessageRelay relay = MessageRelay.getInstance();
-                relay.sendMessage(taterPlayer, taterPlayer.getServerName(), "has made the advancement [" + advancement + "]");
+                relay.sendSystemMessage(taterPlayer.getServerName(), taterPlayer.getDisplayName() + " has made the advancement [" + advancement + "]");
             } catch (Exception e) {
                 System.err.println(e);
                 e.printStackTrace();

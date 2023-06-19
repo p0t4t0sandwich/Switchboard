@@ -22,7 +22,7 @@ public abstract class FabricPlayerAdvancementListener implements PlayerAdvanceme
     @Shadow public abstract AdvancementProgress getProgress(Advancement advancement);
 
     /**
-     * Called when a player completes an advancement, and sends it to the message relay.
+     * Called when a player completes an advancement.
      * @param advancement The advancement
      * @param ci Callback info
      */

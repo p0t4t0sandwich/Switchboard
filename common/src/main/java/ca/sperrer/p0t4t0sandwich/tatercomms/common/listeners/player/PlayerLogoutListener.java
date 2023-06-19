@@ -18,7 +18,7 @@ public interface PlayerLogoutListener {
             try {
                 MessageRelay relay = MessageRelay.getInstance();
 
-                // Add the TaterPlayer to the cache
+                // Remove the TaterPlayer from the cache
                 relay.removeTaterPlayerFromCache(taterPlayer.getUUID());
 
                 // Relay the logout message

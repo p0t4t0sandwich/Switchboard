@@ -4,6 +4,7 @@ author: p0t4t0sandwich
 description: A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
 main: ca.sperrer.p0t4t0sandwich.tatercomms.bungee.BungeeMain
 depends: []
+softDepends: [LuckPerms]
 commands:
   template:
     description: Template

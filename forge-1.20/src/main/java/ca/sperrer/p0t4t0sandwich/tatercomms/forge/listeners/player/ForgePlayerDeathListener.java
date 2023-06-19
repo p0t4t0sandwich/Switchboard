@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class ForgePlayerDeathListener implements PlayerDeathListener {
     /**
-     * Called when a player dies, and sends it to the message relay.
+     * Called when a player dies.
      * @param event The player death event
      */
     @SubscribeEvent

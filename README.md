@@ -16,22 +16,23 @@ Link to our support: [Discord](https://discord.gg/jec2jpdj7A)
 
 | Server type | Versions    | Jar Name                               |
 |-------------|-------------|----------------------------------------|
+| All 1.19    | 1.19-1.19.4 | `TaterComms-<version>-1.19.jar`        |
 | All 1.20    | 1.20-1.20.1 | `TaterComms-<version>-1.20.jar`        |
-| Bukkit      | 1.8-1.20    | `TaterComms-<version>-bukkit.jar`      |
-| BungeeCord  | 1.20-1.20   | `TaterComms-<version>-bungee.jar`      |
+| Bukkit      | 1.8-1.20.1  | `TaterComms-<version>-bukkit.jar`      |
+| BungeeCord  | 1.20-1.20.1 | `TaterComms-<version>-bungee.jar`      |
 | Velocity    | API v3      | `TaterComms-<version>-velocity.jar`    |
-| Fabric 1.20 | 1.20        | `TaterComms-<version>-fabric-1.20.jar` |
-| Forge 1.20  | 1.20        | `TaterComms-<version>-forge-1.20.jar`  |
+| Fabric 1.17 | 1.17-1.19.4 | `TaterComms-<version>-fabric-1.17.jar` |
+| Fabric 1.20 | 1.20-1.20.1 | `TaterComms-<version>-fabric-1.20.jar` |
+| Forge 1.19  | 1.19-1.19.4 | `TaterComms-<version>-forge-1.19.jar`  |
+| Forge 1.20  | 1.20-1.20.1 | `TaterComms-<version>-forge-1.20.jar`  |
 
 ## Dependencies
 
-This plugin requires [Dependency]() to function.
+This plugin has no strict dependencies, but it does have optional dependencies.
 
-## Commands and Permissions
+### Optional Dependencies
 
-| Command                                    | Permission         | Description                  |
-|--------------------------------------------|--------------------|------------------------------|
-| `/command`                                 | `template.command` | Template command             |
+- [LuckPerms](https://luckperms.net/) - For user prefix/suffix support
 
 ## Configuration
 
@@ -73,16 +74,6 @@ formatting:
   staff: "§1[S]§r %displayname% >> %message%"
   # Discord chat formatting
   discord: "§9[D]§r %displayname% >> %message%"
-  # Remote chat formatting
-  remote: "§4[%server%]§r %displayname% >> %message%"
-
-# Remote websocket configuration (for servers that you can't run behind a proxy)
-# Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
-# Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works.
-remote:
-  enabled: false
-  primary: false
-  url: "ws://localhost:5483"
 ```
 
 ## TODO
@@ -92,20 +83,20 @@ remote:
   - Filter specific advancement roots?
   - Proxies need a plugin channel to pass the event up
 - Player Death
+  - Might need a LivingEntity Death mixin for Fabric 1.17
   - Proxies need a plugin channel to pass the event up
 
 ## Discord additions
 - account linking system
-- discord channels accessible from in game, chatroom style (for linked users)
+  - translate discord names to minecraft names and vice versa
 - configurable embeds
   - use player head as icon
     - cache the head
 - option to use webhooks for discord
 
 ## Chat additions
+- Remote chat websocket
 - Complete chat management + passthrough configs
 - Staff chat
-- custom group chats
 - sync chats across servers/proxies in remote configuration
-- mail system
 - RGB support for chat colors

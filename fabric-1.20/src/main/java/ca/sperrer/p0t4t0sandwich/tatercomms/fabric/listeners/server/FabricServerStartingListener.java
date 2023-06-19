@@ -8,30 +8,25 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
 /**
- * Listens for server start and sends it to the message relay.
+ * Listens for server start and starts TaterComms.
  */
 public class FabricServerStartingListener implements ServerLifecycleEvents.ServerStarting {
     FabricMain plugin = FabricMain.getInstance();
 
     /**
-     * Called when the server is starting, and starts TaterComms.
+     * Called when the server is starting.
      * @param server The server
      */
     @Override
     public void onServerStarting(MinecraftServer server) {
-        try {
-            // Start TaterComms
-            plugin.taterComms = new TaterComms("config", plugin.logger);
-            plugin.taterComms.start();
+        // Start TaterComms
+        plugin.taterComms = new TaterComms("config", plugin.logger);
+        plugin.taterComms.start();
 
-            // Register LuckPerms hook
-            if (FabricLoader.getInstance().isModLoaded("luckperms")) {
-                TaterComms.useLogger("[TaterComms] LuckPerms detected, enabling LuckPerms hook.");
-                TaterComms.addHook(new LuckPermsHook());
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
+        // Register LuckPerms hook
+        if (FabricLoader.getInstance().isModLoaded("luckperms")) {
+            TaterComms.useLogger("[TaterComms] LuckPerms detected, enabling LuckPerms hook.");
+            TaterComms.addHook(new LuckPermsHook());
         }
     }
 }

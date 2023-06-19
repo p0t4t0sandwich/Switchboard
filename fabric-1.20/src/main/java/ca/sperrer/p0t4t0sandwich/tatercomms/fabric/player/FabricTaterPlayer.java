@@ -66,6 +66,6 @@ public class FabricTaterPlayer implements TaterPlayer {
      */
     @Override
     public void sendMessage(String message) {
-        player.sendMessage(Text.literal(message));
+        player.sendMessage(Text.of(message), false);
     }
 }

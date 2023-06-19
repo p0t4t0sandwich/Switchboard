@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public class ForgePlayerAdvancementListener implements PlayerAdvancementListener {
     /**
-     * Called when a player advances, and sends it to the message relay.
+     * Called when a player advances.
      * @param event The advancement event
      */
     @SubscribeEvent

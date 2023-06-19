@@ -32,7 +32,7 @@ public final class FabricTemplateCommand {
                         Entity entity = context.getSource().getEntity();
                         if (entity instanceof ServerPlayerEntity) {
                             String text = "";
-                            entity.sendMessage(Text.literal(text));
+                            ((ServerPlayerEntity) entity).sendMessage(Text.of(text), false);
                         } else {
                             plugin.logger.info(ansiiParser("§cYou must be a player to use this command."));
                         }

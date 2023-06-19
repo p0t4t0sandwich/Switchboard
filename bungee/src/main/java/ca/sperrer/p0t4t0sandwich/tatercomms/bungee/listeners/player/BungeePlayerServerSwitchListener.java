@@ -8,8 +8,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
-import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
-
 /**
  * Listens for player server switches and sends them to the message relay.
  */
@@ -20,23 +18,14 @@ public class BungeePlayerServerSwitchListener implements Listener, PlayerServerS
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerSwitch(ServerSwitchEvent event) {
-        runTaskAsync(() -> {
-            try {
-                // If player is just joining, don't run this function
-                if (event.getFrom() == null) {
-                    return;
-                }
+        // If player is just joining, don't run this function
+        if (event.getFrom() == null) return;
 
-                // Get Player UUID and current server
-                ProxiedPlayer player = event.getPlayer();
-                String toServer = player.getServer().getInfo().getName();
+        // Get Player and current server
+        ProxiedPlayer player = event.getPlayer();
+        String toServer = player.getServer().getInfo().getName();
 
-                // Pass Player UUID and current server to helper function
-                taterServerSwitch(new BungeeTaterPlayer(player), toServer);
-            } catch (Exception e) {
-                System.err.println(e);
-                e.printStackTrace();
-            }
-        });
+        // Pass Player UUID and current server to helper function
+        taterServerSwitch(new BungeeTaterPlayer(player), toServer);
     }
 }

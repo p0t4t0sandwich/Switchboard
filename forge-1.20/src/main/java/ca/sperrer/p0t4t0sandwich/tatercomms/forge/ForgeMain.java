@@ -1,7 +1,5 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeTemplateCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerAdvancementListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerLoginListener;

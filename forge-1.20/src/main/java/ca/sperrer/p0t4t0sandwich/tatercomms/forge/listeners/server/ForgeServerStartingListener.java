@@ -14,7 +14,7 @@ public class ForgeServerStartingListener {
     ForgeMain plugin = ForgeMain.getInstance();
 
     /**
-     * Called when the server starts, and starts TaterComms.
+     * Called when the server starts.
      * @param event The server starting event
      */
     @SubscribeEvent

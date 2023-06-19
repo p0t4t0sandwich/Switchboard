@@ -76,16 +76,6 @@ public class MessageRelay {
      * @param player The player
      * @param server The server
      * @param message The message
-     */
-    public void sendMessage(TaterPlayer player, String server, String message) {
-        this.sendMessage(player, server, message, true);
-    }
-
-    /**
-     * Relays a message from the Minecraft server to Discord, or to a remote server.
-     * @param player The player
-     * @param server The server
-     * @param message The message
      * @param isCancelled Whether the message was cancelled
      */
     public void sendMessage(TaterPlayer player, String server, String message, boolean isCancelled) {
@@ -102,7 +92,7 @@ public class MessageRelay {
 
         // Relay message to Discord
         if (this.discord != null) {
-            this.discord.sendPlayerMessage(server, PlaceholderParser.stripSectionSign(formattedMessage));
+            this.discord.sendSystemMessage(server, PlaceholderParser.stripSectionSign(formattedMessage));
         }
 
         // Relay message to remote server
@@ -136,7 +126,7 @@ public class MessageRelay {
         }
 
         // Relay player login to Discord
-        this.sendSystemMessage(player.getServerName(), player.getDisplayName() + " joined the game");
+        this.sendSystemMessage(toServer, player.getDisplayName() + " joined the game");
     }
 
     /**

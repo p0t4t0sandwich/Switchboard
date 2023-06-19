@@ -9,7 +9,7 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
  */
 public class VelocityServerStoppedListener implements ServerStoppedListener {
     /**
-     * Called when the server stops, and sends it to the message relay.
+     * Called when the server stops.
      * @param event The server stopped event
      */
     @Subscribe
