@@ -20,7 +20,7 @@ public final class ForgeDiscordCommand implements DiscordCommand {
                 .executes(context -> {
                     runTaskAsync(() -> {
                         try {
-                            String[] args = new String[] {context.getArgument(DiscordCommand.getCommandName(), String.class)};
+                            String[] args = new String[]{};
 
                             // Send message to player or console
                             Entity entity = context.getSource().getEntity();

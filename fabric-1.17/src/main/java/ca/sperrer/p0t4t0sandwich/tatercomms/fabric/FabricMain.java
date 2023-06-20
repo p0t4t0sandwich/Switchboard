@@ -1,9 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.fabric;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
-import ca.sperrer.p0t4t0sandwich.tatercomms.fabric.commands.FabricDiscordCommand;
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +42,6 @@ public class FabricMain implements DedicatedServerModInitializer {
         instance = this;
 
         logger.info("[TaterComms]: TaterComms is running on " + getServerType() + ".");
-
-        // Register commands
-        CommandRegistrationCallback.EVENT.register(FabricDiscordCommand::register);
 
         // Mod enable message
         logger.info("[TaterComms]: TaterComms has been enabled!");

@@ -5,12 +5,6 @@ PROJ_NAME=TaterComms
 VERSION=1.0.1
 GROUP_ID=ca/sperrer/p0t4t0sandwich
 
-# Make directories
-mkdir -p ./target/temp_build
-cd ./target/temp_build
-
-mkdir -p ./$PROJ_NAME-all/$GROUP_ID/$PROJ_ID
-
 # --------------------------- Functions --------------------------------
 
 function prepareFiles() {
@@ -32,6 +26,7 @@ function build() {
   cp ./fabric-$1/fabric.mod.json ./$3
   cp ./fabric-$1/$PROJ_ID.mixins.json ./$3
   cp -r ./fabric-$1/assets ./$3
+  cp ./fabric-$1/$PROJ_NAME-refmap.json ./$3
 
   # Copy forge files
   cp -r ./forge-$2/$GROUP_ID/$PROJ_ID/forge ./$3/$GROUP_ID/$PROJ_ID
@@ -55,6 +50,14 @@ function build() {
   mv ./$3.jar ../$3.jar
   mv ./$3.jar.MD5 ../$3.jar.MD5
 }
+
+# --------------------------- Setup --------------------------------
+
+# Make directories
+mkdir -p ./target/temp_build
+cd ./target/temp_build
+
+mkdir -p ./$PROJ_NAME-all/$GROUP_ID/$PROJ_ID
 
 # --------------------------- Prepare Common --------------------------------
 

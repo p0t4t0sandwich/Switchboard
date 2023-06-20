@@ -8,6 +8,7 @@
   "client": [
   ],
   "server": [
+    "commands.FabricDiscordCommand",
     "listeners.player.FabricPlayerAdvancementListener",
     "listeners.player.FabricPlayerDeathListener",
     "listeners.player.FabricPlayerLoginListener",

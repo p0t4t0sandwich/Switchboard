@@ -54,7 +54,7 @@ version: 1
 discord:
   enabled: true
   token: ""
-  inviteUrl: "§ahttps://discord.gg/yourInvite"
+  inviteUrl: "&6Join our Discord: &ahttps://discord.gg/yourInvite"
 
   # Server to Discord Channel mapping
   channels:
@@ -82,13 +82,13 @@ formatting:
   # %displayname% - Player display name
 
   # Global chat formatting
-  global: "§a[G]§r %displayname% >> %message%"
+  global: "&a[G]&r %displayname% >> %message%"
   # Local chat formatting
-  local: "§a[L]§r %displayname% >> %message%"
+  local: "&a[L]&r %displayname% >> %message%"
   # Staff chat formatting
-  staff: "§1[S]§r %displayname% >> %message%"
+  staff: "&1[S]&r %displayname% >> %message%"
   # Discord chat formatting
-  discord: "§9[D]§r %displayname% >> %message%"
+  discord: "&9[D]&r %displayname% >> %message%"
 ```
 
 ## TODO
@@ -119,3 +119,5 @@ formatting:
 - Updated the Fabric 1.17 Message listener to ignore commands (whoops)
 - Translated all Fabric events to mixins
 - Added /discord command for players to grab the invite link
+- Fixed build error for the Fabric mixin refmap
+- No longer depends on the Fabric API

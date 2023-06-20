@@ -30,7 +30,24 @@ public class PlaceholderParser {
      * @return The placeholder parser.
      */
     public PlaceholderParser parseSectionSign() {
-        this.input = input.replace("&", "§");
+        this.input = input.replaceAll("&", "§");
+        return this;
+    }
+
+    /**
+     * Parse the section sign.
+     * @return The string with the section sign.
+     */
+    public static String parseSectionSign(String s) {
+        return s.replaceAll("&", "§");
+    }
+
+    /**
+     * Strip the section sign from the string.
+     * @return The placeholder parser.
+     */
+    public PlaceholderParser stripSectionSign() {
+        this.input = input.replaceAll("&", "§");
         return this;
     }
 

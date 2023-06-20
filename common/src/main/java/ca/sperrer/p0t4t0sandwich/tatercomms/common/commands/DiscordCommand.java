@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.common.commands;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.placeholder.PlaceholderParser;
 
 public interface DiscordCommand {
     static String getCommandName() {
@@ -23,7 +24,7 @@ public interface DiscordCommand {
         if (args.length != 0) {
             return getCommandUsage();
         } else {
-            return TaterComms.getDiscordInviteLink();
+            return PlaceholderParser.parseSectionSign(TaterComms.getDiscordInviteLink());
         }
     }
 }
