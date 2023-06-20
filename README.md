@@ -114,10 +114,3 @@ formatting:
 - RGB support for chat colors
 
 # Release Notes
-
-- Created a Fabric mixin for the player Death events
-- Updated the Fabric 1.17 Message listener to ignore commands (whoops)
-- Translated all Fabric events to mixins
-- Added /discord command for players to grab the invite link
-- Fixed build error for the Fabric mixin refmap
-- No longer depends on the Fabric API

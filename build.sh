@@ -2,7 +2,7 @@
 
 PROJ_ID=tatercomms
 PROJ_NAME=TaterComms
-VERSION=1.0.1
+VERSION=1.0.2
 GROUP_ID=ca/sperrer/p0t4t0sandwich
 
 # --------------------------- Functions --------------------------------

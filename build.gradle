@@ -8,7 +8,7 @@ subprojects {
     apply(plugin: 'java')
 
     group = 'ca.sperrer.p0t4t0sandwich'
-    version = '1.0.1'
+    version = '1.0.2'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
