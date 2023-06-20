@@ -9,7 +9,13 @@
   ],
   "server": [
     "listeners.player.FabricPlayerAdvancementListener",
-    "listeners.player.FabricPlayerMessageListener"
+    "listeners.player.FabricPlayerDeathListener",
+    "listeners.player.FabricPlayerLoginListener",
+    "listeners.player.FabricPlayerLogoutListener",
+    "listeners.player.FabricPlayerMessageListener",
+    "listeners.server.FabricServerStartedListener",
+    "listeners.server.FabricServerStartingListener",
+    "listeners.server.FabricServerStoppedListener"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -79,12 +79,9 @@ formatting:
 ## TODO
 
 ## Listeners
-- Player Advancement
-  - Filter specific advancement roots?
-  - Proxies need a plugin channel to pass the event up
-- Player Death
-  - Might need a LivingEntity Death mixin for Fabric 1.17
-  - Proxies need a plugin channel to pass the event up
+- Events that need to be sent up to the proxy
+  - Player Advancement
+  - Player Death
 
 ## Discord additions
 - account linking system
@@ -100,3 +97,9 @@ formatting:
 - Staff chat
 - sync chats across servers/proxies in remote configuration
 - RGB support for chat colors
+
+# Release Notes
+
+- Created a Fabric mixin for the player Death events
+- Updated the Fabric Message listener to ignore commands (whoops)
+- Translated all Fabric events to mixins

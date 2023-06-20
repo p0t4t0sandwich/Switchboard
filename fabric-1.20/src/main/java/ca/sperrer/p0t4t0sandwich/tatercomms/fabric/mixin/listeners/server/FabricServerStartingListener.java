@@ -1,24 +1,27 @@
-package ca.sperrer.p0t4t0sandwich.tatercomms.fabric.listeners.server;
+package ca.sperrer.p0t4t0sandwich.tatercomms.fabric.mixin.listeners.server;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
 import ca.sperrer.p0t4t0sandwich.tatercomms.fabric.FabricMain;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Listens for server start and starts TaterComms.
  */
-public class FabricServerStartingListener implements ServerLifecycleEvents.ServerStarting {
+@Mixin(MinecraftServer.class)
+public class FabricServerStartingListener {
     FabricMain plugin = FabricMain.getInstance();
-
     /**
      * Called when the server is starting.
-     * @param server The server
+     * @param ci The callback info.
      */
-    @Override
-    public void onServerStarting(MinecraftServer server) {
+    @Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setupServer()Z"))
+    public void onServerStarting(CallbackInfo ci) {
         // Start TaterComms
         plugin.taterComms = new TaterComms("config", plugin.logger);
         plugin.taterComms.start();

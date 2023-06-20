@@ -25,6 +25,7 @@ public abstract class FabricPlayerMessageListener implements PlayerMessageListen
      */
     @Inject(method = "onChatMessage", at = @At("HEAD"), cancellable = true)
     public void onPlayerMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {
+        if (packet.chatMessage().startsWith("/")) return;
         // Send message to message relay
         taterPlayerMessage(new FabricTaterPlayer(getPlayer()), packet.chatMessage(), true);
         ci.cancel();
