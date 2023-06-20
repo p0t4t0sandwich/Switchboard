@@ -8,11 +8,20 @@ version: 1
 discord:
   enabled: true
   token: ""
+  inviteUrl: "§ahttps://discord.gg/yourInvite"
 
   # Server to Discord Channel mapping
   channels:
     # in the format of: serverName: guildID/channelId
     example: "123456789012345678/123456789012345678"
+
+# Allow specific servers to bypass the chat formatting.
+# The backend server will handle all the chat messages, but the players will still see the messages from other servers.
+passthrough:
+  # List of servers to allow passthrough
+  servers:
+      - example1
+      - example2
 
 # ServerName for standalone servers (Bukkit, Fabric, or Forge)
 # Proxies will use the server names defined in the config

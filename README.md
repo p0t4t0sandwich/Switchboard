@@ -34,6 +34,13 @@ This plugin has no strict dependencies, but it does have optional dependencies.
 
 - [LuckPerms](https://luckperms.net/) - For user prefix/suffix support
 
+
+## Commands and Permissions
+
+| Command    | Permission           | Description                 |
+|------------|----------------------|-----------------------------|
+| `/discord` | `tatercomms.discord` | Get the Discord invite link |
+
 ## Configuration
 
 ```yaml
@@ -47,11 +54,19 @@ version: 1
 discord:
   enabled: true
   token: ""
+  inviteUrl: "§ahttps://discord.gg/yourInvite"
 
   # Server to Discord Channel mapping
   channels:
     # in the format of: serverName: guildID/channelId
     example: "123456789012345678/123456789012345678"
+
+# Allow specific servers to bypass the chat formatting.
+# The backend server will handle all the chat messages, but the players will still see the messages from other servers.
+passthrough:
+  servers:
+    - example1
+    - example2
 
 # ServerName for standalone servers (Bukkit, Fabric, or Forge)
 # Proxies will use the server names defined in the config
@@ -101,5 +116,6 @@ formatting:
 # Release Notes
 
 - Created a Fabric mixin for the player Death events
-- Updated the Fabric Message listener to ignore commands (whoops)
+- Updated the Fabric 1.17 Message listener to ignore commands (whoops)
 - Translated all Fabric events to mixins
+- Added /discord command for players to grab the invite link

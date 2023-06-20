@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.commands;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.bukkit.BukkitMain;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.commands.DiscordCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,9 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.ansiiParser;
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
-public class BukkitTemplateCommand implements CommandExecutor {
-    private final BukkitMain plugin = BukkitMain.getInstance();
-
+public class BukkitDiscordCommand implements CommandExecutor, DiscordCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         AtomicBoolean success = new AtomicBoolean(false);
@@ -24,16 +23,14 @@ public class BukkitTemplateCommand implements CommandExecutor {
                     Player player = (Player) sender;
 
                     // Permission check
-                    if (!player.hasPermission("template.command")) {
+                    if (!player.hasPermission(DiscordCommand.getCommandPermission())) {
                         player.sendMessage("§cYou do not have permission to use this command.");
                         return;
                     }
+                    player.sendMessage(DiscordCommand.executeCommand(args));
 
-                    String text = "";
-
-                    player.sendMessage(text);
                 } else {
-                    plugin.getLogger().info(ansiiParser("§cYou must be a player to use this command."));
+                    TaterComms.useLogger(ansiiParser(DiscordCommand.executeCommand(args)));
                 }
                 success.set(true);
             } catch (Exception e) {

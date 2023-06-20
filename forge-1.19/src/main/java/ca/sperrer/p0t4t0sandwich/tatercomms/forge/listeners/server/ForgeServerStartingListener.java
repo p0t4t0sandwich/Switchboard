@@ -21,7 +21,7 @@ public class ForgeServerStartingListener {
     public void onServerStart(ServerStartingEvent event) {
         try {
             // Start TaterComms
-            plugin.taterComms = new TaterComms("config", plugin.logger);
+            plugin.taterComms = new TaterComms("config", ForgeMain.logger);
             plugin.taterComms.start();
 
             // Register LuckPerms hook

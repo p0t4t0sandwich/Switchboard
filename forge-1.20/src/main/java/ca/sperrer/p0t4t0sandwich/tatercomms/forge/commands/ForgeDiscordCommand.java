@@ -1,7 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.forge.ForgeMain;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.commands.DiscordCommand;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -10,30 +10,24 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.ansiiParser;
 import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
-import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-
-public final class ForgeTemplateCommand {
-    private static final ForgeMain plugin = ForgeMain.getInstance();
-
+public final class ForgeDiscordCommand implements DiscordCommand {
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
-        event.getDispatcher().register(literal("pronouns")
-            .requires(source -> source.hasPermission(0))
-            .then(argument("pronouns", StringArgumentType.greedyString())
+        event.getDispatcher().register(literal(DiscordCommand.getCommandName())
+                .requires(source -> source.hasPermission(0))
                 .executes(context -> {
                     runTaskAsync(() -> {
                         try {
-                            String[] args = new String[] {context.getArgument("pronouns", String.class)};
+                            String[] args = new String[] {context.getArgument(DiscordCommand.getCommandName(), String.class)};
 
                             // Send message to player or console
                             Entity entity = context.getSource().getEntity();
                             if (entity instanceof ServerPlayer) {
-                                String text = "";
-                                ((ServerPlayer) entity).displayClientMessage(Component.empty().append(text), false);
+                                ((ServerPlayer) entity).displayClientMessage(Component.empty().append(DiscordCommand.executeCommand(args)), false);
                             } else {
-                                plugin.logger.info(ansiiParser("§cYou must be a player to use this command."));
+                                TaterComms.useLogger(ansiiParser(DiscordCommand.executeCommand(args)));
                             }
                         } catch (Exception e) {
                             System.err.println(e);
@@ -42,6 +36,6 @@ public final class ForgeTemplateCommand {
                     });
                     return 1;
                 })
-            ));
+        );
     }
 }

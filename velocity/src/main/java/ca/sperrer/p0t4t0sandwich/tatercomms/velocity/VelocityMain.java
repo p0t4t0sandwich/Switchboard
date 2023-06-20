@@ -1,7 +1,9 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.velocity;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.common.commands.DiscordCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
+import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.commands.VelocityDiscordCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerLogoutListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.velocity.listeners.player.VelocityPlayerMessageListener;
@@ -101,7 +103,7 @@ public class VelocityMain {
         eventManager.register(this, new VelocityServerStoppedListener());
 
         // Register commands
-//        server.getCommandManager().register("template", new VelocityTemplateCommand());
+        server.getCommandManager().register(DiscordCommand.getCommandName(), new VelocityDiscordCommand());
 
         // Register LuckPerms hook
         if (getServer().getPluginManager().getPlugin("LuckPerms").isPresent()) {

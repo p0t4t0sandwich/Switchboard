@@ -1,6 +1,7 @@
 package ca.sperrer.p0t4t0sandwich.tatercomms.forge;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import ca.sperrer.p0t4t0sandwich.tatercomms.forge.commands.ForgeDiscordCommand;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerAdvancementListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerLoginListener;
 import ca.sperrer.p0t4t0sandwich.tatercomms.forge.listeners.player.ForgePlayerLogoutListener;
@@ -64,7 +65,7 @@ public class ForgeMain {
         MinecraftForge.EVENT_BUS.register(new ForgeServerStoppedListener());
 
         // Register commands
-//        MinecraftForge.EVENT_BUS.register(ForgeTemplateCommand.class);
+        MinecraftForge.EVENT_BUS.register(ForgeDiscordCommand.class);
 
         // Mod enable message
         logger.info("[TaterComms]: TaterComms has been enabled!");

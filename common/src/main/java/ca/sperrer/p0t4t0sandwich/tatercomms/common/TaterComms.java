@@ -161,4 +161,11 @@ public class TaterComms {
     public static void addHook(Object hook) {
         hooks.add(hook);
     }
+
+    /**
+     * Get the Discord invite link
+     */
+    public static String getDiscordInviteLink() {
+        return config.getString("discord.inviteUrl");
+    }
 }
