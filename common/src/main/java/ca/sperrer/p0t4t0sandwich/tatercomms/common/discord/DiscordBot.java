@@ -26,10 +26,9 @@ public class DiscordBot extends ListenerAdapter  {
     /**
      * Constructor.
      * @param token The Discord bot token
-     * @param guildId The Discord guild ID
      * @param serverChannels The server channels
      */
-    public DiscordBot(String token, String guildId, HashMap<String, String> serverChannels) {
+    public DiscordBot(String token, HashMap<String, String> serverChannels) {
         this.serverChannels = serverChannels;
 
         try {

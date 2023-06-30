@@ -9,13 +9,6 @@ dependencies {
     // LuckPerms
     compileOnly("net.luckperms:api:5.4")
 
-    // MySQL
-    implementation("com.zaxxer:HikariCP:4.0.3")
-    implementation("mysql:mysql-connector-java:8.0.26")
-
-    // MongoDB
-    implementation("org.mongodb:mongodb-driver-sync:4.9.1")
-
     // JDA
     implementation("net.dv8tion:JDA:5.0.0-beta.10") {
         exclude(module: "opus-java")
@@ -35,14 +28,6 @@ shadowJar {
 
     // YAML
     relocate("dev.dejvokep", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dejvokep")
-
-    // MySQL
-    relocate("com.zaxxer.hikari", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.hikari")
-    relocate("com.mysql", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mysql")
-
-    // MongoDB
-    relocate("com.mongodb", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.mongodb")
-    relocate("org.bson", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.bson")
 
     // JDA
     relocate("net.dv8tion", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.dv8tion")

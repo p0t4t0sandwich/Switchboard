@@ -114,3 +114,4 @@ formatting:
 - RGB support for chat colors
 
 # Release Notes
+- Fixed an issue with the config parser

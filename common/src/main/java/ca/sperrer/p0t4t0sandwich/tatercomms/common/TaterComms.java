@@ -2,8 +2,6 @@ package ca.sperrer.p0t4t0sandwich.tatercomms.common;
 
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.discord.DiscordBot;
 import ca.sperrer.p0t4t0sandwich.tatercomms.common.relay.MessageRelay;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.DataSource;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.storage.Database;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.Block;
 
@@ -84,50 +82,44 @@ public class TaterComms {
      * Start TaterComms
      */
     public void start() {
-        runTaskAsync(() -> {
-            try {
-                if (STARTED) {
-                    useLogger("TaterComms has already started!");
-                    return;
-                }
-                STARTED = true;
-
-                String type = config.getString("storage.type");
-        //        database = DataSource.getDatabase(type, config);
-
-                // Get the Discord token and guild ID from the config
-                String token = config.getString("discord.token");
-                String guildId = config.getString("discord.guildId");
-                if (token == null || token.equals("")) {
-                    useLogger("No Discord token found in config.yml!");
-                    return;
-                }
-
-                // Get server-channel mappings from the config
-                HashMap<String, String> serverChannels = getServerChannels();
-                if (serverChannels.isEmpty()) {
-                    useLogger("No server-channel mappings found in config.yml!");
-                    return;
-                }
-
-                HashMap<String, String> formatting = new HashMap<>();
-                formatting.put("global", config.getString("formatting.global"));
-                formatting.put("local", config.getString("formatting.local"));
-                formatting.put("staff", config.getString("formatting.staff"));
-                formatting.put("discord", config.getString("formatting.discord"));
-                formatting.put("remote", config.getString("formatting.remote"));
-
-                discord = new DiscordBot(token, guildId, serverChannels);
-
-                messageRelay = new MessageRelay(formatting, discord);
-
-                useLogger("TaterComms has been started!");
-            } catch (Exception e) {
-                useLogger("Failed to start TaterComms!");
-                System.err.println(e);
-                e.printStackTrace();
+        try {
+            if (STARTED) {
+                useLogger("TaterComms has already started!");
+                return;
             }
-        });
+            STARTED = true;
+
+            // Get the Discord token from the config
+            String token = config.getString("discord.token");
+            if (token == null || token.equals("")) {
+                useLogger("No Discord token found in config.yml!");
+                return;
+            }
+
+            // Get server-channel mappings from the config
+            HashMap<String, String> serverChannels = getServerChannels();
+            if (serverChannels.isEmpty()) {
+                useLogger("No server-channel mappings found in config.yml!");
+                return;
+            }
+
+            HashMap<String, String> formatting = new HashMap<>();
+            formatting.put("global", config.getString("formatting.global"));
+            formatting.put("local", config.getString("formatting.local"));
+            formatting.put("staff", config.getString("formatting.staff"));
+            formatting.put("discord", config.getString("formatting.discord"));
+            formatting.put("remote", config.getString("formatting.remote"));
+
+            discord = new DiscordBot(token, serverChannels);
+
+            messageRelay = new MessageRelay(formatting, discord);
+
+            useLogger("TaterComms has been started!");
+        } catch (Exception e) {
+            useLogger("Failed to start TaterComms!");
+            System.err.println(e);
+            e.printStackTrace();
+        }
     }
 
     /**
