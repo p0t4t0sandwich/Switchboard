@@ -6,7 +6,7 @@ main: ca.sperrer.p0t4t0sandwich.tatercomms.bungee.BungeeMain
 depends: []
 softDepends: [LuckPerms]
 commands:
-  template:
-    description: Template
-    usage: /template
-    permission: template
+  discord:
+    description: Get the discord invite link
+    usage: /discord
+    permission: tatercomms.discord
