@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version("7.1.2")
+    id('com.github.johnrengelman.shadow') version('8.1.1')
 }
 
 dependencies {
@@ -42,9 +42,8 @@ shadowJar {
     // Websocket
     relocate("com.neovisionaries", "ca.sperrer.p0t4t0sandwich.tatercomms.lib.neovisionaries")
 
-    destinationDir(file("../target"))
-    archiveName("TaterComms-${version}-common.jar")
-    classifier("")
+    destinationDirectory = file('../target')
+    archiveFileName = "TaterComms-${version}-common.jar"
 }
 shadowJar.doLast {
     task ->

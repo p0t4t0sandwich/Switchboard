@@ -1,5 +1,5 @@
 plugins {
-    id('com.github.johnrengelman.shadow') version('7.1.2')
+    id('com.github.johnrengelman.shadow') version('8.1.1')
 }
 
 repositories {
@@ -18,9 +18,8 @@ shadowJar {
         include(project(":common"))
     }
 
-    destinationDir(file('../target'))
-    archiveName("TaterComms-${version}-velocity.jar")
-    classifier('')
+    destinationDirectory = file('../target')
+    archiveFileName = "TaterComms-${version}-velocity.jar"
 }
 shadowJar.doLast {
     task ->
