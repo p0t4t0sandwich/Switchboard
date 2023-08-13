@@ -43,9 +43,7 @@ rootProject.name = 'TaterComms'
 include(
         'bukkit',
         'bungee',
-        'fabric-1.17',
         'fabric-1.20',
-        'forge-1.19',
         'forge-1.20',
         'neoforge-1.20.1',
         'velocity',

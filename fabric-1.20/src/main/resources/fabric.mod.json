@@ -21,7 +21,7 @@
   "environment": "*",
   "entrypoints": {
     "server": [
-      "ca.sperrer.p0t4t0sandwich.tatercomms.fabric.FabricMain"
+        "dev.neuralnexus.tatercomms.fabric.FabricMain"
     ]
   },
   "mixins": [

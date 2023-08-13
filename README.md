@@ -2,7 +2,7 @@
 
 A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
 
-Link to our support: [Discord](https://discord.gg/NffvJd95tk)
+Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 ## Download
 
@@ -11,29 +11,35 @@ Link to our support: [Discord](https://discord.gg/NffvJd95tk)
 - [Hangar](https://hangar.papermc.io/p0t4t0sandwich/TaterComms)
 - [Modrinth](https://modrinth.com/plugin/tatercomms)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tatercomms)
+- Sponge
 
 ### Compatibility Cheatsheet
 
-| Server type | Versions    | Jar Name                               |
-|-------------|-------------|----------------------------------------|
-| All 1.19    | 1.19-1.19.4 | `TaterComms-<version>-1.19.jar`        |
-| All 1.20    | 1.20-1.20.1 | `TaterComms-<version>-1.20.jar`        |
-| Bukkit      | 1.8-1.20.1  | `TaterComms-<version>-bukkit.jar`      |
-| BungeeCord  | 1.20-1.20.1 | `TaterComms-<version>-bungee.jar`      |
-| Velocity    | API v3      | `TaterComms-<version>-velocity.jar`    |
-| Fabric 1.17 | 1.17-1.19.4 | `TaterComms-<version>-fabric-1.17.jar` |
-| Fabric 1.20 | 1.20-1.20.1 | `TaterComms-<version>-fabric-1.20.jar` |
-| Forge 1.19  | 1.19-1.19.4 | `TaterComms-<version>-forge-1.19.jar`  |
-| Forge 1.20  | 1.20-1.20.1 | `TaterComms-<version>-forge-1.20.jar`  |
+| Server type | Versions    | Jar Name                            |
+|-------------|-------------|-------------------------------------|
+| All 1.20    | 1.20-1.20.1 | `TaterComms-<version>-1.20.jar`     |
+| All 1.19    | 1.19-1.19.4 | `TaterComms-<version>-1.19.jar`     |
+
+[//]: # (| All 1.18    | 1.18-1.18.2 | `TaterComms-<version>-1.18.jar`     |)
+
+[//]: # (| All 1.17    | 1.17-1.17.1 | `TaterComms-<version>-1.17.jar`     |)
+
+[//]: # (| All 1.16    | 1.16-1.16.5 | `TaterComms-<version>-1.16.jar`     |)
+
+[//]: # (| All 1.15    | 1.15-1.15.2 | `TaterComms-<version>-1.15.jar`     |)
+
+[//]: # (| All 1.14    | 1.14-1.14.3 | `TaterComms-<version>-1.14.jar`     |)
+| Bukkit      | 1.8-1.20    | `TaterComms-<version>-bukkit.jar`   |
+| BungeeCord  | 1.12-1.20   | `TaterComms-<version>-bungee.jar`   |
+| Velocity    | API v3      | `TaterComms-<version>-velocity.jar` |
 
 ## Dependencies
 
-This plugin has no strict dependencies, but it does have optional dependencies.
+- [FabricAPI](https://modrinth.com/mod/fabric-api) - Required on Fabric
 
 ### Optional Dependencies
 
-- [LuckPerms](https://luckperms.net/) - For user prefix/suffix support
-
+- [LuckPerms](https://luckperms.net/) - For permissions/prefix/suffix support
 
 ## Commands and Permissions
 
@@ -114,4 +120,4 @@ formatting:
 - RGB support for chat colors
 
 # Release Notes
-- Fixed an issue with the config parser
+- Recoded to use TaterLib for easier cross-API support

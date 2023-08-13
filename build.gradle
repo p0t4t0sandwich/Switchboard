@@ -8,7 +8,7 @@ subprojects {
     apply(plugin: 'java')
 
     group = 'ca.sperrer.p0t4t0sandwich'
-    version = '1.0.2'
+    version = '1.0.3'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -40,6 +40,12 @@ subprojects {
         maven {
             name = "papermc-repo"
             url = "https://repo.papermc.io/repository/maven-public/"
+        }
+
+        // NeuralNexus
+        maven {
+            name = "NeuralNexus"
+            url = "https://maven.neuralnexus.dev/releases"
         }
     }
 }
