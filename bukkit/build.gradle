@@ -5,11 +5,11 @@ plugins {
 dependencies {
     implementation(project(path: ':common', configuration: 'shadow'))
 
-    // TaterLib
-    compileOnly(files("../../TaterLib/target/TaterLib-1.0.1-bukkit.jar"))
-
     // Spigot
     compileOnly("org.spigotmc:spigot-api:${minecraft_version}-${bukkit_version}")
+
+    // TaterLib
+    compileOnly('dev.neuralnexus:TaterLib:1.0.1-1.20')
 }
 
 java.disableAutoTargetJvm()

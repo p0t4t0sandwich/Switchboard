@@ -1,17 +1,10 @@
 package dev.neuralnexus.tatercomms.velocity;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.commands.DiscordCommand;
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.hooks.LuckPermsHook;
+import com.velocitypowered.api.plugin.Dependency;
+import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
 import dev.neuralnexus.tatercomms.velocity.commands.VelocityDiscordCommand;
-import dev.neuralnexus.tatercomms.velocity.listeners.player.VelocityPlayerLoginListener;
-import dev.neuralnexus.tatercomms.velocity.listeners.player.VelocityPlayerLogoutListener;
-import dev.neuralnexus.tatercomms.velocity.listeners.player.VelocityPlayerMessageListener;
-import dev.neuralnexus.tatercomms.velocity.listeners.player.VelocityPlayerServerSwitchListener;
-import dev.neuralnexus.tatercomms.velocity.listeners.server.VelocityServerStartedListener;
-import dev.neuralnexus.tatercomms.velocity.listeners.server.VelocityServerStoppedListener;
 import com.google.inject.Inject;
-import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -28,7 +21,10 @@ import org.slf4j.Logger;
         authors = "p0t4t0sandwich",
         description = "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.",
         url = "https://github.com/p0t4t0sandwich/TaterComms",
-        dependencies = {}
+        dependencies = {
+                @Dependency(id = "taterlib"),
+                @Dependency(id = "luckperms", optional = true)
+        }
 )
 public class VelocityMain {
     public TaterComms taterComms;
@@ -89,27 +85,8 @@ public class VelocityMain {
         taterComms = new TaterComms("plugins", getLogger());
         taterComms.start();
 
-        // Server started listener
-        (new VelocityServerStartedListener()).onServerStarted();
-
-        // Register player event listeners
-        EventManager eventManager = server.getEventManager();
-        eventManager.register(this, new VelocityPlayerLoginListener());
-        eventManager.register(this, new VelocityPlayerLogoutListener());
-        eventManager.register(this, new VelocityPlayerMessageListener());
-        eventManager.register(this, new VelocityPlayerServerSwitchListener());
-
-        // Register server event listeners
-        eventManager.register(this, new VelocityServerStoppedListener());
-
         // Register commands
         server.getCommandManager().register(DiscordCommand.getCommandName(), new VelocityDiscordCommand());
-
-        // Register LuckPerms hook
-        if (getServer().getPluginManager().getPlugin("LuckPerms").isPresent()) {
-            getLogger().info("LuckPerms detected, enabling LuckPerms hook.");
-            TaterComms.addHook(new LuckPermsHook());
-        }
 
         // Plugin enable message
         this.logger.info("TaterComms has been enabled!");

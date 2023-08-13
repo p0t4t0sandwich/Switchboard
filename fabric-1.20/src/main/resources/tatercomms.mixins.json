@@ -1,22 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ca.sperrer.p0t4t0sandwich.tatercomms.fabric.mixin",
+  "package": "dev.neuralnexus.tatercomms.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
   ],
   "server": [
-      "dev.neuralnexus.tatercomms.fabric.mixin.commands.FabricDiscordCommand",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.player.FabricPlayerAdvancementListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.player.FabricPlayerDeathListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.player.FabricPlayerLoginListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.player.FabricPlayerLogoutListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.player.FabricPlayerMessageListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.server.FabricServerStartedListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.server.FabricServerStartingListener",
-      "dev.neuralnexus.tatercomms.fabric.mixin.listeners.server.FabricServerStoppedListener"
   ],
   "injectors": {
     "defaultRequire": 1

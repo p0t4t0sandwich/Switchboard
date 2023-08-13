@@ -15,6 +15,9 @@ minecraft {
 dependencies {
     implementation(project(path: ':common', configuration: 'shadow'))
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+
+    // TaterLib
+    compileOnly(fg.deobf('dev.neuralnexus:TaterLib:1.0.1-1.20'))
 }
 
 reobf {

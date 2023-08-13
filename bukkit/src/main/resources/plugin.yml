@@ -3,7 +3,7 @@ version: '${version}'
 author: p0t4t0sandwich
 description: A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
 main: dev.neuralnexus.tatercomms.bukkit.BukkitMain
-depend: []
+depend: [TaterLib]
 softdepend: [LuckPerms]
 load: STARTUP
 folia-supported: true

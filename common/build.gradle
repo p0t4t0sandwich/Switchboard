@@ -4,8 +4,7 @@ plugins {
 
 dependencies {
     // TaterLib
-//    compileOnly('dev.neuralnexus:TaterLib:1.0.0-1.20')
-    compileOnly(files("../../TaterLib/target/TaterLib-1.0.1-common.jar"))
+    compileOnly('dev.neuralnexus:TaterLib:1.0.1-1.20')
 
     // JDA
     implementation("net.dv8tion:JDA:5.0.0-beta.10") {

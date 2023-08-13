@@ -1,7 +1,9 @@
 package dev.neuralnexus.tatercomms.fabric;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.fabric.commands.FabricDiscordCommand;
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,9 @@ public class FabricMain implements DedicatedServerModInitializer {
     public void onInitializeServer() {
         // Singleton instance
         instance = this;
+
+        // Register commands
+        CommandRegistrationCallback.EVENT.register(FabricDiscordCommand::register);
 
         logger.info("[TaterComms]: TaterComms is running on " + getServerType() + ".");
 

@@ -1,4 +1,4 @@
-package dev.neuralnexus.tatercomms.forge.commands;
+package dev.neuralnexus.tatercomms.neoforge.commands;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
@@ -16,7 +16,7 @@ import static net.minecraft.commands.Commands.literal;
 /**
  * Registers the discord command.
  */
-public final class ForgeDiscordCommand {
+public final class NeoForgeDiscordCommand implements DiscordCommand {
     /**
      * Registers the command.
      * @param event The event.

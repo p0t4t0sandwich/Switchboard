@@ -1,12 +1,11 @@
 package dev.neuralnexus.tatercomms.bungee.commands;
 
-import ca.sperrer.p0t4t0sandwich.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.bungee.BungeeMain;
+import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-
-import static ca.sperrer.p0t4t0sandwich.tatercomms.common.Utils.runTaskAsync;
 
 public class BungeeDiscordCommand extends Command implements DiscordCommand {
     public BungeeDiscordCommand() {
@@ -15,7 +14,7 @@ public class BungeeDiscordCommand extends Command implements DiscordCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        runTaskAsync(() -> {
+        BungeeMain.getInstance().getProxy().getScheduler().runAsync(BungeeMain.getInstance(), () -> {
             try {
                 // Check if sender is a player
                 if ((sender instanceof ProxiedPlayer)) {
