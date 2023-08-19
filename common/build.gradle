@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     // TaterLib
-    compileOnly('dev.neuralnexus:TaterLib:1.0.1-1.20')
+    compileOnly("dev.neuralnexus:TaterLib:1.20-${taterlib_version}")
 
     // JDA
     implementation("net.dv8tion:JDA:5.0.0-beta.10") {
@@ -31,13 +31,13 @@ shadowJar {
     relocate("com.neovisionaries", "dev.neuralnexus.tatercomms.lib.neovisionaries")
 
     destinationDirectory = file('../target')
-    archiveFileName = "TaterComms-${version}-common.jar"
+    archiveFileName = "${project_name}-common-${version}.jar"
 }
 shadowJar.doLast {
     task ->
         ant.checksum(file: task.archivePath) {
-            hashAlgorithm = "md5"
-            property = "md5sum"
+            hashAlgorithm = 'md5'
+            property = 'md5sum'
         }
 }
 

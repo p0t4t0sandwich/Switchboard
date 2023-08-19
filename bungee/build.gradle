@@ -9,7 +9,7 @@ dependencies {
     compileOnly("net.md-5:bungeecord-api:${minecraft_version}-${bungeecord_version}")
 
     // TaterLib
-    compileOnly('dev.neuralnexus:TaterLib:1.0.1-1.20')
+    compileOnly("dev.neuralnexus:TaterLib:1.20-${taterlib_version}")
 }
 
 processResources {
@@ -27,7 +27,7 @@ shadowJar {
     }
 
     destinationDirectory = file('../target')
-    archiveFileName = "TaterComms-${version}-bungee.jar"
+    archiveFileName = "${project_name}-bungee-${version}.jar"
 }
 shadowJar.doLast {
     task ->

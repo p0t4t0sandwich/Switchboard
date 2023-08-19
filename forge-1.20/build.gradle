@@ -4,7 +4,6 @@ plugins {
     id('org.parchmentmc.librarian.forgegradle') version('1.+')
 }
 
-sourceCompatibility = 1.8
 targetCompatibility = 17
 
 minecraft {
@@ -17,7 +16,7 @@ dependencies {
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
     // TaterLib
-    compileOnly(fg.deobf('dev.neuralnexus:TaterLib:1.0.1-1.20'))
+    compileOnly("dev.neuralnexus:TaterLib:1.20-${taterlib_version}")
 }
 
 reobf {
@@ -30,7 +29,7 @@ shadowJar {
     }
 
     destinationDirectory = file('../target')
-    archiveFileName = "TaterComms-${version}-forge-${minecraft_version}.jar"
+    archiveFileName = "${project_name}-forge-${minecraft_version}-${version}.jar"
 }
 shadowJar.doLast {
     task ->

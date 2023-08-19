@@ -15,26 +15,26 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 ### Compatibility Cheatsheet
 
-| Server type | Versions    | Jar Name                            |
-|-------------|-------------|-------------------------------------|
-| All 1.20    | 1.20-1.20.1 | `TaterComms-<version>-1.20.jar`     |
-| All 1.19    | 1.19-1.19.4 | `TaterComms-<version>-1.19.jar`     |
+TaterComms supports: Bukkit, Fabric, and Forge
 
-[//]: # (| All 1.18    | 1.18-1.18.2 | `TaterComms-<version>-1.18.jar`     |)
+[//]: # (TaterComms supports: Bukkit, Fabric, Forge, and Sponge &#40;some versions&#41;)
 
-[//]: # (| All 1.17    | 1.17-1.17.1 | `TaterComms-<version>-1.17.jar`     |)
+| Server type        | Versions    | Jar Name                        |
+|--------------------|-------------|---------------------------------|
+| All 1.20           | 1.20-1.20.1 | `TaterComms-1.20-<version>.jar` |
+| All 1.19           | 1.19-1.19.4 | `TaterComms-1.19-<version>.jar` |
 
-[//]: # (| All 1.16    | 1.16-1.16.5 | `TaterComms-<version>-1.16.jar`     |)
+[//]: # (| All 1.18           | 1.18-1.18.2 | `TaterComms-1.18-<version>.jar` |)
 
-[//]: # (| All 1.15    | 1.15-1.15.2 | `TaterComms-<version>-1.15.jar`     |)
+[//]: # (| All 1.17           | 1.17-1.17.1 | `TaterComms-1.17-<version>.jar` |)
 
-[//]: # (| All 1.14    | 1.14-1.14.3 | `TaterComms-<version>-1.14.jar`     |)
-| Bukkit      | 1.8-1.20    | `TaterComms-<version>-bukkit.jar`   |
-| BungeeCord  | 1.12-1.20   | `TaterComms-<version>-bungee.jar`   |
-| Velocity    | API v3      | `TaterComms-<version>-velocity.jar` |
+[//]: # (| All 1.16 &#40;Sponge8&#41; | 1.16-1.16.5 | `TaterComms-1.16-<version>.jar` |)
+
+[//]: # (| All 1.15           | 1.15-1.15.2 | `TaterComms-1.15-<version>.jar` |)
 
 ## Dependencies
 
+- [TaterLib](https://github.com/p0t4t0sandwich/TaterLib) - Required on all platforms
 - [FabricAPI](https://modrinth.com/mod/fabric-api) - Required on Fabric
 
 ### Optional Dependencies
@@ -98,6 +98,7 @@ formatting:
 ```
 
 ## TODO
+- api to add messages/events to the relay
 
 ## Listeners
 - Events that need to be sent up to the proxy
@@ -111,6 +112,7 @@ formatting:
   - use player head as icon
     - cache the head
 - option to use webhooks for discord
+- add option for webhook-only, and just webhook options in general
 
 ## Chat additions
 - Remote chat websocket
@@ -118,6 +120,7 @@ formatting:
 - Staff chat
 - sync chats across servers/proxies in remote configuration
 - RGB support for chat colors
+- bell noise “ping”
 
 # Release Notes
 - Recoded to use TaterLib for easier cross-API support

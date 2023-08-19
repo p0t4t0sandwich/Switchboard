@@ -7,8 +7,8 @@ defaultTasks('build')
 subprojects {
     apply(plugin: 'java')
 
-    group = 'ca.sperrer.p0t4t0sandwich'
-    version = '1.0.3'
+    group = 'dev.neuralnexus'
+    version = '1.0.3-SNAPSHOT'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -46,6 +46,12 @@ subprojects {
         maven {
             name = "NeuralNexus"
             url = "https://maven.neuralnexus.dev/releases"
+        }
+
+        // NeuralNexus Snapshots
+        maven {
+            name = "NeuralNexus Snapshots"
+            url = "https://maven.neuralnexus.dev/snapshots"
         }
     }
 }
