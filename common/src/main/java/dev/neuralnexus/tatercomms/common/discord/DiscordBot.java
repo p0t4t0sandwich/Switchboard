@@ -1,5 +1,6 @@
 package dev.neuralnexus.tatercomms.common.discord;
 
+import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.discord.player.DiscordPlayer;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;

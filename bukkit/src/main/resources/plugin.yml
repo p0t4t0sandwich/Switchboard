@@ -2,7 +2,7 @@ name: TaterComms
 version: '${version}'
 author: p0t4t0sandwich
 description: A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
-main: dev.neuralnexus.tatercomms.bukkit.BukkitMain
+main: dev.neuralnexus.tatercomms.bukkit.BukkitTaterCommsPlugin
 depend: [TaterLib]
 softdepend: [LuckPerms]
 load: STARTUP
@@ -11,4 +11,4 @@ commands:
   discord:
     description: Get the discord invite link
     usage: /discord
-    permission: tatercomms.discord
+    permission: tatercomms.command.discord

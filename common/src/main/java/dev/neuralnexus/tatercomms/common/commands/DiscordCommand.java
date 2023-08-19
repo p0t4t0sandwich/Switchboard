@@ -17,7 +17,7 @@ public interface DiscordCommand {
     }
 
     static String getCommandPermission() {
-        return "tatercomms.discord";
+        return "tatercomms.command.discord";
     }
 
     static String executeCommand(String[] args) {

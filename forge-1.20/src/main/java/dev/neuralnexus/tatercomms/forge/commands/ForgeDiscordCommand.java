@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.forge.commands;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.forge.ForgeTaterCommsPlugin;
 import dev.neuralnexus.taterlib.common.Utils;
 import dev.neuralnexus.taterlib.common.hooks.LuckPermsHook;
 import net.minecraft.commands.Commands;
@@ -10,12 +11,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import static net.minecraft.commands.Commands.literal;
 
 /**
  * Registers the discord command.
  */
+@Mod.EventBusSubscriber(modid = ForgeTaterCommsPlugin.MOD_ID)
 public final class ForgeDiscordCommand {
     /**
      * Registers the command.

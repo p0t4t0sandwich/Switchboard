@@ -43,9 +43,9 @@ TaterComms supports: Bukkit, Fabric, and Forge
 
 ## Commands and Permissions
 
-| Command    | Permission           | Description                 |
-|------------|----------------------|-----------------------------|
-| `/discord` | `tatercomms.discord` | Get the Discord invite link |
+| Command    | Permission                   | Description                 |
+|------------|------------------------------|-----------------------------|
+| `/discord` | `tatercomms.command.discord` | Get the Discord invite link |
 
 ## Configuration
 

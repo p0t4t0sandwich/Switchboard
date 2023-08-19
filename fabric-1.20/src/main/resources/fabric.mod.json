@@ -21,7 +21,7 @@
   "environment": "*",
   "entrypoints": {
     "server": [
-        "dev.neuralnexus.tatercomms.fabric.FabricMain"
+        "dev.neuralnexus.tatercomms.fabric.FabricTaterCommsPlugin"
     ]
   },
   "mixins": [
@@ -31,6 +31,7 @@
     "fabricloader": ">=0.9.0",
     "minecraft": ">=${minecraft_version}",
     "fabric-command-api-v2": "*",
+    "fabric-lifecycle-events-v1": "*",
     "taterlib": "*"
   },
   "suggests": {
