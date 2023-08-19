@@ -1,18 +1,22 @@
 package dev.neuralnexus.tatercomms.fabric.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.neuralnexus.tatercomms.common.TaterComms;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
-import dev.neuralnexus.taterlib.common.Utils;
+import dev.neuralnexus.taterlib.common.commands.TaterLibCommand;
 import dev.neuralnexus.taterlib.common.hooks.LuckPermsHook;
+import dev.neuralnexus.taterlib.fabric.abstractions.player.FabricPlayer;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.entity.Entity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
+import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
+
+/**
+ * The Fabric implementation of the Discord command.
+ */
 public class FabricDiscordCommand {
     /**
      * Registers the command.
@@ -29,21 +33,26 @@ public class FabricDiscordCommand {
             permissionLevel = 0;
         }
 
-        dispatcher.register(literal(DiscordCommand.getCommandName())
+        dispatcher.register(literal(TaterLibCommand.getCommandName())
                 .requires(source -> source.hasPermissionLevel(permissionLevel))
-                .executes(context -> {
-                    String[] args = new String[]{};
+                .then(argument("command", StringArgumentType.greedyString())
+                    .executes(context -> {
+                        try {
+                            String[] args = context.getArgument("command", String.class).split(" ");
 
-                    // Send message to player or console
-                    Entity entity = context.getSource().getEntity();
-                    if (entity instanceof ServerPlayerEntity) {
-                        ((ServerPlayerEntity) entity).sendMessage(Text.of(DiscordCommand.executeCommand(args)), false);
-                    } else {
-                        TaterComms.useLogger((Utils.ansiiParser(DiscordCommand.executeCommand(args))));
-                    }
-                    return 1;
-                })
-        );
+                            // Check if sender is a player
+                            boolean isPlayer = context.getSource().getEntity() instanceof ServerPlayerEntity;
+                            FabricPlayer player = isPlayer ? new FabricPlayer((ServerPlayerEntity) context.getSource().getEntity()) : null;
+
+                            // Execute command
+                            DiscordCommand.executeCommand(player, isPlayer, args);
+                        } catch (Exception e) {
+                            System.err.println(e);
+                            e.printStackTrace();
+                            return 0;
+                        }
+                        return 1;
+                    })
+        ));
     }
-
 }

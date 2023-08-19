@@ -2,28 +2,24 @@ package dev.neuralnexus.tatercomms.velocity.commands;
 
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
-import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
-import dev.neuralnexus.taterlib.common.Utils;
-import net.kyori.adventure.text.Component;
+import dev.neuralnexus.taterlib.velocity.abstractions.player.VelocityPlayer;
 
 public class VelocityDiscordCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
+        try {
             String[] args = invocation.arguments();
 
             // Check if sender is a player
-            if ((invocation.source() instanceof Player)) {
-                Player player = (Player) invocation.source();
+            boolean isPlayer = invocation.source() instanceof Player;
+            VelocityPlayer player = isPlayer ? new VelocityPlayer((Player) invocation.source()) : null;
 
-                // Permission check
-                if (!player.hasPermission(DiscordCommand.getCommandPermission())) {
-                    player.sendMessage(Component.text("§cYou do not have permission to use this command."));
-                    return;
-                }
-                player.sendMessage(Component.text(DiscordCommand.executeCommand(args)));
-            } else {
-                TaterComms.useLogger(Utils.ansiiParser(DiscordCommand.executeCommand(args)));
-            }
+            // Execute command
+            DiscordCommand.executeCommand(player, isPlayer, args);
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
     }
 }

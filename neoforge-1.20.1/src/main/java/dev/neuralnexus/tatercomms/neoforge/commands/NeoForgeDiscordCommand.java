@@ -1,22 +1,22 @@
 package dev.neuralnexus.tatercomms.neoforge.commands;
 
-import dev.neuralnexus.tatercomms.common.TaterComms;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
 import dev.neuralnexus.tatercomms.neoforge.NeoForgeTaterCommsPlugin;
-import dev.neuralnexus.taterlib.common.Utils;
+import dev.neuralnexus.taterlib.common.commands.TaterLibCommand;
 import dev.neuralnexus.taterlib.common.hooks.LuckPermsHook;
+import dev.neuralnexus.taterlib.neoforge.abstractions.player.NeoForgePlayer;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 /**
- * Registers the discord command.
+ * NeoForge implementation of the Discord command.
  */
 @Mod.EventBusSubscriber(modid = NeoForgeTaterCommsPlugin.MOD_ID)
 public final class NeoForgeDiscordCommand implements DiscordCommand {
@@ -34,20 +34,26 @@ public final class NeoForgeDiscordCommand implements DiscordCommand {
             permissionLevel = 0;
         }
 
-        event.getDispatcher().register(literal(DiscordCommand.getCommandName())
+        // Register command
+        event.getDispatcher().register(literal(TaterLibCommand.getCommandName())
                 .requires(source -> source.hasPermission(permissionLevel))
-                .executes(context -> {
-                    String[] args = new String[]{};
+                .then(argument("command", StringArgumentType.greedyString())
+                        .executes(context -> {
+                            try {
+                                String[] args = context.getArgument("command", String.class).split(" ");
 
-                    // Send message to player or console
-                    Entity entity = context.getSource().getEntity();
-                    if (entity instanceof ServerPlayer) {
-                        ((ServerPlayer) entity).displayClientMessage(Component.empty().append(DiscordCommand.executeCommand(args)), false);
-                    } else {
-                        TaterComms.useLogger(Utils.ansiiParser(DiscordCommand.executeCommand(args)));
-                    }
-                    return 1;
-                })
-        );
+                                // Check if sender is a player
+                                boolean isPlayer = context.getSource().getEntity() instanceof Player;
+                                NeoForgePlayer player = isPlayer ? new NeoForgePlayer((Player) context.getSource().getEntity()) : null;
+
+                                // Execute command
+                                DiscordCommand.executeCommand(player, isPlayer, args);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return 0;
+                            }
+                            return 1;
+                        })
+                ));
     }
 }
