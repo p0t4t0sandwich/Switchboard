@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "tatercomms",
+  "version": "${version}",
+  "name": "TaterComms",
+  "description": "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.",
+  "authors": [
+    {
+      "name": "p0t4t0sandwich",
+      "contact": {
+        "sources": "https://github.com/p0t4t0sandwich/",
+        "homepage": "https://links.sperrer.ca/"
+      }
+    }
+  ],
+  "contact": {
+    "repo": "https://github.com/p0t4t0sandwich/TaterComms"
+  },
+  "license": "GPL-3",
+  "icon": "assets/TaterComms/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "server": [
+        "dev.neuralnexus.tatercomms.fabric.FabricTaterCommsPlugin"
+    ]
+  },
+  "mixins": [
+    "tatercomms.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.9.0",
+    "minecraft": ">=${minecraft_version}",
+    "fabric-command-api-v1": "*",
+    "fabric-lifecycle-events-v1": "*",
+    "taterlib": "*"
+  },
+  "suggests": {
+      "luckperms": "*"
+  }
+}

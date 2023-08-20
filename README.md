@@ -49,6 +49,8 @@ TaterComms supports: Bukkit, Fabric, and Forge
 
 ## Configuration
 
+<plugins/config>/TaterComms/tatercomms.config.yml
+
 ```yaml
 ---
 version: 1
