@@ -11,26 +11,20 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 - [Hangar](https://hangar.papermc.io/p0t4t0sandwich/TaterComms)
 - [Modrinth](https://modrinth.com/plugin/tatercomms)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tatercomms)
-- Sponge
+- [Sponge](https://ore.spongepowered.org/p0t4t0sandwich/TaterComms)
 
 ### Compatibility Cheatsheet
 
-TaterComms supports: Bukkit, Fabric, and Forge
-
-[//]: # (TaterComms supports: Bukkit, Fabric, Forge, and Sponge &#40;some versions&#41;)
+TaterComms supports: Bukkit, Fabric, Forge, and Sponge (some versions)
 
 | Server type        | Versions    | Jar Name                        |
 |--------------------|-------------|---------------------------------|
 | All 1.20           | 1.20-1.20.1 | `TaterComms-1.20-<version>.jar` |
 | All 1.19           | 1.19-1.19.4 | `TaterComms-1.19-<version>.jar` |
-
-[//]: # (| All 1.18           | 1.18-1.18.2 | `TaterComms-1.18-<version>.jar` |)
-
-[//]: # (| All 1.17           | 1.17-1.17.1 | `TaterComms-1.17-<version>.jar` |)
-
-[//]: # (| All 1.16 &#40;Sponge8&#41; | 1.16-1.16.5 | `TaterComms-1.16-<version>.jar` |)
-
-[//]: # (| All 1.15           | 1.15-1.15.2 | `TaterComms-1.15-<version>.jar` |)
+| All 1.18           | 1.18-1.18.2 | `TaterComms-1.18-<version>.jar` |
+| All 1.17           | 1.17-1.17.1 | `TaterComms-1.17-<version>.jar` |
+| All 1.16 (Sponge8) | 1.16-1.16.5 | `TaterComms-1.16-<version>.jar` |
+| All 1.15           | 1.15-1.15.2 | `TaterComms-1.15-<version>.jar` |
 
 ## Dependencies
 
@@ -40,6 +34,10 @@ TaterComms supports: Bukkit, Fabric, and Forge
 ### Optional Dependencies
 
 - [LuckPerms](https://luckperms.net/) - For permissions/prefix/suffix support
+
+## Usage
+
+- [Create and add a Discord bot to your server](https://discordpy.readthedocs.io/en/stable/discord.html)
 
 ## Commands and Permissions
 
@@ -126,3 +124,4 @@ formatting:
 
 # Release Notes
 - Recoded to use TaterLib for easier cross-API support
+- Back ported to 1.14 and added Sponge8 support
