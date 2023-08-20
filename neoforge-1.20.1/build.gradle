@@ -4,7 +4,7 @@ plugins {
     id('org.parchmentmc.librarian.forgegradle') version('1.+')
 }
 
-targetCompatibility = 17
+targetCompatibility = java_version
 
 minecraft {
     // https://parchmentmc.org/docs/getting-started
