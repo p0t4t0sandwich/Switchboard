@@ -97,7 +97,7 @@ formatting:
   discord: "&9[D]&r %displayname% >> %message%"
 ```
 
-## TODO
+# TODO
 - api to add messages/events to the relay
 
 ## Listeners
