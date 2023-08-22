@@ -35,7 +35,7 @@ public final class ForgeDiscordCommand {
 
         // Register command
         event.getCommandDispatcher().register(literal(DiscordCommand.getCommandName())
-                .requires(source -> source.hasPermissionLevel(permissionLevel))
+                .requires(source -> source.hasPermission(permissionLevel))
                 .then(argument("command", StringArgumentType.greedyString())
                         .executes(context -> {
                             try {
