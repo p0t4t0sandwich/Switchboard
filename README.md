@@ -124,4 +124,5 @@ formatting:
 
 # Release Notes
 - Recoded to use TaterLib for easier cross-API support
+- Once again depends on the fabric API
 - Back ported to 1.14 and added Sponge8 support
