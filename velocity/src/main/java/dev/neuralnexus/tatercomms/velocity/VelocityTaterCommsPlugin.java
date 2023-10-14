@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.velocity;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
@@ -13,6 +14,7 @@ import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.velocity.commands.VelocityDiscordCommand;
+import dev.neuralnexus.tatercomms.velocity.messagelisteners.VelocityMessageListener;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.velocity.TemplateVelocityPlugin;
 import dev.neuralnexus.taterlib.velocity.abstractions.logger.VelocityLogger;
@@ -58,14 +60,16 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
      */
     @Override
     public void registerEventListeners() {
+        // Register channels
         ChannelRegistrar channelRegistrar = server.getChannelRegistrar();
         channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier()));
         channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier()));
         channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier()));
         channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()));
 
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.SERVER_STARTED.getIdentifier()));
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.SERVER_STOPPED.getIdentifier()));
+        // Register channel listener
+        EventManager eventManager = server.getEventManager();
+        eventManager.register(this, new VelocityMessageListener());
     }
 
     /**

@@ -34,6 +34,15 @@ public class CommsSender implements AbstractPlayer {
     /**
      * Constructor for the CommsSender class.
      * @param player The player
+     * @param serverName The server name
+     */
+    public CommsSender(AbstractPlayer player, String serverName) {
+        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUUID(), serverName);
+    }
+
+    /**
+     * Constructor for the CommsSender class.
+     * @param player The player
      */
     public CommsSender(AbstractPlayer player) {
         this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUUID(), player.getServerName());
@@ -41,22 +50,22 @@ public class CommsSender implements AbstractPlayer {
 
     @Override
     public UUID getUUID() {
-        return null;
+        return this.uuid;
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.name;
     }
 
     @Override
     public String getDisplayName() {
-        return null;
+        return this.displayName;
     }
 
     @Override
     public String getServerName() {
-        return null;
+        return this.serverName;
     }
 
     @Override
