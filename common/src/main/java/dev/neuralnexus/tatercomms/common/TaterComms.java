@@ -72,7 +72,7 @@ public class TaterComms {
 
         // Config
         try {
-            config = YamlDocument.create(new File("." + File.separator + configPath + File.separator + "BeeNameGenerator", "tatercomms.config.yml"),
+            config = YamlDocument.create(new File("." + File.separator + configPath + File.separator + "TaterComms", "tatercomms.config.yml"),
                     Objects.requireNonNull(TaterComms.class.getClassLoader().getResourceAsStream("tatercomms.config.yml"))
             );
             config.reload();

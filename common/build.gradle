@@ -13,6 +13,9 @@ dependencies {
 
     // Websocket
     implementation("com.neovisionaries:nv-websocket-client:2.14")
+
+    // Guava
+    implementation("com.google.guava:guava:30.1.1-jre")
 }
 
 shadowJar {
@@ -29,6 +32,9 @@ shadowJar {
 
     // Websocket
     relocate("com.neovisionaries", "dev.neuralnexus.tatercomms.lib.neovisionaries")
+
+    // Guava
+    relocate("com.google.common", "dev.neuralnexus.tatercomms.lib.guava")
 
     destinationDirectory = file('../target')
     archiveFileName = "${project_name}-common-${version}.jar"

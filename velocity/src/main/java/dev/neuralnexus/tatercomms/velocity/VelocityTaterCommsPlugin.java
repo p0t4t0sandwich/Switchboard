@@ -7,8 +7,11 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
+import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.velocity.commands.VelocityDiscordCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.velocity.TemplateVelocityPlugin;
@@ -48,6 +51,21 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
     @Override
     public void registerCommands() {
         server.getCommandManager().register(DiscordCommand.getCommandName(), new VelocityDiscordCommand());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void registerEventListeners() {
+        ChannelRegistrar channelRegistrar = server.getChannelRegistrar();
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier()));
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier()));
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier()));
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()));
+
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.SERVER_STARTED.getIdentifier()));
+        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.SERVER_STOPPED.getIdentifier()));
     }
 
     /**

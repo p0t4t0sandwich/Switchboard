@@ -106,31 +106,6 @@ formatting:
   discord: "&9[D]&r %displayname% >> %message%"
 ```
 
-# TODO
-- api to add messages/events to the relay
-
-## Listeners
-- Events that need to be sent up to the proxy
-  - Player Advancement
-  - Player Death
-
-## Discord additions
-- account linking system
-  - translate discord names to minecraft names and vice versa
-- configurable embeds
-  - use player head as icon
-    - cache the head
-- option to use webhooks for discord
-- add option for webhook-only, and just webhook options in general
-
-## Chat additions
-- Remote chat websocket
-- Complete chat management + passthrough configs
-- Staff chat
-- sync chats across servers/proxies in remote configuration
-- RGB support for chat colors
-- bell noise “ping”
-
 # Release Notes
 - Recoded to use TaterLib for easier cross-API support
 - Once again depends on the fabric API
