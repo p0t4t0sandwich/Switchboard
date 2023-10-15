@@ -2,7 +2,7 @@
 
 PROJ_ID=tatercomms
 PROJ_NAME=TaterComms
-VERSION=1.0.3-SNAPSHOT
+VERSION=1.0.3-R01-SNAPSHOT
 GROUP_ID=dev/neuralnexus
 
 # --------------------------- Functions --------------------------------
@@ -267,7 +267,7 @@ FABRIC_VERSION=1.20
 FORGE_VERSION=1.20
 NEOFORGE_VERSION=1.20.1
 OUT_FILE=$PROJ_NAME-$MC_VERSION-$VERSION
-neobuild $FABRIC_VERSION $FORGE_VERSION $NEOFORGE_VERSION $OUT_FILE
+build $FABRIC_VERSION $FORGE_VERSION $OUT_FILE
 
 # --------------------------- Cleanup --------------------------------
 cd ../

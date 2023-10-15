@@ -98,11 +98,11 @@ public class CommsRelay implements MessageRelay {
     public void sendPlayerServerSwitch(AbstractPlayer player, String fromServer, String toServer) {
         if (fromServer != null) {
             // Relay player logout to Discord
-            this.sendSystemMessage(player.getServerName(), player.getDisplayName() + " left the game");
+            this.sendSystemMessage(player.getServerName(), player.getName() + " left the game");
         }
 
         // Relay player login to Discord
-        this.sendSystemMessage(toServer, player.getDisplayName() + " joined the game");
+        this.sendSystemMessage(toServer, player.getName() + " joined the game");
     }
 
     /**

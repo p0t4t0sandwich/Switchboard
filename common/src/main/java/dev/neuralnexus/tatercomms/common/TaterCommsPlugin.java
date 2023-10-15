@@ -25,8 +25,6 @@ public interface TaterCommsPlugin extends TemplatePlugin {
             // Register commands
             registerCommands();
 
-            useLogger("TaterComms has been enabled!");
-
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
@@ -39,7 +37,6 @@ public interface TaterCommsPlugin extends TemplatePlugin {
     default void pluginStop() {
         try {
             TaterComms.stop();
-            useLogger("TaterComms has been disabled!");
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();

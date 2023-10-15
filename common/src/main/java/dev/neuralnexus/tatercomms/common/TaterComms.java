@@ -118,6 +118,7 @@ public class TaterComms {
         PlayerEvents.LOGIN.register(CommonPlayerListener::onPlayerLogin);
         PlayerEvents.LOGOUT.register(CommonPlayerListener::onPlayerLogout);
         PlayerEvents.MESSAGE.register(CommonPlayerListener::onPlayerMessage);
+        PlayerEvents.SERVER_SWITCH.register(CommonPlayerListener::onPlayerServerSwitch);
 
         // Register server listeners
         ServerEvents.STARTED.register(CommonServerListener::onServerStarted);

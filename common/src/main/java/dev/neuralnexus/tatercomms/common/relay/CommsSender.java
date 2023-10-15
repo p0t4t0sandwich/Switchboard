@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.common.relay;
 
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayerInventory;
+import dev.neuralnexus.taterlib.common.abstractions.utils.Position;
 
 import java.util.UUID;
 
@@ -64,6 +65,11 @@ public class CommsSender implements AbstractPlayer {
     }
 
     @Override
+    public Position getPosition() {
+        return null;
+    }
+
+    @Override
     public String getServerName() {
         return this.serverName;
     }
@@ -81,6 +87,9 @@ public class CommsSender implements AbstractPlayer {
 
     @Override
     public void kickPlayer(String s) {}
+
+    @Override
+    public void setSpawn(Position position) {}
 
     @Override
     public String getPrefix() {

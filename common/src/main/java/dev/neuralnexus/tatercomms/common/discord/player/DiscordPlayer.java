@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.common.discord.player;
 
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayerInventory;
+import dev.neuralnexus.taterlib.common.abstractions.utils.Position;
 import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
 import net.dv8tion.jda.api.entities.User;
 
@@ -48,6 +49,11 @@ public class DiscordPlayer implements AbstractPlayer {
         return this.displayName;
     }
 
+    @Override
+    public Position getPosition() {
+        return null;
+    }
+
     /**
      * @inheritDoc
      */
@@ -92,4 +98,7 @@ public class DiscordPlayer implements AbstractPlayer {
     @Override
     public void kickPlayer(String message) {
     }
+
+    @Override
+    public void setSpawn(Position position) {}
 }

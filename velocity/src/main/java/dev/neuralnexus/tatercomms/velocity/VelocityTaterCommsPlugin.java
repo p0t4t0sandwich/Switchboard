@@ -62,10 +62,8 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
     public void registerEventListeners() {
         // Register channels
         ChannelRegistrar channelRegistrar = server.getChannelRegistrar();
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier()));
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier()));
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier()));
-        channelRegistrar.register(MinecraftChannelIdentifier.from(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()));
+        // TODO: Abstract to TaterLib and add some way to filter them and relay them to the correct event listener
+        CommsMessage.MessageType.getTypes().stream().map(CommsMessage.MessageType::getIdentifier).map(MinecraftChannelIdentifier::from).forEach(channelRegistrar::register);
 
         // Register channel listener
         EventManager eventManager = server.getEventManager();

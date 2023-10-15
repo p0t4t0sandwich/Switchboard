@@ -16,7 +16,7 @@ public interface CommonPlayerListener {
 
         MessageRelay relay = TaterLib.getMessageRelay();
         // Send advancement through relay
-        relay.sendSystemMessage(player.getServerName(), player.getDisplayName() + " has made the advancement [" + advancement + "]");
+        relay.sendSystemMessage(player.getServerName(), player.getName() + " has made the advancement [" + advancement + "]");
     }
 
     /**
@@ -41,7 +41,7 @@ public interface CommonPlayerListener {
 
         MessageRelay relay = TaterLib.getMessageRelay();
         // Relay the login message
-        relay.sendSystemMessage(player.getServerName(), player.getDisplayName() + " joined the game");
+        relay.sendSystemMessage(player.getServerName(), player.getName() + " joined the game");
     }
 
     /**
@@ -53,7 +53,7 @@ public interface CommonPlayerListener {
 
         MessageRelay relay = TaterLib.getMessageRelay();
         // Relay the logout message
-        relay.sendSystemMessage(player.getServerName(), player.getDisplayName() + " left the game");
+        relay.sendSystemMessage(player.getServerName(), player.getName() + " left the game");
     }
 
     /**
@@ -74,7 +74,7 @@ public interface CommonPlayerListener {
      * Called when a player logs out, and sends it to the message relay.
      * @param args The player and the server they switched from.
      */
-    static void onServerSwitch(Object[] args) {
+    static void onPlayerServerSwitch(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
         String fromServer = (String) args[1];
 
