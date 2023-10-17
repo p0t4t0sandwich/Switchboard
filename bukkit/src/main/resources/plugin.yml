@@ -5,7 +5,6 @@ description: A simple, cross API plugin that bridges communication between serve
 main: dev.neuralnexus.tatercomms.bukkit.BukkitTaterCommsPlugin
 depend: [TaterLib]
 softdepend: [LuckPerms]
-load: STARTUP
 folia-supported: true
 commands:
   discord:

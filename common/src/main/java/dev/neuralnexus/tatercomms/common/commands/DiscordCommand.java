@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.common.commands;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 
@@ -27,7 +28,7 @@ public interface DiscordCommand {
         if (args.length != 0) {
             return getCommandUsage();
         } else {
-            return new PlaceholderParser(TaterComms.getDiscordInviteLink()).parseSectionSign().getResult();
+            return new PlaceholderParser(TaterCommsConfig.discordInviteUrl()).parseSectionSign().getResult();
         }
     }
 

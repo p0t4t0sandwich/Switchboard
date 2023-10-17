@@ -1,9 +1,15 @@
 package dev.neuralnexus.tatercomms.common.listeners.player;
 
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
+import dev.neuralnexus.tatercomms.common.relay.CommsSender;
+import dev.neuralnexus.taterlib.bukkit.abstractions.player.BukkitPlayer;
+import dev.neuralnexus.taterlib.bungee.abstractions.player.BungeePlayer;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.relay.MessageRelay;
+import dev.neuralnexus.taterlib.velocity.abstractions.player.VelocityPlayer;
 
 public interface CommonPlayerListener {
     /**
@@ -17,6 +23,14 @@ public interface CommonPlayerListener {
         MessageRelay relay = TaterLib.getMessageRelay();
         // Send advancement through relay
         relay.sendSystemMessage(player.getServerName(), player.getName() + " has made the advancement [" + advancement + "]");
+
+        if (TaterCommsConfig.serverUsingProxy()) {
+            CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
+            CommsMessage commsMessage = new CommsMessage(commsSender, advancement);
+            if (player instanceof BukkitPlayer) {
+                ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
+            }
+        }
     }
 
     /**
@@ -30,6 +44,14 @@ public interface CommonPlayerListener {
         MessageRelay relay = TaterLib.getMessageRelay();
         // Send death message through relay
         relay.sendSystemMessage(player.getServerName(), deathMessage);
+
+        if (TaterCommsConfig.serverUsingProxy()) {
+            CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
+            CommsMessage commsMessage = new CommsMessage(commsSender, deathMessage);
+            if (player instanceof BukkitPlayer) {
+                ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
+            }
+        }
     }
 
     /**

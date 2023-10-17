@@ -1,29 +1,15 @@
 package dev.neuralnexus.tatercomms.forge;
 
 import com.mojang.logging.LogUtils;
-import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
-import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
-import dev.neuralnexus.tatercomms.common.relay.CommsSender;
 import dev.neuralnexus.tatercomms.forge.commands.ForgeDiscordCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
 import dev.neuralnexus.taterlib.forge.TemplateForgePlugin;
 import dev.neuralnexus.taterlib.forge.abstrations.logger.ForgeLogger;
-import dev.neuralnexus.taterlib.forge.abstrations.player.ForgePlayer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
-
-import java.util.function.Supplier;
-
-import static dev.neuralnexus.tatercomms.forge.TaterCommsPacketHandler.PLAYER_ADVANCEMENT_FINISHED_INSTANCE;
-import static dev.neuralnexus.tatercomms.forge.TaterCommsPacketHandler.PLAYER_DEATH_INSTANCE;
 
 /**
  * The TaterComms Forge plugin.

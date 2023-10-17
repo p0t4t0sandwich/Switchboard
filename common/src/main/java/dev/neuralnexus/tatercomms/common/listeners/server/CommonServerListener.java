@@ -1,7 +1,6 @@
 package dev.neuralnexus.tatercomms.common.listeners.server;
 
-import dev.neuralnexus.tatercomms.common.TaterComms;
-import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.relay.MessageRelay;
 
@@ -15,7 +14,7 @@ public interface CommonServerListener {
         if (args.length > 0) {
             server = args[0].toString();
         } else {
-            server = TaterComms.getServerName();
+            server = TaterCommsConfig.serverName();
         }
         relay.sendSystemMessage(server, "**Server has started**");
     }
@@ -29,7 +28,7 @@ public interface CommonServerListener {
         if (args.length > 0) {
             server = args[0].toString();
         } else {
-            server = TaterComms.getServerName();
+            server = TaterCommsConfig.serverName();
         }
         relay.sendSystemMessage(server, "**Server has stopped**");
     }

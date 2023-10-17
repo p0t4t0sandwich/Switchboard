@@ -24,7 +24,6 @@ import java.util.Objects;
  */
 public class TaterComms {
     private static final TaterComms instance = new TaterComms();
-    private static YamlDocument config;
     private static String configPath;
     private static AbstractLogger logger;
     private static boolean STARTED = false;
@@ -71,46 +70,13 @@ public class TaterComms {
         TaterComms.logger = logger;
 
         // Config
-        try {
-            config = YamlDocument.create(new File("." + File.separator + configPath + File.separator + "TaterComms", "tatercomms.config.yml"),
-                    Objects.requireNonNull(TaterComms.class.getClassLoader().getResourceAsStream("tatercomms.config.yml"))
-            );
-            config.reload();
-        } catch (IOException | NullPointerException e) {
-            useLogger("Failed to load tatercomms.config.yml!\n" + e.getMessage());
-            e.printStackTrace();
-        }
+        TaterCommsConfig.loadConfig(configPath);
 
         if (STARTED) {
             useLogger("TaterComms has already started!");
             return;
         }
         STARTED = true;
-
-        // Get the Discord token from the config
-        String token = config.getString("discord.token");
-        if (token == null || token.equals("")) {
-            useLogger("No Discord token found in tatercomms.config.yml!");
-            return;
-        }
-
-        // Get server-channel mappings from the config
-        HashMap<String, String> serverChannels = getServerChannels();
-        if (serverChannels.isEmpty()) {
-            useLogger("No server-channel mappings found in tatercomms.config.yml!");
-            return;
-        }
-
-        HashMap<String, String> formatting = new HashMap<>();
-        formatting.put("global", config.getString("formatting.global"));
-        formatting.put("local", config.getString("formatting.local"));
-        formatting.put("staff", config.getString("formatting.staff"));
-        formatting.put("discord", config.getString("formatting.discord"));
-        formatting.put("remote", config.getString("formatting.remote"));
-
-        discord = new DiscordBot(token, serverChannels);
-        messageRelay = new CommsRelay(formatting, discord);
-
 
         // Register player listeners
         PlayerEvents.ADVANCEMENT_FINISHED.register(CommonPlayerListener::onPlayerAdvancementFinished);
@@ -124,8 +90,28 @@ public class TaterComms {
         ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
         ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
 
+        // Get the Discord token from the config
+        String discordToken = TaterCommsConfig.discordToken();
+        if (discordToken == null || discordToken.isEmpty()) {
+            useLogger("No Discord token found in tatercomms.config.yml!");
+            TaterCommsConfig.setDiscordEnabled(false);
+        }
+
+        // Get server-channel mappings from the config
+        HashMap<String, String> serverChannels = TaterCommsConfig.discordChannels();
+        if (serverChannels.isEmpty()) {
+            useLogger("No server-channel mappings found in tatercomms.config.yml!");
+            TaterCommsConfig.setDiscordEnabled(false);
+        }
+
+        HashMap<String, String> formatting = TaterCommsConfig.formattingChat();
+        if (TaterCommsConfig.discordEnabled()) {
+            discord = new DiscordBot(discordToken, serverChannels);
+        }
+        messageRelay = new CommsRelay(formatting, discord);
+
         // Cancel chat and set message relay
-        TaterLib.cancelChat = true;
+        TaterLib.cancelChat = TaterCommsConfig.formattingEnabled();
         TaterLib.setMessageRelay(messageRelay);
 
         useLogger("TaterComms has been started!");
@@ -150,7 +136,7 @@ public class TaterComms {
         STARTED = false;
 
         // Remove references to objects
-        config = null;
+        TaterCommsConfig.unloadConfig();
         discord = null;
         messageRelay = null;
 
@@ -174,36 +160,5 @@ public class TaterComms {
         start(configPath, logger);
 
         useLogger("TaterComms has been reloaded!");
-    }
-
-    /**
-     * Get the server name from the config
-     * @return The server name
-     */
-    public static String getServerName() {
-        return config.getString("server.name");
-    }
-
-    /**
-     * Get server channels from the config file.
-     * @return The map of server channels
-     */
-    public static HashMap<String, String> getServerChannels() {
-        HashMap<String, String> serverChannels = new HashMap<>();
-
-        HashMap<String, Block> channelConfig = (HashMap<String, Block>) config.getBlock("discord.channels").getStoredValue();
-
-        for (Map.Entry<String, Block> entry: channelConfig.entrySet()) {
-            serverChannels.put(entry.getKey(), (String) entry.getValue().getStoredValue());
-        }
-
-        return serverChannels;
-    }
-
-    /**
-     * Get the Discord invite link
-     */
-    public static String getDiscordInviteLink() {
-        return config.getString("discord.inviteUrl");
     }
 }

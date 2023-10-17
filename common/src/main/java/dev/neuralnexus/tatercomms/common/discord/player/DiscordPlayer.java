@@ -15,7 +15,6 @@ public class DiscordPlayer implements AbstractPlayer {
     private final User user;
     private final String name;
     private final String displayName;
-    private final UUID uuid;
     private final String serverName;
 
     /**
@@ -26,9 +25,8 @@ public class DiscordPlayer implements AbstractPlayer {
         this.user = user;
         this.name = user.getName();
         this.displayName = user.getEffectiveName();
-        this.uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
-        this.serverName = "Discord";
+        this.serverName = "discord";
 
         // TODO: Set up account linking, and get the UUID and name from the database.
     }
@@ -59,7 +57,7 @@ public class DiscordPlayer implements AbstractPlayer {
      */
     @Override
     public UUID getUUID() {
-        return this.uuid;
+        return UUID.fromString("00000000-0000-0000-0000-000000000000");
     }
 
     /**
@@ -96,8 +94,7 @@ public class DiscordPlayer implements AbstractPlayer {
      * @inheritDoc
      */
     @Override
-    public void kickPlayer(String message) {
-    }
+    public void kickPlayer(String message) {}
 
     @Override
     public void setSpawn(Position position) {}

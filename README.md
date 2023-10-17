@@ -106,7 +106,10 @@ formatting:
   discord: "&9[D]&r %displayname% >> %message%"
 ```
 
-# Release Notes
+# Release Notes v1.0.3
+
 - Recoded to use TaterLib for easier cross-API support
 - Once again depends on the fabric API
 - Back ported to 1.14 and added Sponge8 support
+- Added plugin message support for server-side only events
+- Implemented plugin channel support for Bukkit and Sponge

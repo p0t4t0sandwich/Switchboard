@@ -1,10 +1,19 @@
 ---
 version: 1
 
+# ServerName for standalone servers (Bukkit, Fabric, or Forge)
+# Proxies will use the server names defined in the config
+server:
+  name: "serverName"
+  # Weather the plugin is running in a proxy network
+  # Set this to true on both ends to enable plugin messaging for some events (player advancements, death messages, etc.)
+  usingProxy: false
+  # Weather global chat should be the default chat channel for players
+  globalChatEnabledByDefault: false
+
 # Discord bot configuration
-# You only need one of these per server network, assuming you're running a primary proxy/websocket to handle chats
-# If you're running a standalone server, or this is the main server/proxy in your network,
-# set primary to true and set the channel mappings accordingly.
+# You only need one of these per server network, assuming you're running a primary proxy/socket to handle chats
+# If you're running a standalone server, or this is the main server/proxy in your network, set primary to true and set the channel mappings accordingly
 discord:
   enabled: true
   token: ""
@@ -12,46 +21,41 @@ discord:
 
   # Server to Discord Channel mapping
   channels:
-    # in the format of: serverName: guildID/channelId
-    local: "123456789012345678/123456789012345678"
+    # in the format of serverName: guildID/channelId
+    global: "123456789012345678/123456789012345678"
+    serverName: "123456789012345678/123456789012345678"
 
-# Allow specific servers to bypass the chat formatting.
-# The backend server will handle all the chat messages, but the players will still see the messages from other servers.
-passthrough:
-  # List of servers to allow passthrough
-  servers:
-      - example1
-      - example2
-
-# ServerName for standalone servers (Bukkit, Fabric, or Forge)
-# Proxies will use the server names defined in the config
-server:
-  name: "local"
-
+# Formatting for server messages
 formatting:
-  # %player% - Player name
-  # %message% - Message
-  # %server% - Server name
-  # %prefix% - Player prefix
-  # %suffix% - Player suffix
-  # %displayname% - Player display name
+  # Whether TaterComms should handle chat formatting
+  enabled: true
+  # Allow specific servers to bypass chat formatting
+  # The backend server will handle all the chat formatting
+  passthrough:
+    - example1
+    - example2
+  chat:
+    # Available placeholders:
+    #   %player% - Player name
+    #   %displayname% - Player display name
+    #   %message% - Message
+    #   %server% - Server name
+    #   %prefix% - Player prefix
+    #   %suffix% - Player suffix
 
-  # Global chat formatting
-  global: "&a[G]&r %displayname% >> %message%"
-  # Local chat formatting
-  local: "&a[L]&r %displayname% >> %message%"
-  # Staff chat formatting
-  staff: "&1[S]&r %displayname% >> %message%"
-  # Discord chat formatting
-  discord: "&9[D]&r %displayname% >> %message%"
-  # Remote chat formatting
-  remote: "&4[%server%]&r %displayname% >> %message%"
+    # Global chat formatting
+    global: "&a[G]&r %displayname% >> %message%"
+    # Local chat formatting
+    local: "&d[L]&r %displayname% >> %message%"
+    # Formatting for messages coming from Discord
+    discord: "&9[D]&r %displayname% >> %message%"
+    # Remote chat formatting
+    remote: "&4[%server%]&r %displayname% >> %message%"
 
-# WORK IN PROGRESS - DO NOT USE
-# Remote websocket configuration (for servers that you can't run behind a proxy)
+# Remote TCP socket configuration (for servers that you can't run behind a proxy)
 # Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
-# Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works.
+# Short explanation: The 1.13 update changed the way that Forge initializes and syncs mod/datapack data with the server, this causes issues with the way that the proxy works
 remote:
   enabled: false
   primary: false
-  url: "ws://localhost:5483"
+  host: "127.0.0.1:5483"
