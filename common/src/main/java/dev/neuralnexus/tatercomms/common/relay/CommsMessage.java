@@ -8,6 +8,7 @@ import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,8 +54,15 @@ public class CommsMessage {
      */
     public static void parseMessageChannel(Object[] args) {
         String channel = args[0].toString();
+        CommsMessage message;
         byte[] data = (byte[]) args[1];
-        CommsMessage message = CommsMessage.fromByteArray(data);
+        try {
+            message = CommsMessage.fromByteArray(data);
+        } catch (Exception e) {
+            // TODO: Make this less jank
+             message = gson.fromJson(new String(Arrays.copyOfRange(data, 5, data.length)), CommsMessage.class);
+        }
+
         switch (channel) {
             case "tatercomms:player_advancement_finished":
                 CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});

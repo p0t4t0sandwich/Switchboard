@@ -24,9 +24,6 @@ public class BukkitTaterCommsPlugin extends TemplateBukkitPlugin implements Tate
     }
 
     @Override
-    public void registerEventListeners() {}
-
-    @Override
     public void onEnable() {
         pluginStart();
     }

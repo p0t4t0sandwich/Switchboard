@@ -51,12 +51,6 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
     }
 
     /**
-     * @inheritDoc
-     */
-    @Override
-    public void registerEventListeners() {}
-
-    /**
      * Called when the proxy is initialized.
      * @param event The event.
      */
