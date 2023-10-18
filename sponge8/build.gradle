@@ -16,19 +16,19 @@ sponge {
     }
     plugin(project_id) {
         displayName(project_name)
-        entrypoint("dev.neuralnexus.taterlib.sponge.SpongeTaterCommsPlugin")
-        description("A plugin that implements the bee-name-generator API to generate names for bees.")
+        entrypoint("dev.neuralnexus.tatercomms.sponge.SpongeTaterCommsPlugin")
+        description("A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.")
         links {
-             homepage("https://github.com/p0t4t0sandwich/TaterLib#taterapi")
-             source("https://github.com/p0t4t0sandwich/TaterLib")
-             issues("https://github.com/p0t4t0sandwich/TaterLib/issues")
+             homepage("https://github.com/p0t4t0sandwich/TaterComms#readme")
+             source("https://github.com/p0t4t0sandwich/TaterComms")
+             issues("https://github.com/p0t4t0sandwich/TaterComms/issues")
         }
         dependency("spongeapi") {
             loadOrder(PluginDependency.LoadOrder.AFTER)
             optional(false)
         }
         dependency("taterlib") {
-            version("1.0.0")
+            version("1.0.2")
             loadOrder(PluginDependency.LoadOrder.AFTER)
             optional(false)
         }

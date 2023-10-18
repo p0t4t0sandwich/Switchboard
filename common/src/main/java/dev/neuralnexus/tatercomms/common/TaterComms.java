@@ -4,20 +4,21 @@ import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
 import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
+import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
+import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvents;
 import dev.neuralnexus.taterlib.common.event.server.ServerEvents;
 import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.YamlDocument;
 import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.block.Block;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Main class for the TaterComms plugin.
@@ -89,6 +90,24 @@ public class TaterComms {
         // Register server listeners
         ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
         ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+
+        if (TaterCommsConfig.serverUsingProxy()) {
+            // Register plugin channels
+//             TaterLib.registerChannels(CommsMessage.MessageType.getTypes());
+            // TODO: Un-mess this up
+            // Reflect to get TaterLib.registerChannels
+            try {
+                Field registerChannelsField = TaterLib.class.getDeclaredField("registerChannels");
+                registerChannelsField.setAccessible(true);
+                Consumer<Set<String>> registerChannels = (Consumer<Set<String>>) registerChannelsField.get(null);
+                registerChannels.accept(CommsMessage.MessageType.getTypes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Register plugin message listeners
+            PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
+        }
 
         // Get the Discord token from the config
         String discordToken = TaterCommsConfig.discordToken();

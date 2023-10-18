@@ -3,7 +3,7 @@
   "id": "tatercomms",
   "version": "${version}",
   "name": "TaterComms",
-  "description": "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.",
+  "description": "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.",
   "authors": [
     {
       "name": "p0t4t0sandwich",

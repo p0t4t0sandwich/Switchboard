@@ -81,6 +81,9 @@ public class CommsSender implements AbstractPlayer {
     public void sendMessage(String s) {}
 
     @Override
+    public void sendPluginMessage(String s, byte[] bytes) {}
+
+    @Override
     public AbstractPlayerInventory getInventory() {
         return null;
     }

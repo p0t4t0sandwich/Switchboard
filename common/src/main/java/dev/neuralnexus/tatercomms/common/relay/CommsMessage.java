@@ -9,7 +9,8 @@ import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class for relaying messages between the server and Discord
@@ -48,10 +49,11 @@ public class CommsMessage {
 
     /**
      * Message channel parser
-     * @param channel The channel
-     * @param data The byte array data.
+     * @param args The arguments
      */
-    public static void parseMessageChannel(String channel, byte[] data) {
+    public static void parseMessageChannel(Object[] args) {
+        String channel = args[0].toString();
+        byte[] data = (byte[]) args[1];
         CommsMessage message = CommsMessage.fromByteArray(data);
         switch (channel) {
             case "tatercomms:player_advancement_finished":
@@ -100,8 +102,8 @@ public class CommsMessage {
             return this.identifier;
         }
 
-        public static HashSet<MessageType> getTypes() {
-            return new HashSet<>(Arrays.asList(MessageType.values()));
+        public static Set<String> getTypes() {
+            return Arrays.stream(MessageType.values()).map(MessageType::getIdentifier).collect(Collectors.toSet());
         }
     }
 

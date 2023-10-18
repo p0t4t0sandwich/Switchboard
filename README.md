@@ -6,7 +6,7 @@
 [![Discord](https://img.shields.io/discord/1067482396246683708?color=7289da&logo=discord&logoColor=white)](https://discord.neuralnexus.dev)
 [![wakatime](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b.svg)](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b)
 
-A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and websockets.
+A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.
 
 Link to our support: [Discord](https://discord.neuralnexus.dev)
 

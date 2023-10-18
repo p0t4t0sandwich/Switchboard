@@ -24,10 +24,7 @@ public class BukkitTaterCommsPlugin extends TemplateBukkitPlugin implements Tate
     }
 
     @Override
-    public void registerEventListeners() {
-        Messenger messenger = getServer().getMessenger();
-        CommsMessage.MessageType.getTypes().stream().map(CommsMessage.MessageType::getIdentifier).forEach((identifier) -> messenger.registerOutgoingPluginChannel(BukkitTaterLibPlugin.getInstance(), identifier));
-    }
+    public void registerEventListeners() {}
 
     @Override
     public void onEnable() {

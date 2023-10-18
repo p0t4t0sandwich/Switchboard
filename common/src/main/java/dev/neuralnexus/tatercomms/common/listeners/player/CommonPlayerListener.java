@@ -9,6 +9,7 @@ import dev.neuralnexus.taterlib.bungee.abstractions.player.BungeePlayer;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.relay.MessageRelay;
+import dev.neuralnexus.taterlib.sponge.abstractions.player.SpongePlayer;
 import dev.neuralnexus.taterlib.velocity.abstractions.player.VelocityPlayer;
 
 public interface CommonPlayerListener {
@@ -29,6 +30,8 @@ public interface CommonPlayerListener {
             CommsMessage commsMessage = new CommsMessage(commsSender, advancement);
             if (player instanceof BukkitPlayer) {
                 ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
+            } else if (player instanceof SpongePlayer) {
+                ((SpongePlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
             }
         }
     }
@@ -50,6 +53,8 @@ public interface CommonPlayerListener {
             CommsMessage commsMessage = new CommsMessage(commsSender, deathMessage);
             if (player instanceof BukkitPlayer) {
                 ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
+            } else if (player instanceof SpongePlayer) {
+                ((SpongePlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
             }
         }
     }

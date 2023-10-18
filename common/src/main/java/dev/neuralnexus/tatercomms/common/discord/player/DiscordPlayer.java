@@ -86,6 +86,12 @@ public class DiscordPlayer implements AbstractPlayer {
      * @inheritDoc
      */
     @Override
+    public void sendPluginMessage(String channel, byte[] message) {}
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public AbstractPlayerInventory getInventory() {
         return null;
     }
