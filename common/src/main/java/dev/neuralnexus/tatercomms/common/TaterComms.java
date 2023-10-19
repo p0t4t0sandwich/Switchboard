@@ -93,17 +93,7 @@ public class TaterComms {
 
         if (TaterCommsConfig.serverUsingProxy()) {
             // Register plugin channels
-//             TaterLib.registerChannels(CommsMessage.MessageType.getTypes());
-            // TODO: Un-mess this up
-            // Reflect to get TaterLib.registerChannels
-            try {
-                Field registerChannelsField = TaterLib.class.getDeclaredField("registerChannels");
-                registerChannelsField.setAccessible(true);
-                Consumer<Set<String>> registerChannels = (Consumer<Set<String>>) registerChannelsField.get(null);
-                registerChannels.accept(CommsMessage.MessageType.getTypes());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            TaterLib.registerChannels.accept(CommsMessage.MessageType.getTypes());
 
             // Register plugin message listeners
             PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);

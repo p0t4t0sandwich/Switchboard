@@ -28,11 +28,7 @@ public interface CommonPlayerListener {
         if (TaterCommsConfig.serverUsingProxy()) {
             CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
             CommsMessage commsMessage = new CommsMessage(commsSender, advancement);
-            if (player instanceof BukkitPlayer) {
-                ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
-            } else if (player instanceof SpongePlayer) {
-                ((SpongePlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
-            }
+            player.sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
         }
     }
 
@@ -51,11 +47,7 @@ public interface CommonPlayerListener {
         if (TaterCommsConfig.serverUsingProxy()) {
             CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
             CommsMessage commsMessage = new CommsMessage(commsSender, deathMessage);
-            if (player instanceof BukkitPlayer) {
-                ((BukkitPlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
-            } else if (player instanceof SpongePlayer) {
-                ((SpongePlayer) player).sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
-            }
+            player.sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
         }
     }
 

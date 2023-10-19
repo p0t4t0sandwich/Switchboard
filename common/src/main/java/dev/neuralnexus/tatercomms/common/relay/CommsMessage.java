@@ -60,7 +60,7 @@ public class CommsMessage {
             message = CommsMessage.fromByteArray(data);
         } catch (Exception e) {
             // TODO: Make this less jank
-             message = gson.fromJson(new String(Arrays.copyOfRange(data, 5, data.length)), CommsMessage.class);
+            message = gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
         }
 
         switch (channel) {
