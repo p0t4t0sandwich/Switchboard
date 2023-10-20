@@ -64,25 +64,25 @@ public class CommsMessage {
         }
 
         switch (channel) {
-            case "tatercomms:player_advancement_finished":
+            case "tc:p_adv_fin":
                 CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tatercomms:player_death":
+            case "tc:p_death":
                 CommonPlayerListener.onPlayerDeath(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tatercomms:player_login":
+            case "tc:p_login":
                 CommonPlayerListener.onPlayerLogin(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tatercomms:player_logout":
+            case "tc:p_logout":
                 CommonPlayerListener.onPlayerLogout(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tatercomms:player_message":
+            case "tc:p_msg":
                 CommonPlayerListener.onPlayerMessage(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tatercomms:server_started":
+            case "tc:s_start":
                 CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});
                 break;
-            case "tatercomms:server_stopped":
+            case "tc:s_stop":
                 CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
                 break;
         }
