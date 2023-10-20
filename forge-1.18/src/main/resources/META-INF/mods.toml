@@ -38,8 +38,8 @@ side = "BOTH"
 [[dependencies.tatercomms]]
 modId = "taterlib"
 mandatory = true
-versionRange = "[1.0.1,)"
-ordering = "NONE"
+versionRange = "[1.0.2,)"
+ordering = "AFTER"
 side = "SERVER"
 
 # LuckPerms Dependency

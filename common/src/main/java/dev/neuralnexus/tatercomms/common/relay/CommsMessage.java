@@ -8,7 +8,6 @@ import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,26 +62,27 @@ public class CommsMessage {
             message = gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
         }
 
-        switch (channel) {
-            case "tc:p_adv_fin":
+        MessageType messageType = MessageType.fromIdentifier(channel);
+        switch (messageType) {
+            case PLAYER_ADVANCEMENT_FINISHED:
                 CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tc:p_death":
+            case PLAYER_DEATH:
                 CommonPlayerListener.onPlayerDeath(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tc:p_login":
+            case PLAYER_LOGIN:
                 CommonPlayerListener.onPlayerLogin(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tc:p_logout":
+            case PLAYER_LOGOUT:
                 CommonPlayerListener.onPlayerLogout(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tc:p_msg":
+            case PLAYER_MESSAGE:
                 CommonPlayerListener.onPlayerMessage(new Object[]{message.getSender(), message.getMessage()});
                 break;
-            case "tc:s_start":
+            case SERVER_STARTED:
                 CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});
                 break;
-            case "tc:s_stop":
+            case SERVER_STOPPED:
                 CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
                 break;
         }
@@ -92,13 +92,13 @@ public class CommsMessage {
      * Enum for the different types of messages that can be sent
      */
     public enum MessageType {
-        PLAYER_ADVANCEMENT_FINISHED("tatercomms:player_advancement_finished"),
-        PLAYER_DEATH("tatercomms:player_death"),
-        PLAYER_LOGIN("tatercomms:player_login"),
-        PLAYER_LOGOUT("tatercomms:player_logout"),
-        PLAYER_MESSAGE("tatercomms:player_message"),
-        SERVER_STARTED("tatercomms:server_started"),
-        SERVER_STOPPED("tatercomms:server_stopped");
+        PLAYER_ADVANCEMENT_FINISHED("tc:p_adv_fin"),
+        PLAYER_DEATH("tc:p_death"),
+        PLAYER_LOGIN("tc:p_login"),
+        PLAYER_LOGOUT("tc:p_logout"),
+        PLAYER_MESSAGE("tc:p_msg"),
+        SERVER_STARTED("tc:s_start"),
+        SERVER_STOPPED("tc:s_stop");
 
         private final String identifier;
 
@@ -112,6 +112,10 @@ public class CommsMessage {
 
         public static Set<String> getTypes() {
             return Arrays.stream(MessageType.values()).map(MessageType::getIdentifier).collect(Collectors.toSet());
+        }
+
+        public static MessageType fromIdentifier(String identifier) {
+            return Arrays.stream(MessageType.values()).filter(messageType -> messageType.getIdentifier().equals(identifier)).findFirst().orElse(null);
         }
     }
 

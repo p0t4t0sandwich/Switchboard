@@ -35,7 +35,6 @@ public class ForgeTaterCommsPlugin extends TemplateForgePlugin implements TaterC
 
         // Register commands
         MinecraftForge.EVENT_BUS.register(ForgeDiscordCommand.class);
-
         pluginStart();
     }
 
