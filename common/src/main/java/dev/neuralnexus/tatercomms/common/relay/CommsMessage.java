@@ -59,7 +59,13 @@ public class CommsMessage {
             message = CommsMessage.fromByteArray(data);
         } catch (Exception e) {
             // TODO: Make this less jank
-            message = gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
+            try {
+                // Forge Support
+                message = gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
+            } catch (Exception ex) {
+                // Fabric Support
+                message = gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), CommsMessage.class);
+            }
         }
 
         MessageType messageType = MessageType.fromIdentifier(channel);
