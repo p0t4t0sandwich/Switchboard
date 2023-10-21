@@ -116,10 +116,6 @@ public class CommsMessage {
     public static void parseMessageChannel(Object[] args) {
         CommsMessage message;
         byte[] data = (byte[]) args[1];
-        //
-        System.out.println(args[0]);
-        System.out.println("Received message: " + new String(data));
-        //
         try {
             message = CommsMessage.fromByteArray(data);
         } catch (Exception e) {
@@ -134,51 +130,26 @@ public class CommsMessage {
         }
 
         MessageType messageType = MessageType.fromIdentifier(message.getChannel());
-        //
-        System.out.println("Message type: " + messageType);
-        System.out.println("Decoded message: " + message.toJSON());
-        //
         switch (messageType) {
             case PLAYER_ADVANCEMENT_FINISHED:
-                //
-                System.out.println("Advancement finished");
-                //
                 CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_DEATH:
-                //
-                System.out.println("Player death");
-                //
                 CommonPlayerListener.onPlayerDeath(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_LOGIN:
-                //
-                System.out.println("Player login");
-                //
                 CommonPlayerListener.onPlayerLogin(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_LOGOUT:
-                //
-                System.out.println("Player logout");
-                //
                 CommonPlayerListener.onPlayerLogout(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_MESSAGE:
-                //
-                System.out.println("Player message");
-                //
                 CommonPlayerListener.onPlayerMessage(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case SERVER_STARTED:
-                //
-                System.out.println("Server started");
-                //
                 CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});
                 break;
             case SERVER_STOPPED:
-                //
-                System.out.println("Server stopped");
-                //
                 CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
                 break;
         }
@@ -222,9 +193,20 @@ public class CommsMessage {
     }
 
     public static CommsMessage fromByteArray(byte[] data) {
-        ByteArrayDataInput in = ByteStreams.newDataInput(data);
-        String json = in.readUTF();
-        return gson.fromJson(json, CommsMessage.class);
+        try {
+            ByteArrayDataInput in = ByteStreams.newDataInput(data);
+            String json = in.readUTF();
+            return gson.fromJson(json, CommsMessage.class);
+        } catch (Exception e) {
+            // TODO: Make this less jank
+            try {
+                // Fabric Support and fixes the initial TCP connection
+                return gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), CommsMessage.class);
+            } catch (Exception ex) {
+                // Forge Support
+                return gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
+            }
+        }
     }
 
     public String toJSON() {

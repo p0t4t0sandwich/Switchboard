@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.common.relay;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
 import dev.neuralnexus.tatercomms.common.socket.Client;
+import dev.neuralnexus.tatercomms.common.socket.Server;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
@@ -15,13 +16,11 @@ import java.util.HashMap;
  */
 public class CommsRelay implements MessageRelay {
     /**
-     * Properties of the MessageRelay class.
-     * singleton: The singleton instance of the MessageRelay class
-     * taterPlayerCache: A cache of TaterPlayer objects
+     * Properties of the MessageRelay class
+     * formatting: The formatting for the messages
      * discord: The JDA instance
      * socketClient: The socket client
      */
-    private static MessageRelay singleton = null;
     private final HashMap<String, String> formatting;
     private final DiscordBot discord;
     private final Client socketClient;
@@ -30,18 +29,9 @@ public class CommsRelay implements MessageRelay {
      * Constructor for the MessageRelay class.
      */
     public CommsRelay(HashMap<String, String> formatting, DiscordBot discord, Client socketClient) {
-        singleton = this;
         this.formatting = formatting;
         this.discord = discord;
         this.socketClient = socketClient;
-    }
-
-    /**
-     * Getter for the singleton instance of the MessageRelay class.
-     * @return The singleton instance
-     */
-    public static MessageRelay getInstance() {
-        return singleton;
     }
 
     /**
@@ -62,6 +52,11 @@ public class CommsRelay implements MessageRelay {
         // Relay the message to the proxy
         if (TaterCommsConfig.serverUsingProxy() && !TaterCommsConfig.remoteEnabled()) {
             message.getSender().sendPluginMessage(message);
+        }
+
+        // Relay messages to remote servers
+        if (TaterCommsConfig.remoteEnabled() && !message.getSender().getServerName().equals(TaterCommsConfig.serverName()) && message.getChannel().equals("tc:p_msg")) {
+            Server.sendMessageToAll(message);
         }
 
         // Relay external messages to the players

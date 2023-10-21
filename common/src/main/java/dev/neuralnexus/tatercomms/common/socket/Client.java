@@ -20,10 +20,11 @@ public class Client {
 
     public void sendMessage(CommsMessage message) {
         try {
-//            if (socket == null) {
-//                socket = new Socket(host, port);
-//            }
-            socket = new Socket(host, port);
+            if (socket == null) {
+                socket = new Socket(host, port);
+            } else if (socket.isClosed()) {
+                socket = new Socket(host, port);
+            }
 
             // Writing to server
             DataOutputStream out
@@ -36,6 +37,7 @@ public class Client {
         }
         catch (IOException e) {
             e.printStackTrace();
+            socket = null;
             TaterComms.useLogger("Error sending message to " + host + ":" + port);
         }
     }
