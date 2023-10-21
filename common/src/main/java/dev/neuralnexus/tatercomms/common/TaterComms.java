@@ -125,6 +125,7 @@ public class TaterComms {
                 Utils.runTaskAsync(socketServer::start);
             } else {
                 socketClient = new Client(TaterCommsConfig.remoteHost(), TaterCommsConfig.remotePort());
+//                socketClient.start();
             }
         }
 

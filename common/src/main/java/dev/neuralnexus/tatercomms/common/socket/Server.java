@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.HashMap;
 
-// Server class
+/**
+ * Server class
+ */
 public class Server {
     private static ServerSocket server;
     private static int port;
@@ -74,9 +75,8 @@ public class Server {
                 // Writing to server
                 DataOutputStream out = new DataOutputStream(client.getOutputStream());
 
-                out.writeUTF(message.toJSON());
+                out.writeUTF(message.toJSON() + "\n");
                 out.flush();
-                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 TaterComms.useLogger("Error sending message to " + server);
@@ -112,7 +112,7 @@ public class Server {
     /**
      * ClientHandler class
      */
-    private static class ClientHandler implements Runnable {
+    public static class ClientHandler implements Runnable {
         private final Socket clientSocket;
 
         /**
@@ -131,12 +131,16 @@ public class Server {
                         new InputStreamReader(
                                 clientSocket.getInputStream()));
 
-                byte[] data = in.readLine().getBytes();
-                in.close();
-                CommsMessage message = CommsMessage.fromByteArray(data);
+//                byte[] data = in.readLine().getBytes();
+//                CommsMessage message = CommsMessage.fromByteArray(data);
+                String data = in.readLine();
+                CommsMessage message = CommsMessage.fromJSON(data);
+                //
+                System.out.println("Received " + message.toJSON());
+                //
                 if (message != null) {
                     Server.addClient(message.getSender().getServerName(), clientSocket);
-                    CommsMessage.parseMessageChannel(new Object[] { "", data });
+                    CommsMessage.parseMessageChannel(new Object[] { "", message.toByteArray() });
                 }
             } catch (IOException e) {
                 e.printStackTrace();

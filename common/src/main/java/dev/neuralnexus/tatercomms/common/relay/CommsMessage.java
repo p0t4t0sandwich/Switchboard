@@ -152,6 +152,9 @@ public class CommsMessage {
             case SERVER_STOPPED:
                 CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
                 break;
+            case CUSTOM:
+//                CommonServerListener.onCustomMessage(new Object[]{message.getSender().getServerName(), message.getMessage()});
+                break;
         }
     }
 
@@ -165,7 +168,8 @@ public class CommsMessage {
         PLAYER_LOGOUT("tc:p_logout"),
         PLAYER_MESSAGE("tc:p_msg"),
         SERVER_STARTED("tc:s_start"),
-        SERVER_STOPPED("tc:s_stop");
+        SERVER_STOPPED("tc:s_stop"),
+        CUSTOM("tc:custom");
 
         private final String identifier;
 
@@ -186,12 +190,21 @@ public class CommsMessage {
         }
     }
 
+    /**
+     * Converts the CommsMessage to a byte array
+     * @return The byte array
+     */
     public byte[] toByteArray() {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(gson.toJson(this));
         return out.toByteArray();
     }
 
+    /**
+     * Creates a CommsMessage from a byte array
+     * @param data The byte array
+     * @return The CommsMessage
+     */
     public static CommsMessage fromByteArray(byte[] data) {
         try {
             ByteArrayDataInput in = ByteStreams.newDataInput(data);
@@ -209,6 +222,19 @@ public class CommsMessage {
         }
     }
 
+    /**
+     * Creates a CommsMessage from a JSON string
+     * @param json The JSON string
+     * @return The CommsMessage
+     */
+    public static CommsMessage fromJSON(String json) {
+        return gson.fromJson(json, CommsMessage.class);
+    }
+
+    /**
+     * Converts the CommsMessage to a JSON string
+     * @return The JSON string
+     */
     public String toJSON() {
         return gson.toJson(this);
     }
