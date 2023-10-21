@@ -4,13 +4,8 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.tatercomms.common.relay.CommsSender;
-import dev.neuralnexus.taterlib.bukkit.abstractions.player.BukkitPlayer;
-import dev.neuralnexus.taterlib.bungee.abstractions.player.BungeePlayer;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.relay.MessageRelay;
-import dev.neuralnexus.taterlib.sponge.abstractions.player.SpongePlayer;
-import dev.neuralnexus.taterlib.velocity.abstractions.player.VelocityPlayer;
 
 public interface CommonPlayerListener {
     /**
@@ -20,16 +15,11 @@ public interface CommonPlayerListener {
     static void onPlayerAdvancementFinished(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
         String advancement = (String) args[1];
-
-        MessageRelay relay = TaterLib.getMessageRelay();
-        // Send advancement through relay
-        relay.sendSystemMessage(player.getServerName(), player.getName() + " has made the advancement [" + advancement + "]");
-
-        if (TaterCommsConfig.serverUsingProxy()) {
-            CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
-            CommsMessage commsMessage = new CommsMessage(commsSender, advancement);
-            player.sendPluginMessage(CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), commsMessage.toByteArray());
+        if (player.getServerName().equals("local")) {
+            player.setServerName(TaterCommsConfig.serverName());
         }
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(), advancement));
     }
 
     /**
@@ -39,16 +29,11 @@ public interface CommonPlayerListener {
     static void onPlayerDeath(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
         String deathMessage = (String) args[1];
-
-        MessageRelay relay = TaterLib.getMessageRelay();
-        // Send death message through relay
-        relay.sendSystemMessage(player.getServerName(), deathMessage);
-
-        if (TaterCommsConfig.serverUsingProxy()) {
-            CommsSender commsSender = new CommsSender(player, TaterCommsConfig.serverName());
-            CommsMessage commsMessage = new CommsMessage(commsSender, deathMessage);
-            player.sendPluginMessage(CommsMessage.MessageType.PLAYER_DEATH.getIdentifier(), commsMessage.toByteArray());
+        if (player.getServerName().equals("local")) {
+            player.setServerName(TaterCommsConfig.serverName());
         }
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_DEATH, deathMessage));
     }
 
     /**
@@ -57,10 +42,11 @@ public interface CommonPlayerListener {
      */
     static void onPlayerLogin(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
-
-        MessageRelay relay = TaterLib.getMessageRelay();
-        // Relay the login message
-        relay.sendSystemMessage(player.getServerName(), player.getName() + " joined the game");
+        if (player.getServerName().equals("local")) {
+            player.setServerName(TaterCommsConfig.serverName());
+        }
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_LOGIN, player.getName() + " joined the game"));
     }
 
     /**
@@ -69,10 +55,11 @@ public interface CommonPlayerListener {
      */
     static void onPlayerLogout(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
-
-        MessageRelay relay = TaterLib.getMessageRelay();
-        // Relay the logout message
-        relay.sendSystemMessage(player.getServerName(), player.getName() + " left the game");
+        if (player.getServerName().equals("local")) {
+            player.setServerName(TaterCommsConfig.serverName());
+        }
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_LOGOUT, player.getName() + " left the game"));
     }
 
     /**
@@ -82,11 +69,11 @@ public interface CommonPlayerListener {
     static void onPlayerMessage(Object[] args) {
         AbstractPlayer player = (AbstractPlayer) args[0];
         String message = (String) args[1];
-        boolean isCancelled = (boolean) args[2];
-
-        MessageRelay relay = TaterLib.getMessageRelay();
-        // Send message through relay
-        relay.sendPlayerMessage(player, player.getServerName(), message, isCancelled);
+        if (player.getServerName().equals("local")) {
+            player.setServerName(TaterCommsConfig.serverName());
+        }
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_MESSAGE, message));
     }
 
     /**
@@ -98,11 +85,8 @@ public interface CommonPlayerListener {
         String fromServer = (String) args[1];
 
         CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
-
-        // Get toServer
-        String toServer = player.getServerName();
-
-        // Relay the server switch message
-        relay.sendPlayerServerSwitch(player, fromServer, toServer);
+        // Construct and send two messages
+        relay.relayMessage(new CommsMessage(new CommsSender(player, fromServer), CommsMessage.MessageType.PLAYER_LOGOUT, player.getName() + " left the game"));
+        relay.relayMessage(new CommsMessage(player, CommsMessage.MessageType.PLAYER_LOGIN, player.getName() + " joined the game"));
     }
 }

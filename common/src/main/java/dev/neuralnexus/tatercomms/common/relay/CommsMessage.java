@@ -5,6 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
+import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
@@ -17,16 +18,69 @@ import java.util.stream.Collectors;
  */
 public class CommsMessage {
     private final CommsSender sender;
+    private final String channel;
     private final String message;
 
     /**
      * Constructor for the CommsMessage class
      * @param sender The sender
+     * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(CommsSender sender, String message) {
+    public CommsMessage(CommsSender sender, String channel, String message) {
         this.sender = sender;
+        this.channel = channel;
         this.message = message;
+    }
+
+    /**
+     * Constructor for the CommsMessage class
+     * @param sender The sender
+     * @param channel The channel
+     * @param message The message
+     */
+    public CommsMessage(CommsSender sender, MessageType channel, String message) {
+        this(sender, channel.getIdentifier(), message);
+    }
+
+    /**
+     * Constructor for the CommsMessage class
+     * @param serverName The server name
+     * @param channel The channel
+     * @param message The message
+     */
+    public CommsMessage(String serverName, String channel, String message) {
+        this(new CommsSender(serverName), channel, message);
+    }
+
+    /**
+     * Constructor for the CommsMessage class
+     * @param serverName The server name
+     * @param channel The channel
+     * @param message The message
+     */
+    public CommsMessage(String serverName, MessageType channel, String message) {
+        this(new CommsSender(serverName), channel.getIdentifier(), message);
+    }
+
+    /**
+     * Constructor for the CommsMessage class
+     * @param sender The sender
+     * @param channel The channel
+     * @param message The message
+     */
+    public CommsMessage(AbstractPlayer sender, String channel, String message) {
+        this(new CommsSender(sender), channel, message);
+    }
+
+    /**
+     * Constructor for the CommsMessage class
+     * @param sender The sender
+     * @param channel The channel
+     * @param message The message
+     */
+    public CommsMessage(AbstractPlayer sender, MessageType channel, String message) {
+        this(new CommsSender(sender), channel.getIdentifier(), message);
     }
 
     /**
@@ -35,6 +89,14 @@ public class CommsMessage {
      */
     public CommsSender getSender() {
         return this.sender;
+    }
+
+    /**
+     * Getter for the channel
+     * @return The channel
+     */
+    public String getChannel() {
+        return this.channel;
     }
 
     /**
@@ -52,9 +114,12 @@ public class CommsMessage {
      * @param args The arguments
      */
     public static void parseMessageChannel(Object[] args) {
-        String channel = args[0].toString();
         CommsMessage message;
         byte[] data = (byte[]) args[1];
+        //
+        System.out.println(args[0]);
+        System.out.println("Received message: " + new String(data));
+        //
         try {
             message = CommsMessage.fromByteArray(data);
         } catch (Exception e) {
@@ -68,27 +133,52 @@ public class CommsMessage {
             }
         }
 
-        MessageType messageType = MessageType.fromIdentifier(channel);
+        MessageType messageType = MessageType.fromIdentifier(message.getChannel());
+        //
+        System.out.println("Message type: " + messageType);
+        System.out.println("Decoded message: " + message.toJSON());
+        //
         switch (messageType) {
             case PLAYER_ADVANCEMENT_FINISHED:
+                //
+                System.out.println("Advancement finished");
+                //
                 CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_DEATH:
+                //
+                System.out.println("Player death");
+                //
                 CommonPlayerListener.onPlayerDeath(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_LOGIN:
+                //
+                System.out.println("Player login");
+                //
                 CommonPlayerListener.onPlayerLogin(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_LOGOUT:
+                //
+                System.out.println("Player logout");
+                //
                 CommonPlayerListener.onPlayerLogout(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case PLAYER_MESSAGE:
+                //
+                System.out.println("Player message");
+                //
                 CommonPlayerListener.onPlayerMessage(new Object[]{message.getSender(), message.getMessage()});
                 break;
             case SERVER_STARTED:
+                //
+                System.out.println("Server started");
+                //
                 CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});
                 break;
             case SERVER_STOPPED:
+                //
+                System.out.println("Server stopped");
+                //
                 CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
                 break;
         }
@@ -135,5 +225,9 @@ public class CommsMessage {
         ByteArrayDataInput in = ByteStreams.newDataInput(data);
         String json = in.readUTF();
         return gson.fromJson(json, CommsMessage.class);
+    }
+
+    public String toJSON() {
+        return gson.toJson(this);
     }
 }

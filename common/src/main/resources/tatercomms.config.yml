@@ -58,4 +58,5 @@ formatting:
 remote:
   enabled: false
   primary: false
-  host: "127.0.0.1:5483"
+  host: 127.0.0.1
+  port: 5483

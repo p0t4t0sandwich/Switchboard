@@ -1,8 +1,8 @@
 package dev.neuralnexus.tatercomms.common.discord;
 
-import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.discord.player.DiscordPlayer;
 import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
 import net.dv8tion.jda.api.JDA;
@@ -88,15 +88,17 @@ public class DiscordBot extends ListenerAdapter  {
         DiscordPlayer discordPlayer = new DiscordPlayer(author);
 
         // Send the message
-        ((CommsRelay) TaterLib.getMessageRelay()).receiveMessage(discordPlayer, server, content);
+        ((CommsRelay) TaterLib.getMessageRelay()).relayMessage(new CommsMessage(discordPlayer, CommsMessage.MessageType.PLAYER_MESSAGE, content));
     }
 
     /**
      * Send system message to a Discord channel.
-     * @param server The server to send the message to
-     * @param message The message to send
+     * @param commsMessage The message to send
      */
-    public void sendSystemMessage(String server, String message) {
+    public void sendMessage(CommsMessage commsMessage) {
+        String message = commsMessage.getMessage();
+        String server = commsMessage.getSender().getServerName();
+
         // Get the channel
         String channelGuildId = serverChannels.get(server);
         if (channelGuildId == null) {

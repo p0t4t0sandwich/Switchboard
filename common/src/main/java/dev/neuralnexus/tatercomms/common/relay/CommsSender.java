@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.common.relay;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayerInventory;
 import dev.neuralnexus.taterlib.common.abstractions.utils.Position;
+import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
 
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ public class CommsSender implements AbstractPlayer {
     private final String suffix;
     private final String displayName;
     private final UUID uuid;
-    private final String serverName;
+    private String serverName;
 
     /**
      * Constructor for the CommsSender class.
@@ -49,6 +50,19 @@ public class CommsSender implements AbstractPlayer {
         this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUUID(), player.getServerName());
     }
 
+    /**
+     * Constructor for the CommsSender class.
+     * @param serverName The server name
+     */
+    public CommsSender(String serverName) {
+        this.name = "";
+        this.prefix = "";
+        this.suffix = "";
+        this.displayName = "";
+        this.uuid = UUID.randomUUID();
+        this.serverName = serverName;
+    }
+
     @Override
     public UUID getUUID() {
         return this.uuid;
@@ -66,7 +80,7 @@ public class CommsSender implements AbstractPlayer {
 
     @Override
     public Position getPosition() {
-        return null;
+        return new Position(0, 0, 0);
     }
 
     @Override
@@ -75,13 +89,33 @@ public class CommsSender implements AbstractPlayer {
     }
 
     @Override
-    public void setServerName(String s) {}
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
 
     @Override
-    public void sendMessage(String s) {}
+    public void sendMessage(String message) {
+        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        if (player == null) return;
+        player.sendMessage(message);
+    }
 
     @Override
-    public void sendPluginMessage(String s, byte[] bytes) {}
+    public void sendPluginMessage(String channel, byte[] bytes) {
+        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        if (player == null) return;
+        player.sendPluginMessage(channel, bytes);
+    }
+
+    /**
+     * Sends a plugin message on behalf of the player.
+     * @param message The message
+     */
+    public void sendPluginMessage(CommsMessage message) {
+        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        if (player == null) return;
+        player.sendPluginMessage(message.getChannel(), message.toByteArray());
+    }
 
     @Override
     public AbstractPlayerInventory getInventory() {
@@ -89,7 +123,7 @@ public class CommsSender implements AbstractPlayer {
     }
 
     @Override
-    public void kickPlayer(String s) {}
+    public void kickPlayer(String message) {}
 
     @Override
     public void setSpawn(Position position) {}

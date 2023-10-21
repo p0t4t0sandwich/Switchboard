@@ -151,4 +151,12 @@ public class TaterCommsConfig {
     public static String remoteHost() {
         return config.getString("remote.host");
     }
+
+    /**
+     * Get the remote port
+     * @return The remote port
+     */
+    public static int remotePort() {
+        return config.getInt("remote.port");
+    }
 }

@@ -6,7 +6,10 @@ import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
+import dev.neuralnexus.tatercomms.common.socket.Client;
+import dev.neuralnexus.tatercomms.common.socket.Server;
 import dev.neuralnexus.taterlib.common.TaterLib;
+import dev.neuralnexus.taterlib.common.Utils;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
 import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvents;
@@ -30,6 +33,8 @@ public class TaterComms {
     private static boolean STARTED = false;
     private static final ArrayList<Object> hooks = new ArrayList<>();
     private static DiscordBot discord = null;
+    private static Server socketServer = null;
+    private static Client socketClient = null;
     private static CommsRelay messageRelay = null;
 
     /**
@@ -113,11 +118,21 @@ public class TaterComms {
             TaterCommsConfig.setDiscordEnabled(false);
         }
 
+        // Start the socket server
+        if (TaterCommsConfig.remoteEnabled()) {
+            if (TaterCommsConfig.remotePrimary()) {
+                socketServer = new Server(TaterCommsConfig.remotePort());
+                Utils.runTaskAsync(socketServer::start);
+            } else {
+                socketClient = new Client(TaterCommsConfig.remoteHost(), TaterCommsConfig.remotePort());
+            }
+        }
+
         HashMap<String, String> formatting = TaterCommsConfig.formattingChat();
         if (TaterCommsConfig.discordEnabled()) {
             discord = new DiscordBot(discordToken, serverChannels);
         }
-        messageRelay = new CommsRelay(formatting, discord);
+        messageRelay = new CommsRelay(formatting, discord, socketClient);
 
         // Cancel chat and set message relay
         TaterLib.cancelChat = TaterCommsConfig.formattingEnabled();
@@ -147,6 +162,11 @@ public class TaterComms {
         // Remove references to objects
         TaterCommsConfig.unloadConfig();
         discord = null;
+        if (socketServer != null) {
+            socketServer.stop();
+        }
+        socketServer = null;
+        socketClient = null;
         messageRelay = null;
 
         useLogger("TaterComms has been stopped!");

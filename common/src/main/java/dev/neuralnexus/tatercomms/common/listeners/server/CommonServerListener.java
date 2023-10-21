@@ -1,35 +1,36 @@
 package dev.neuralnexus.tatercomms.common.listeners.server;
 
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
+import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
-import dev.neuralnexus.taterlib.common.relay.MessageRelay;
 
 public interface CommonServerListener {
     /**
      * Called when a server starts, and sends it to the message relay.
      */
     static void onServerStarted(Object[] args) {
-        MessageRelay relay = TaterLib.getMessageRelay();
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
         String server;
         if (args.length > 0) {
             server = args[0].toString();
         } else {
             server = TaterCommsConfig.serverName();
         }
-        relay.sendSystemMessage(server, "**Server has started**");
+        relay.relayMessage(new CommsMessage(server, CommsMessage.MessageType.SERVER_STARTED, "**Server has started**"));
     }
 
     /**
      * Called when a server stops, and sends it to the message relay.
      */
     static void onServerStopped(Object[] args) {
-        MessageRelay relay = TaterLib.getMessageRelay();
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
         String server;
         if (args.length > 0) {
             server = args[0].toString();
         } else {
             server = TaterCommsConfig.serverName();
         }
-        relay.sendSystemMessage(server, "**Server has stopped**");
+        relay.relayMessage(new CommsMessage(server, CommsMessage.MessageType.SERVER_STOPPED, "**Server has stopped**"));
     }
 }
