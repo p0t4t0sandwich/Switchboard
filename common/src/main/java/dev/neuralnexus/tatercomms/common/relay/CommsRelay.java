@@ -39,31 +39,43 @@ public class CommsRelay implements MessageRelay {
      * @param message The message
      */
     public void relayMessage(CommsMessage message) {
+        //
+        System.out.println("Relaying message: " + message.toJSON());
+        System.out.println("From: " + message.getSender().getServerName());
+        //
+
         // Relay the message to Discord
         if (discord != null && !message.getSender().getServerName().equals("discord")) {
             discord.sendMessage(message);
         }
 
         // Relay the message to the socket server
-        if (socketClient != null) {
+        if (socketClient != null && !(
+                TaterCommsConfig.serverUsingProxy()
+                        && (message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
+                        || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
+                        || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()))
+        )) {
             socketClient.sendMessage(message);
         }
 
-        // Relay messages to remote servers
+        // Relay player messages to socket clients
         if (TaterCommsConfig.remoteEnabled()
                 && !message.getSender().getServerName().equals(TaterCommsConfig.serverName())
-                && message.getChannel().equals("tc:p_msg")) {
+                && message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
             Server.sendMessageToAll(message);
         }
 
-        // Relay the message to the proxy
+        // Send the message using proxy channels
         if (TaterCommsConfig.serverUsingProxy()
                 && !TaterCommsConfig.remoteEnabled()
-                && !message.getChannel().equals("tc:p_msg")) {
+                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
+                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
+                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier())) {
             message.getSender().sendPluginMessage(message);
         }
 
-        // Relay external messages to the players
+        // Relay external messages to players on the server
         if ((!message.getSender().getServerName().equals(TaterCommsConfig.serverName())
                 || TaterLib.cancelChat) && message.getChannel().equals("tc:p_msg")) {
             for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
@@ -75,12 +87,8 @@ public class CommsRelay implements MessageRelay {
     }
 
     @Override
-    public void sendPlayerMessage(AbstractPlayer abstractPlayer, String s, String s1, boolean b) {
-
-    }
+    public void sendPlayerMessage(AbstractPlayer abstractPlayer, String s, String s1, boolean b) {}
 
     @Override
-    public void sendSystemMessage(String s, String s1) {
-
-    }
+    public void sendSystemMessage(String s, String s1) {}
 }
