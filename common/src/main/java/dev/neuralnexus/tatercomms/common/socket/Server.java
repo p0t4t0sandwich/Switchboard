@@ -65,9 +65,6 @@ public class Server {
      * @param message The message
      */
     public static void sendMessageToAll(CommsMessage message) {
-        //
-        System.out.println(clients.keySet());
-        //
         for (String server : clients.keySet()) {
             if (!message.getSender().getServerName().equals(server)) {
                 try {
@@ -116,6 +113,14 @@ public class Server {
     }
 
     /**
+     * Is a client connected to the server
+     * @param serverName The server name
+     */
+    public static boolean isClientConnected(String serverName) {
+        return clients.containsKey(serverName) && clients.get(serverName).isConnected();
+    }
+
+    /**
      * ClientHandler class
      */
     public static class SocketHandler implements Runnable {
@@ -130,36 +135,33 @@ public class Server {
         }
 
         /**
-         * Receive a message from the client
+         * Run the client handler and receive messages from the client
          */
-        public void receiveMessage() {
-            try {
-                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-                int dataLen = in.readInt();
-                byte[] data = new byte[dataLen];
-                in.readFully(data);
-                CommsMessage message = CommsMessage.fromJSON(new String(data));
-                if (message != null) {
-                    Server.addClient(message.getSender().getServerName(), clientSocket);
-                    CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
-                }
-
-                // Clear the input stream
-                in.skip(in.available());
-            } catch (IOException e) {
-                e.printStackTrace();
-                try {
-                    clientSocket.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                TaterComms.useLogger("Error receiving message from " + clientSocket.getInetAddress().getHostAddress());
-            }
-        }
-
         public void run() {
             while (!clientSocket.isClosed()) {
-                receiveMessage();
+                try {
+                    DataInputStream in = new DataInputStream(clientSocket.getInputStream());
+                    int dataLen = in.readInt();
+                    byte[] data = new byte[dataLen];
+                    in.readFully(data);
+
+                    CommsMessage message = CommsMessage.fromJSON(new String(data));
+                    if (!isClientConnected(message.getSender().getServerName())) {
+                        addClient(message.getSender().getServerName(), clientSocket);
+                    }
+                    CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
+
+                    // Clear the input stream
+                    in.skip(in.available());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    try {
+                        clientSocket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    TaterComms.useLogger("Error receiving message from " + clientSocket.getInetAddress().getHostAddress());
+                }
             }
         }
     }

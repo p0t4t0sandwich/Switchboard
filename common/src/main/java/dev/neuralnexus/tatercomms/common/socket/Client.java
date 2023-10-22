@@ -28,7 +28,7 @@ public class Client {
         while (true) {
             try {
                 if (socket == null || socket.isClosed()) {
-                    socket = new Socket(host, port);
+                    continue;
                 }
 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
