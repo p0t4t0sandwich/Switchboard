@@ -207,13 +207,17 @@ public class CommsMessage {
      */
     public static CommsMessage fromByteArray(byte[] data) {
         try {
-            ByteArrayDataInput in = ByteStreams.newDataInput(data);
-            String json = in.readUTF();
-            return gson.fromJson(json, CommsMessage.class);
+            try {
+                ByteArrayDataInput in = ByteStreams.newDataInput(data);
+                String json = in.readUTF();
+                return gson.fromJson(json, CommsMessage.class);
+            } catch (Exception e) {
+                return gson.fromJson(new String(data), CommsMessage.class);
+            }
         } catch (Exception e) {
             // TODO: Make this less jank
             try {
-                // Fabric Support and fixes the initial TCP connection
+                // Fabric Support
                 return gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), CommsMessage.class);
             } catch (Exception ex) {
                 // Forge Support

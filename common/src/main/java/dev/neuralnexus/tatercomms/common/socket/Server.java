@@ -3,10 +3,7 @@ package dev.neuralnexus.tatercomms.common.socket;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -123,24 +120,19 @@ public class Server {
             this.clientSocket = socket;
         }
 
-        public void run() {
-            BufferedReader in;
+        /**
+         * Receive a message from the client
+         */
+        public void receiveMessage() {
             try {
-                // Get byteArray from client
-                in = new BufferedReader(
-                        new InputStreamReader(
-                                clientSocket.getInputStream()));
-
-//                byte[] data = in.readLine().getBytes();
-//                CommsMessage message = CommsMessage.fromByteArray(data);
-                String data = in.readLine();
-                CommsMessage message = CommsMessage.fromJSON(data);
-                //
-                System.out.println("Received " + message.toJSON());
-                //
+                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
+                int dataLen = in.readInt();
+                byte[] data = new byte[dataLen];
+                in.readFully(data);
+                CommsMessage message = CommsMessage.fromJSON(new String(data));
                 if (message != null) {
                     Server.addClient(message.getSender().getServerName(), clientSocket);
-                    CommsMessage.parseMessageChannel(new Object[] { "", message.toByteArray() });
+                    CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -150,6 +142,12 @@ public class Server {
                     ex.printStackTrace();
                 }
                 TaterComms.useLogger("Error receiving message from " + clientSocket.getInetAddress().getHostAddress());
+            }
+        }
+
+        public void run() {
+            while (!clientSocket.isClosed()) {
+                receiveMessage();
             }
         }
     }

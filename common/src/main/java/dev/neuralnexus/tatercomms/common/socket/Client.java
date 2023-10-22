@@ -5,7 +5,6 @@ import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -47,18 +46,13 @@ public class Client {
             }
 
             // Writing to server
-//            DataOutputStream out
-//                    = new DataOutputStream(
-//                    socket.getOutputStream());
-//
-//            out.writeBytes(message.toJSON() + "\n");
-//            out.flush();
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            out.println(message.toJSON());
-            // TODO: Have this not-close the socket
-            out.close();
-            //
+            String json = message.toJSON();
+            int length = json.length();
+            out.writeInt(length);
+            out.write(json.getBytes(), 0, length);
+            out.flush();
 
             //
             System.out.println("Sent " + message.toJSON() + " to " + host + ":" + port);
