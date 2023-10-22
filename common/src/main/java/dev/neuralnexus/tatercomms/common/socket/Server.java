@@ -31,7 +31,7 @@ public class Server {
 
             while (true) {
                 Socket client = server.accept();
-                ClientHandler clientSock = new ClientHandler(client);
+                SocketHandler clientSock = new SocketHandler(client);
                 new Thread(clientSock).start();
             }
         } catch (IOException e) {
@@ -65,18 +65,27 @@ public class Server {
      * @param message The message
      */
     public static void sendMessageToAll(CommsMessage message) {
+        //
+        System.out.println(clients.keySet());
+        //
         for (String server : clients.keySet()) {
-            try {
-                Socket client = clients.get(server);
+            if (!message.getSender().getServerName().equals(server)) {
+                try {
+                    Socket client = clients.get(server);
 
-                // Writing to server
-                DataOutputStream out = new DataOutputStream(client.getOutputStream());
+                    // Writing to client
+                    DataOutputStream out = new DataOutputStream(client.getOutputStream());
 
-                out.writeUTF(message.toJSON() + "\n");
-                out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-                TaterComms.useLogger("Error sending message to " + server);
+                    String json = message.toJSON();
+                    int length = json.length();
+                    out.writeInt(length);
+                    out.write(json.getBytes(), 0, length);
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    removeClient(server);
+                    TaterComms.useLogger("Error sending message to " + server);
+                }
             }
         }
     }
@@ -109,14 +118,14 @@ public class Server {
     /**
      * ClientHandler class
      */
-    public static class ClientHandler implements Runnable {
+    public static class SocketHandler implements Runnable {
         private final Socket clientSocket;
 
         /**
          * Constructor for the ClientHandler class
          * @param socket The socket
          */
-        public ClientHandler(Socket socket) {
+        public SocketHandler(Socket socket) {
             this.clientSocket = socket;
         }
 
@@ -134,6 +143,9 @@ public class Server {
                     Server.addClient(message.getSender().getServerName(), clientSocket);
                     CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
                 }
+
+                // Clear the input stream
+                in.skip(in.available());
             } catch (IOException e) {
                 e.printStackTrace();
                 try {

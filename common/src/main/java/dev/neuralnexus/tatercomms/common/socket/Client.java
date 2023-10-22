@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.common.socket;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -23,17 +24,35 @@ public class Client {
     /**
      * Start the client
      */
-//    public void start() {
-//        try {
-//            socket = new Socket(host, port);
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//            TaterComms.useLogger("Error starting Socket client on " + host + ":" + port);
-//        }
-//        Server.ClientHandler clientSock = new Server.ClientHandler(socket);
-//        new Thread(clientSock).start();
-//    }
+    public void start() {
+        while (true) {
+            try {
+                if (socket == null || socket.isClosed()) {
+                    socket = new Socket(host, port);
+                }
+
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                int dataLen = in.readInt();
+                byte[] data = new byte[dataLen];
+                in.readFully(data);
+                CommsMessage message = CommsMessage.fromJSON(new String(data));
+                if (message != null) {
+                    CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
+                }
+
+                // Clear the input stream
+                in.skip(in.available());
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                TaterComms.useLogger("Error receiving message from " + socket.getInetAddress().getHostAddress());
+            }
+        }
+    }
 
     /**
      * Send a message to the server
@@ -53,10 +72,6 @@ public class Client {
             out.writeInt(length);
             out.write(json.getBytes(), 0, length);
             out.flush();
-
-            //
-            System.out.println("Sent " + message.toJSON() + " to " + host + ":" + port);
-            //
         }
         catch (IOException e) {
             e.printStackTrace();

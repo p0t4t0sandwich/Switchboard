@@ -49,21 +49,27 @@ public class CommsRelay implements MessageRelay {
             socketClient.sendMessage(message);
         }
 
-        // Relay the message to the proxy
-        if (TaterCommsConfig.serverUsingProxy() && !TaterCommsConfig.remoteEnabled()) {
-            message.getSender().sendPluginMessage(message);
+        // Relay messages to remote servers
+        if (TaterCommsConfig.remoteEnabled()
+                && !message.getSender().getServerName().equals(TaterCommsConfig.serverName())
+                && message.getChannel().equals("tc:p_msg")) {
+            Server.sendMessageToAll(message);
         }
 
-        // Relay messages to remote servers
-        if (TaterCommsConfig.remoteEnabled() && !message.getSender().getServerName().equals(TaterCommsConfig.serverName()) && message.getChannel().equals("tc:p_msg")) {
-            Server.sendMessageToAll(message);
+        // Relay the message to the proxy
+        if (TaterCommsConfig.serverUsingProxy()
+                && !TaterCommsConfig.remoteEnabled()
+                && !message.getChannel().equals("tc:p_msg")) {
+            message.getSender().sendPluginMessage(message);
         }
 
         // Relay external messages to the players
         if ((!message.getSender().getServerName().equals(TaterCommsConfig.serverName())
                 || TaterLib.cancelChat) && message.getChannel().equals("tc:p_msg")) {
             for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
-                player.sendMessage(message.getMessage());
+                if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(message.getSender().getServerName())) {
+                    player.sendMessage(message.getMessage());
+                }
             }
         }
     }
