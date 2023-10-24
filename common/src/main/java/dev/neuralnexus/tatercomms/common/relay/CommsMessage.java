@@ -9,6 +9,9 @@ import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,6 +23,7 @@ public class CommsMessage {
     private final CommsSender sender;
     private final String channel;
     private final String message;
+    private final String timeStamp;
 
     /**
      * Constructor for the CommsMessage class
@@ -31,6 +35,7 @@ public class CommsMessage {
         this.sender = sender;
         this.channel = channel;
         this.message = message;
+        this.timeStamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
     }
 
     /**
@@ -105,6 +110,14 @@ public class CommsMessage {
      */
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * Getter for the timestamp
+     * @return The timestamp
+     */
+    public String getTimeStamp() {
+        return this.timeStamp;
     }
 
     static Gson gson = new GsonBuilder().create();

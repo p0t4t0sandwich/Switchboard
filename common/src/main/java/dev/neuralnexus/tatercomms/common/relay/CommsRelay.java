@@ -39,19 +39,14 @@ public class CommsRelay implements MessageRelay {
      * @param message The message
      */
     public void relayMessage(CommsMessage message) {
-        //
-        System.out.println("Relaying message: " + message.toJSON());
-        System.out.println("From: " + message.getSender().getServerName());
-        //
-
         // Relay the message to Discord
         if (discord != null && !message.getSender().getServerName().equals("discord")) {
             discord.sendMessage(message);
         }
 
         // Relay the message to the socket server
-        if (socketClient != null && !(
-                TaterCommsConfig.serverUsingProxy()
+        if (socketClient != null && TaterCommsConfig.serverName().equals(message.getSender().getServerName()) &&
+                !(TaterCommsConfig.serverUsingProxy()
                         && (message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
                         || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
                         || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()))
@@ -61,7 +56,6 @@ public class CommsRelay implements MessageRelay {
 
         // Relay player messages to socket clients
         if (TaterCommsConfig.remoteEnabled()
-                && !message.getSender().getServerName().equals(TaterCommsConfig.serverName())
                 && message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
             Server.sendMessageToAll(message);
         }
@@ -75,12 +69,15 @@ public class CommsRelay implements MessageRelay {
             message.getSender().sendPluginMessage(message);
         }
 
-        // Relay external messages to players on the server
-        if ((!message.getSender().getServerName().equals(TaterCommsConfig.serverName())
-                || TaterLib.cancelChat) && message.getChannel().equals("tc:p_msg")) {
-            for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
-                if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(message.getSender().getServerName())) {
-                    player.sendMessage(message.getMessage());
+        // Relay messages to players on the server
+        if (message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+            if (!TaterCommsConfig.serverName().equals(message.getSender().getServerName()) || TaterCommsConfig.formattingEnabled()) {
+                for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
+                    // Check if the sender and the player are on the same server
+                    // If they are, check if formatting is enabled, and if it is, let it through
+                    if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(message.getSender().getServerName())) {
+                        player.sendMessage(message.getMessage());
+                    }
                 }
             }
         }

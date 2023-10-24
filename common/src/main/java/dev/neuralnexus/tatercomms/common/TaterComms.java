@@ -120,10 +120,10 @@ public class TaterComms {
         // Start the socket server
         if (TaterCommsConfig.remoteEnabled()) {
             if (TaterCommsConfig.remotePrimary()) {
-                socketServer = new Server(TaterCommsConfig.remotePort());
+                socketServer = new Server(TaterCommsConfig.remotePort(), TaterCommsConfig.remoteSecret());
                 Utils.runTaskAsync(socketServer::start);
             } else {
-                socketClient = new Client(TaterCommsConfig.remoteHost(), TaterCommsConfig.remotePort());
+                socketClient = new Client(TaterCommsConfig.remoteHost(), TaterCommsConfig.remotePort(),  TaterCommsConfig.remoteSecret());
                 Utils.runTaskAsync(socketClient::start);
             }
         }

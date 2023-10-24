@@ -88,7 +88,7 @@ public class DiscordBot extends ListenerAdapter  {
         DiscordPlayer discordPlayer = new DiscordPlayer(author);
 
         // Send the message
-        ((CommsRelay) TaterLib.getMessageRelay()).relayMessage(new CommsMessage(discordPlayer, CommsMessage.MessageType.PLAYER_MESSAGE, content));
+        ((CommsRelay) TaterLib.getMessageRelay()).relayMessage(new CommsMessage(discordPlayer, CommsMessage.MessageType.PLAYER_MESSAGE, "[D] " + content));
     }
 
     /**

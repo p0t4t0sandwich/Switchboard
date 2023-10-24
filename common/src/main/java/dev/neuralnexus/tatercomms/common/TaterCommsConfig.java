@@ -36,6 +36,17 @@ public class TaterCommsConfig {
     }
 
     /**
+     * Save the config
+     */
+    public static void saveConfig() {
+        try {
+            config.save();
+        } catch (IOException e) {
+            TaterComms.useLogger("Failed to save tatercomms.config.yml!\n" + e.getMessage());
+        }
+    }
+
+    /**
      * Get the server name from the config
      * @return The server name
      */
@@ -158,5 +169,20 @@ public class TaterCommsConfig {
      */
     public static int remotePort() {
         return config.getInt("remote.port");
+    }
+
+    /**
+     * Get the remote secret
+     * @return The remote secret
+     */
+    public static String remoteSecret() {
+        String secret = config.getString("remote.secret");
+        if (secret == null || secret.isEmpty()) {
+            TaterComms.useLogger("Generating new remote secret");
+            secret = UUID.randomUUID().toString();
+            config.set("remote.secret", secret);
+            saveConfig();
+        }
+        return secret;
     }
 }

@@ -28,7 +28,7 @@ discord:
 # Formatting for server messages
 formatting:
   # Whether TaterComms should handle chat formatting
-  enabled: true
+  enabled: false
   # Allow specific servers to bypass chat formatting
   # The backend server will handle all the chat formatting
   passthrough:
@@ -60,3 +60,4 @@ remote:
   primary: false
   host: 127.0.0.1
   port: 5483
+  secret: ""
