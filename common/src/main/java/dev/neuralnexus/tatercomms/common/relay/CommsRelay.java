@@ -17,19 +17,16 @@ import java.util.HashMap;
 public class CommsRelay implements MessageRelay {
     /**
      * Properties of the MessageRelay class
-     * formatting: The formatting for the messages
      * discord: The JDA instance
      * socketClient: The socket client
      */
-    private final HashMap<String, String> formatting;
     private final DiscordBot discord;
     private final Client socketClient;
 
     /**
      * Constructor for the MessageRelay class.
      */
-    public CommsRelay(HashMap<String, String> formatting, DiscordBot discord, Client socketClient) {
-        this.formatting = formatting;
+    public CommsRelay(DiscordBot discord, Client socketClient) {
         this.discord = discord;
         this.socketClient = socketClient;
     }
@@ -76,7 +73,7 @@ public class CommsRelay implements MessageRelay {
                     // Check if the sender and the player are on the same server
                     // If they are, check if formatting is enabled, and if it is, let it through
                     if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(message.getSender().getServerName())) {
-                        player.sendMessage(message.getMessage());
+                        player.sendMessage(message.applyPlaceHolders());
                     }
                 }
             }

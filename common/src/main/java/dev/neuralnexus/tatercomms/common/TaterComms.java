@@ -128,11 +128,10 @@ public class TaterComms {
             }
         }
 
-        HashMap<String, String> formatting = TaterCommsConfig.formattingChat();
         if (TaterCommsConfig.discordEnabled()) {
             discord = new DiscordBot(discordToken, serverChannels);
         }
-        messageRelay = new CommsRelay(formatting, discord, socketClient);
+        messageRelay = new CommsRelay(discord, socketClient);
 
         // Cancel chat and set message relay
         TaterLib.cancelChat = TaterCommsConfig.formattingEnabled();

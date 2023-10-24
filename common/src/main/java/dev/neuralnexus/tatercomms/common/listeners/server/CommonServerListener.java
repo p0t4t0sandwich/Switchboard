@@ -5,6 +5,8 @@ import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
 
+import java.util.HashMap;
+
 public interface CommonServerListener {
     /**
      * Called when a server starts, and sends it to the message relay.
@@ -17,7 +19,12 @@ public interface CommonServerListener {
         } else {
             server = TaterCommsConfig.serverName();
         }
-        relay.relayMessage(new CommsMessage(server, CommsMessage.MessageType.SERVER_STARTED, "**Server has started**"));
+        relay.relayMessage(new CommsMessage(server,
+                CommsMessage.MessageType.SERVER_STARTED,
+                "**Server has started**",
+                TaterCommsConfig.formattingChat().get("serverStarted"),
+                new HashMap<>()
+        ));
     }
 
     /**
@@ -31,6 +38,11 @@ public interface CommonServerListener {
         } else {
             server = TaterCommsConfig.serverName();
         }
-        relay.relayMessage(new CommsMessage(server, CommsMessage.MessageType.SERVER_STOPPED, "**Server has stopped**"));
+        relay.relayMessage(new CommsMessage(server,
+                CommsMessage.MessageType.SERVER_STOPPED,
+                "**Server has stopped**",
+                TaterCommsConfig.formattingChat().get("serverStopped"),
+                new HashMap<>()
+        ));
     }
 }

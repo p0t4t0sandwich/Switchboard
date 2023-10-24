@@ -1,5 +1,6 @@
 package dev.neuralnexus.tatercomms.common.discord;
 
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.discord.player.DiscordPlayer;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
@@ -88,7 +89,15 @@ public class DiscordBot extends ListenerAdapter  {
         DiscordPlayer discordPlayer = new DiscordPlayer(author);
 
         // Send the message
-        ((CommsRelay) TaterLib.getMessageRelay()).relayMessage(new CommsMessage(discordPlayer, CommsMessage.MessageType.PLAYER_MESSAGE, "[D] " + content));
+        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
+        HashMap<String, String> placeholders = new HashMap<>();
+        placeholders.put("message", content);
+        relay.relayMessage(new CommsMessage(discordPlayer,
+                        CommsMessage.MessageType.PLAYER_MESSAGE,
+                        content,
+                        TaterCommsConfig.formattingChat().get("discord"),
+                        placeholders
+        ));
     }
 
     /**
@@ -96,7 +105,7 @@ public class DiscordBot extends ListenerAdapter  {
      * @param commsMessage The message to send
      */
     public void sendMessage(CommsMessage commsMessage) {
-        String message = commsMessage.getMessage();
+        String message = commsMessage.applyPlaceHolders();
         String server = commsMessage.getSender().getServerName();
 
         // Get the channel

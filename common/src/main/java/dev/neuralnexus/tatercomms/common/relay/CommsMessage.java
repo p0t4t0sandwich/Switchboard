@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
+import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
@@ -13,6 +14,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,8 @@ public class CommsMessage {
     private final CommsSender sender;
     private final String channel;
     private final String message;
+    private String placeHolderMessage = "";
+    private HashMap<String, String> placeHolders = new HashMap<>();
     private final String timeStamp;
 
     /**
@@ -31,10 +35,13 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(CommsSender sender, String channel, String message) {
+    public CommsMessage(CommsSender sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
         this.sender = sender;
         this.channel = channel;
         this.message = message;
+        this.placeHolderMessage = placeHolderMessage;
+        this.placeHolders = placeHolders;
+        placeHolders.put("message", message);
         this.timeStamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
     }
 
@@ -44,8 +51,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(CommsSender sender, MessageType channel, String message) {
-        this(sender, channel.getIdentifier(), message);
+    public CommsMessage(CommsSender sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(sender, channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -54,8 +61,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(String serverName, String channel, String message) {
-        this(new CommsSender(serverName), channel, message);
+    public CommsMessage(String serverName, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new CommsSender(serverName), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -64,8 +71,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(String serverName, MessageType channel, String message) {
-        this(new CommsSender(serverName), channel.getIdentifier(), message);
+    public CommsMessage(String serverName, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new CommsSender(serverName), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -74,8 +81,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(AbstractPlayer sender, String channel, String message) {
-        this(new CommsSender(sender), channel, message);
+    public CommsMessage(AbstractPlayer sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new CommsSender(sender), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -84,8 +91,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(AbstractPlayer sender, MessageType channel, String message) {
-        this(new CommsSender(sender), channel.getIdentifier(), message);
+    public CommsMessage(AbstractPlayer sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new CommsSender(sender), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -110,6 +117,67 @@ public class CommsMessage {
      */
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * Getter for the placeHolderMessage
+     * @return The placeHolderMessage
+     */
+    public String getPlaceHolderMessage() {
+        return this.placeHolderMessage;
+    }
+
+    /**
+     * Setter for the placeHolderMessage
+     * @param placeHolderMessage The placeHolderMessage
+     */
+    public void setPlaceHolderMessage(String placeHolderMessage) {
+        this.placeHolderMessage = placeHolderMessage;
+    }
+
+    /**
+     * Getter for the placeHolders
+     * @return The placeHolders
+     */
+    public HashMap<String, String> getPlaceHolders() {
+        return this.placeHolders;
+    }
+
+    /**
+     * Setter for the placeHolders
+     * @param placeHolders The placeHolders
+     */
+    public void setPlaceHolders(HashMap<String, String> placeHolders) {
+        this.placeHolders = placeHolders;
+    }
+
+    /**
+     * Merge an existing placeHolders hashmap with the current one
+     * @param placeHolders The placeHolders to merge
+     */
+    public void mergePlaceHolders(HashMap<String, String> placeHolders) {
+        this.placeHolders.putAll(placeHolders);
+    }
+
+    /**
+     * Add a placeHolder to the placeHolders hashmap
+     * @param placeHolder The placeHolder to add
+     */
+    public void addPlaceHolder(String placeHolder, String value) {
+        this.placeHolders.put(placeHolder, value);
+    }
+
+    /**
+     * Applies the placeHolders to the placeHolderMessage and returns the result
+     * @return The placeHolderMessage with the placeHolders applied
+     */
+    public String applyPlaceHolders() {
+        String message = this.placeHolderMessage;
+        PlaceholderParser parser = sender.parsePlaceholders(message);
+        for (String placeHolder : this.placeHolders.keySet()) {
+            parser.parseString(placeHolder, this.placeHolders.get(placeHolder));
+        }
+        return parser.getResult();
     }
 
     /**
