@@ -14,14 +14,12 @@ import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
 import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvents;
 import dev.neuralnexus.taterlib.common.event.server.ServerEvents;
-import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.YamlDocument;
-import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.block.Block;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Main class for the TaterComms plugin.
@@ -36,6 +34,7 @@ public class TaterComms {
     private static Server socketServer = null;
     private static Client socketClient = null;
     private static CommsRelay messageRelay = null;
+    public static Supplier<Set<String>> proxyServers = HashSet::new;
 
     /**
      * Constructor for the TaterComms class.
@@ -190,5 +189,13 @@ public class TaterComms {
         start(configPath, logger);
 
         useLogger("TaterComms has been reloaded!");
+    }
+
+    /**
+     * Set the proxyServers consumer
+     * @param proxyServers The registerChannels consumer
+     */
+    public static void setProxyServers(Supplier<Set<String>> proxyServers) {
+        TaterComms.proxyServers = proxyServers;
     }
 }

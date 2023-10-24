@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.bungee;
 
 import dev.neuralnexus.tatercomms.bungee.commands.BungeeDiscordCommand;
+import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.taterlib.bungee.TemplateBungeePlugin;
 
@@ -22,6 +23,7 @@ public class BungeeTaterCommsPlugin extends TemplateBungeePlugin implements Tate
      */
     @Override
     public void onEnable() {
+        TaterComms.setProxyServers(() -> getProxy().getServers().keySet());
         pluginStart();
     }
 

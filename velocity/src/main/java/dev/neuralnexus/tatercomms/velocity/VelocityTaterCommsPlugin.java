@@ -7,6 +7,7 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
 import dev.neuralnexus.tatercomms.velocity.commands.VelocityDiscordCommand;
@@ -14,6 +15,8 @@ import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.velocity.TemplateVelocityPlugin;
 import dev.neuralnexus.taterlib.velocity.abstractions.logger.VelocityLogger;
 import org.slf4j.Logger;
+
+import java.util.stream.Collectors;
 
 /**
  * The TaterComms Velocity plugin.
@@ -57,6 +60,7 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         proxyServer = server;
+        TaterComms.setProxyServers(() -> server.getAllServers().stream().map(s -> s.getServerInfo().getName()).collect(Collectors.toSet()));
         pluginStart();
     }
 
