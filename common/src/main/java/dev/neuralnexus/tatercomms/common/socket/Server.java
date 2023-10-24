@@ -93,7 +93,9 @@ public class Server {
      * @param client The client
      */
     public static void addClient(String serverName, Socket client) {
-        clients.put(serverName, client);
+        if (!TaterComms.proxyServers.get().contains(serverName)) {
+            clients.put(serverName, client);
+        }
     }
 
     /**
