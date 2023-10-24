@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.common.socket;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 
 import java.io.*;
@@ -14,10 +15,26 @@ import java.util.HashMap;
 public class Server {
     private static ServerSocket server;
     private static int port;
+    private static String secret;
     private static final HashMap<String, Socket> clients = new HashMap<>();
 
-    public Server(int port) {
+    public Server(int port, String secret) {
         Server.port = port;
+        Server.secret = secret;
+    }
+
+    /**
+     * Really basic XOR obfuscation until some form of SSL is implemented
+     * @param message The message
+     * @param secret The secret
+     * @return The encrypted message
+     */
+    public static String XORMessage(String message, String secret) {
+        StringBuilder encryptedMessage = new StringBuilder();
+        for (int i = 0; i < message.length(); i++) {
+            encryptedMessage.append((char) (message.charAt(i) ^ secret.charAt(i % secret.length())));
+        }
+        return encryptedMessage.toString();
     }
 
     /**
@@ -74,9 +91,10 @@ public class Server {
                     DataOutputStream out = new DataOutputStream(client.getOutputStream());
 
                     String json = message.toJSON();
-                    int length = json.length();
+                    String encryptedMessage = XORMessage(json, secret);
+                    int length = encryptedMessage.length();
                     out.writeInt(length);
-                    out.write(json.getBytes(), 0, length);
+                    out.write(encryptedMessage.getBytes(), 0, length);
                     out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -93,7 +111,7 @@ public class Server {
      * @param client The client
      */
     public static void addClient(String serverName, Socket client) {
-        if (!TaterComms.proxyServers.get().contains(serverName)) {
+        if (!TaterComms.proxyServers.get().contains(serverName) && !TaterCommsConfig.serverName().equals(serverName)) {
             clients.put(serverName, client);
         }
     }
@@ -147,7 +165,10 @@ public class Server {
                     byte[] data = new byte[dataLen];
                     in.readFully(data);
 
-                    CommsMessage message = CommsMessage.fromJSON(new String(data));
+                    String dataString = new String(data);
+                    String decryptedMessage = XORMessage(dataString, secret);
+
+                    CommsMessage message = CommsMessage.fromJSON(decryptedMessage);
                     if (!isClientConnected(message.getSender().getServerName())) {
                         addClient(message.getSender().getServerName(), clientSocket);
                     }

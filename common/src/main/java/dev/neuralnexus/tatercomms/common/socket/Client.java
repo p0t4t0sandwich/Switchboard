@@ -8,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import static dev.neuralnexus.tatercomms.common.socket.Server.XORMessage;
+
 /**
  * Client class
  */
@@ -15,10 +17,12 @@ public class Client {
     private Socket socket;
     private final int port;
     private final String host;
+    private final String secret;
 
-    public Client(String host, int port) {
+    public Client(String host, int port, String secret) {
         this.host = host;
         this.port = port;
+        this.secret = secret;
     }
 
     /**
@@ -40,7 +44,11 @@ public class Client {
                 int dataLen = in.readInt();
                 byte[] data = new byte[dataLen];
                 in.readFully(data);
-                CommsMessage message = CommsMessage.fromJSON(new String(data));
+
+                String dataString = new String(data);
+                String decryptedMessage = XORMessage(dataString, secret);
+
+                CommsMessage message = CommsMessage.fromJSON(decryptedMessage);
                 if (message != null) {
                     CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
                 }
@@ -73,9 +81,10 @@ public class Client {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
             String json = message.toJSON();
-            int length = json.length();
+            String encryptedMessage = XORMessage(json, secret);
+            int length = encryptedMessage.length();
             out.writeInt(length);
-            out.write(json.getBytes(), 0, length);
+            out.write(encryptedMessage.getBytes(), 0, length);
             out.flush();
         }
         catch (IOException e) {
