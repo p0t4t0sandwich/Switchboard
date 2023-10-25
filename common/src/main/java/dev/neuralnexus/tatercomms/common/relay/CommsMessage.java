@@ -7,12 +7,10 @@ import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterlib.common.relay.Message;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
@@ -21,13 +19,15 @@ import java.util.stream.Collectors;
 /**
  * Class for relaying messages between the server and Discord
  */
-public class CommsMessage {
+public class CommsMessage implements Message {
     private final CommsSender sender;
     private final String channel;
     private final String message;
     private String placeHolderMessage = "";
     private HashMap<String, String> placeHolders = new HashMap<>();
-    private final String timeStamp;
+    private final long timeStamp;
+    private boolean isRemote = false;
+    private boolean isGlobal = false;
 
     /**
      * Constructor for the CommsMessage class
@@ -42,7 +42,7 @@ public class CommsMessage {
         this.placeHolderMessage = placeHolderMessage;
         this.placeHolders = placeHolders;
         placeHolders.put("message", message);
-        this.timeStamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+        this.timeStamp = System.currentTimeMillis(); // ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
     }
 
     /**
@@ -112,9 +112,9 @@ public class CommsMessage {
     }
 
     /**
-     * Getter for the message
-     * @return The message
+     * @inheritDoc
      */
+    @Override
     public String getMessage() {
         return this.message;
     }
@@ -181,11 +181,43 @@ public class CommsMessage {
     }
 
     /**
-     * Getter for the timestamp
-     * @return The timestamp
+     * @inheritDoc
      */
-    public String getTimeStamp() {
+    @Override
+    public long getTimestamp() {
         return this.timeStamp;
+    }
+
+    /**
+     * Getter for the isRemote boolean
+     * @return The isRemote boolean
+     */
+    public boolean isRemote() {
+        return this.isRemote;
+    }
+
+    /**
+     * Setter for the isRemote boolean
+     * @param isRemote The isRemote boolean
+     */
+    public void setRemote(boolean isRemote) {
+        this.isRemote = isRemote;
+    }
+
+    /**
+     * Getter for the isGlobal boolean
+     * @return The isGlobal boolean
+     */
+    public boolean isGlobal() {
+        return this.isGlobal;
+    }
+
+    /**
+     * Setter for the isGlobal boolean
+     * @param isGlobal The isGlobal boolean
+     */
+    public void setGlobal(boolean isGlobal) {
+        this.isGlobal = isGlobal;
     }
 
     static Gson gson = new GsonBuilder().create();

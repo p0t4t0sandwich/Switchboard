@@ -43,7 +43,7 @@ public interface CommonPlayerListener {
         }
         CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
         HashMap<String, String> placeholders = new HashMap<>();
-        placeholders.put("deathMessage", deathMessage);
+        placeholders.put("deathmessage", deathMessage);
         relay.relayMessage(new CommsMessage(player,
                 CommsMessage.MessageType.PLAYER_DEATH,
                 deathMessage,
@@ -102,7 +102,7 @@ public interface CommonPlayerListener {
         relay.relayMessage(new CommsMessage(player,
                 CommsMessage.MessageType.PLAYER_MESSAGE,
                 message,
-                TaterCommsConfig.formattingChat().get("message"),
+                TaterCommsConfig.formattingChat().get("local"),
                 new HashMap<>()
         ));
     }

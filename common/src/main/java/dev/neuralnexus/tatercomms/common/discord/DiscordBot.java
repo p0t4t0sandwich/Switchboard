@@ -6,6 +6,7 @@ import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
+import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -105,7 +106,7 @@ public class DiscordBot extends ListenerAdapter  {
      * @param commsMessage The message to send
      */
     public void sendMessage(CommsMessage commsMessage) {
-        String message = commsMessage.applyPlaceHolders();
+        String message = PlaceholderParser.stripSectionSign(commsMessage.applyPlaceHolders());
         String server = commsMessage.getSender().getServerName();
 
         // Get the channel

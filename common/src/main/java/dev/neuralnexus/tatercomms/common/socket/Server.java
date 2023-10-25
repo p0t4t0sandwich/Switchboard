@@ -172,6 +172,8 @@ public class Server {
                     if (!isClientConnected(message.getSender().getServerName())) {
                         addClient(message.getSender().getServerName(), clientSocket);
                     }
+                    message.setRemote(true);
+
                     CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
 
                     // Clear the input stream

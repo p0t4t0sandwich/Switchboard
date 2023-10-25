@@ -1,5 +1,5 @@
 ---
-version: 1
+version: 2
 
 # ServerName for standalone servers (Bukkit, Fabric, or Forge)
 # Proxies will use the server names defined in the config
@@ -35,7 +35,7 @@ formatting:
     - example1
     - example2
   chat:
-    # Available placeholders:
+    # Common placeholders for player events/messages:
     #   %player% - Player name
     #   %displayname% - Player display name
     #   %message% - Message
@@ -43,12 +43,31 @@ formatting:
     #   %prefix% - Player prefix
     #   %suffix% - Player suffix
 
+    # Player advancement messages
+    #   %advancement% - Advancement name
+    advancement: "%displayname% has made the advancement [%advancement%]!"
+    # Player death messages
+    #   %deathmessage% - Death message
+    death: "%deathmessage%"
+    # Player login messages
+    login: "%displayname% joined the game"
+    # Player logout messages
+    logout: "%displayname% left the game"
+
+    # Server start message
+    serverStarted: "**Server Started**"
+    # Server stop message
+    serverStopped: "**Server Stopped**"
+
+    # Formatting for messages coming from Discord
+    discord: "&9[D]&r %displayname% >> %message%"
+
+    # Message formatting for each type of chat
+    #   %message% - Message
     # Global chat formatting
     global: "&a[G]&r %displayname% >> %message%"
     # Local chat formatting
-    local: "&d[L]&r %displayname% >> %message%"
-    # Formatting for messages coming from Discord
-    discord: "&9[D]&r %displayname% >> %message%"
+    local: "&e[L]&r %displayname% >> %message%"
     # Remote chat formatting
     remote: "&4[%server%]&r %displayname% >> %message%"
 

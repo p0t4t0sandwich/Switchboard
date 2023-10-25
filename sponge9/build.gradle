@@ -7,6 +7,8 @@ plugins {
     id("org.spongepowered.gradle.plugin") version('2.1.1')
 }
 
+targetCompatibility = java_version
+
 sponge {
     apiVersion(spongeapi_version)
     license("GPL-3.0")
@@ -15,7 +17,7 @@ sponge {
         version("1.0")
     }
     plugin(project_id) {
-        version("1.16-${version}")
+        version("1.18-${version}")
         displayName(project_name)
         entrypoint("dev.neuralnexus.tatercomms.sponge.SpongeTaterCommsPlugin")
         description("A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.")

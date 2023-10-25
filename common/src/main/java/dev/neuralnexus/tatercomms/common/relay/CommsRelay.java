@@ -4,12 +4,10 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
 import dev.neuralnexus.tatercomms.common.socket.Client;
 import dev.neuralnexus.tatercomms.common.socket.Server;
-import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
+import dev.neuralnexus.taterlib.common.relay.Message;
 import dev.neuralnexus.taterlib.common.relay.MessageRelay;
-
-import java.util.HashMap;
 
 /**
  * Class for relaying messages between the server and Discord.
@@ -35,54 +33,62 @@ public class CommsRelay implements MessageRelay {
      * Relays a CommsMessage from a source to all other sources.
      * @param message The message
      */
-    public void relayMessage(CommsMessage message) {
+    public void relayMessage(Message message) {
+        CommsMessage commsMessage = (CommsMessage) message;
+
+        // Set the chat to global if it is enabled
+        // TODO: Rework into a per-user setting
+        if (TaterCommsConfig.serverGlobalChatEnabledByDefault()
+                && !commsMessage.getSender().getServerName().equals("discord")
+                && commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+            commsMessage.setGlobal(true);
+        }
+
         // Relay the message to Discord
-        if (discord != null && !message.getSender().getServerName().equals("discord")) {
-            discord.sendMessage(message);
+        if (discord != null && !commsMessage.getSender().getServerName().equals("discord")) {
+            discord.sendMessage(commsMessage);
         }
 
         // Relay the message to the socket server
-        if (socketClient != null && TaterCommsConfig.serverName().equals(message.getSender().getServerName()) &&
+        if (socketClient != null && TaterCommsConfig.serverName().equals(commsMessage.getSender().getServerName()) &&
                 !(TaterCommsConfig.serverUsingProxy()
-                        && (message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
-                        || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
-                        || message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier()))
-        )) {
-            socketClient.sendMessage(message);
+                        && (commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
+                        || commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
+                        || commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier())))) {
+            socketClient.sendMessage(commsMessage);
         }
 
         // Relay player messages to socket clients
         if (TaterCommsConfig.remoteEnabled()
-                && message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
-            Server.sendMessageToAll(message);
+                && commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+            Server.sendMessageToAll(commsMessage);
         }
 
         // Send the message using proxy channels
         if (TaterCommsConfig.serverUsingProxy()
                 && !TaterCommsConfig.remoteEnabled()
-                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
-                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
-                && !message.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier())) {
-            message.getSender().sendPluginMessage(message);
+                && !commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())
+                && !commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGIN.getIdentifier())
+                && !commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_LOGOUT.getIdentifier())) {
+            commsMessage.getSender().sendPluginMessage(commsMessage);
+        }
+
+        // Set the formatting for the message
+        if (commsMessage.isRemote()) {
+            commsMessage.setPlaceHolderMessage(TaterCommsConfig.formattingChat().get("remote"));
+        } else if (commsMessage.isGlobal()) {
+            commsMessage.setPlaceHolderMessage(TaterCommsConfig.formattingChat().get("global"));
         }
 
         // Relay messages to players on the server
-        if (message.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
-            if (!TaterCommsConfig.serverName().equals(message.getSender().getServerName()) || TaterCommsConfig.formattingEnabled()) {
-                for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
-                    // Check if the sender and the player are on the same server
-                    // If they are, check if formatting is enabled, and if it is, let it through
-                    if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(message.getSender().getServerName())) {
-                        player.sendMessage(message.applyPlaceHolders());
-                    }
+        if (commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+            for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
+                if (commsMessage.isGlobal() || commsMessage.isRemote()) {
+                    player.sendMessage(commsMessage.applyPlaceHolders());
+                } else if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(commsMessage.getSender().getServerName())) {
+                    player.sendMessage(commsMessage.applyPlaceHolders());
                 }
             }
         }
     }
-
-    @Override
-    public void sendPlayerMessage(AbstractPlayer abstractPlayer, String s, String s1, boolean b) {}
-
-    @Override
-    public void sendSystemMessage(String s, String s1) {}
 }
