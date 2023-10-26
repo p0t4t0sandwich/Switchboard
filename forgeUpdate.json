@@ -4,33 +4,33 @@
     "1.0.0": "Initial release",
     "1.0.1": "- Created a Fabric mixin for the player Death events\n- Updated the Fabric 1.17 Message listener to ignore commands (whoops)\n- Translated all Fabric events to mixins\n- Added /discord command for players to grab the invite link\n- Fixed build error for the Fabric mixin refmap\n- No longer depends on the Fabric API",
     "1.0.2": "Fixed an issue with the config parser",
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.19": {
     "1.0.1": "- Created a Fabric mixin for the player Death events\n- Updated the Fabric 1.17 Message listener to ignore commands (whoops)\n- Translated all Fabric events to mixins\n- Added /discord command for players to grab the invite link\n- Fixed build error for the Fabric mixin refmap\n- No longer depends on the Fabric API",
     "1.0.2": "Fixed an issue with the config parser",
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.18": {
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.17": {
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.16": {
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.15": {
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "1.14": {
-    "1.0.3": ""
+    "1.0.3": "- Recoded to use TaterLib for easier cross-API support\n- Once again depends on the fabric API\n- Back ported to 1.14 and added support for Sponge 8-11\n- Added plugin message support for server-side only events\n- Implemented plugin channel support for all platforms\n- Overhauled the message relay system\n  - Added Remote TCP socket support"
   },
   "promos": {
-    "1.20-latest": "1.0.2",
-    "1.20-recommended": "1.0.2",
-    "1.19-latest": "1.0.2",
-    "1.19-recommended": "1.0.2",
+    "1.20-latest": "1.0.3",
+    "1.20-recommended": "1.0.3",
+    "1.19-latest": "1.0.3",
+    "1.19-recommended": "1.0.3",
     "1.18-latest": "1.0.3",
     "1.18-recommended": "1.0.3",
     "1.17-latest": "1.0.3",
