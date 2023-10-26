@@ -8,12 +8,14 @@ import dev.neuralnexus.taterlib.forge.TemplateForgePlugin;
 import dev.neuralnexus.taterlib.forge.abstrations.logger.ForgeLogger;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import org.apache.logging.log4j.LogManager;
 
 /**
  * The TaterComms Forge plugin.
  */
+@Mod(ForgeTaterCommsPlugin.MOD_ID)
 public class ForgeTaterCommsPlugin extends TemplateForgePlugin implements TaterCommsPlugin {
     public static final String MOD_ID = "tatercomms";
 
