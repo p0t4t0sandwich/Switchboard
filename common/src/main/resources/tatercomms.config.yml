@@ -45,7 +45,7 @@ formatting:
 
     # Player advancement messages
     #   %advancement% - Advancement name
-    advancement: "%displayname% has made the advancement [%advancement%]!"
+    advancement: "%displayname% has made the advancement [%advancement%]"
     # Player death messages
     #   %deathmessage% - Death message
     death: "%deathmessage%"
