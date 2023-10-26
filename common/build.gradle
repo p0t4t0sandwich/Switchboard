@@ -29,6 +29,7 @@ shadowJar {
     relocate("com.fasterxml.jackson", "dev.neuralnexus.tatercomms.lib.jackson")
     relocate("gnu.trove", "dev.neuralnexus.tatercomms.lib.trove")
     relocate("okio", "dev.neuralnexus.tatercomms.lib.okio")
+    relocate("org.slf4j", "dev.neuralnexus.tatercomms.lib.slf4j")
 
     // Websocket
     relocate("com.neovisionaries", "dev.neuralnexus.tatercomms.lib.neovisionaries")
