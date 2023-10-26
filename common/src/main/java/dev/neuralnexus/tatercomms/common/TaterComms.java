@@ -35,6 +35,7 @@ public class TaterComms {
     private static Client socketClient = null;
     private static CommsRelay messageRelay = null;
     public static Supplier<Set<String>> proxyServers = HashSet::new;
+    private static boolean RELOADED = false;
 
     /**
      * Constructor for the TaterComms class.
@@ -83,17 +84,19 @@ public class TaterComms {
         }
         STARTED = true;
 
-        // Register player listeners
-        PlayerEvents.ADVANCEMENT_FINISHED.register(CommonPlayerListener::onPlayerAdvancementFinished);
-        PlayerEvents.DEATH.register(CommonPlayerListener::onPlayerDeath);
-        PlayerEvents.LOGIN.register(CommonPlayerListener::onPlayerLogin);
-        PlayerEvents.LOGOUT.register(CommonPlayerListener::onPlayerLogout);
-        PlayerEvents.MESSAGE.register(CommonPlayerListener::onPlayerMessage);
-        PlayerEvents.SERVER_SWITCH.register(CommonPlayerListener::onPlayerServerSwitch);
+        if (!RELOADED) {
+            // Register player listeners
+            PlayerEvents.ADVANCEMENT_FINISHED.register(CommonPlayerListener::onPlayerAdvancementFinished);
+            PlayerEvents.DEATH.register(CommonPlayerListener::onPlayerDeath);
+            PlayerEvents.LOGIN.register(CommonPlayerListener::onPlayerLogin);
+            PlayerEvents.LOGOUT.register(CommonPlayerListener::onPlayerLogout);
+            PlayerEvents.MESSAGE.register(CommonPlayerListener::onPlayerMessage);
+            PlayerEvents.SERVER_SWITCH.register(CommonPlayerListener::onPlayerServerSwitch);
 
-        // Register server listeners
-        ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
-        ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+            // Register server listeners
+            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
+            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+        }
 
         if (TaterCommsConfig.serverUsingProxy()) {
             // Register plugin channels
@@ -180,6 +183,7 @@ public class TaterComms {
             useLogger("TaterComms has not been started!");
             return;
         }
+        RELOADED = true;
 
         // Stop
         stop();
