@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.sponge;
 
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.sponge.commands.SpongeDiscordCommand;
+import dev.neuralnexus.tatercomms.sponge.commands.SpongeTaterCommsCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.sponge.TemplateSpongePlugin;
 import dev.neuralnexus.taterlib.sponge.abstractions.logger.SpongeLogger;
@@ -38,6 +39,7 @@ public class SpongeTaterCommsPlugin extends TemplateSpongePlugin implements Tate
      */
     @Listener
     public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
+        new SpongeTaterCommsCommand().onRegisterCommands(container, event);
         new SpongeDiscordCommand().onRegisterCommands(container, event);
     }
 

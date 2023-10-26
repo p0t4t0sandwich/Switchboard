@@ -1,18 +1,11 @@
 package dev.neuralnexus.tatercomms.bukkit;
 
 import dev.neuralnexus.tatercomms.bukkit.commands.BukkitDiscordCommand;
-import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.bukkit.commands.BukkitTaterCommsCommand;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
-import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
-import dev.neuralnexus.tatercomms.common.relay.CommsSender;
-import dev.neuralnexus.taterlib.bukkit.BukkitTaterLibPlugin;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.taterlib.bukkit.TemplateBukkitPlugin;
-import dev.neuralnexus.taterlib.bukkit.abstractions.player.BukkitPlayer;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.messaging.Messenger;
 
 /**
  * The TaterComms Bukkit plugin.
@@ -20,6 +13,7 @@ import org.bukkit.plugin.messaging.Messenger;
 public class BukkitTaterCommsPlugin extends TemplateBukkitPlugin implements TaterCommsPlugin {
     @Override
     public void registerCommands() {
+        getCommand(TaterCommsCommand.getCommandName()).setExecutor(new BukkitTaterCommsCommand());
         getCommand(DiscordCommand.getCommandName()).setExecutor(new BukkitDiscordCommand());
     }
 

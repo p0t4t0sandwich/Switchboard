@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.velocity;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
@@ -10,7 +11,9 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.tatercomms.velocity.commands.VelocityDiscordCommand;
+import dev.neuralnexus.tatercomms.velocity.commands.VelocityTaterCommsCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.velocity.TemplateVelocityPlugin;
 import dev.neuralnexus.taterlib.velocity.abstractions.logger.VelocityLogger;
@@ -50,7 +53,9 @@ public class VelocityTaterCommsPlugin extends TemplateVelocityPlugin implements 
      */
     @Override
     public void registerCommands() {
-        server.getCommandManager().register(DiscordCommand.getCommandName(), new VelocityDiscordCommand());
+        CommandManager commandManager = server.getCommandManager();
+        commandManager.register(TaterCommsCommand.getCommandName(), new VelocityTaterCommsCommand());
+        commandManager.register(DiscordCommand.getCommandName(), new VelocityDiscordCommand());
     }
 
     /**

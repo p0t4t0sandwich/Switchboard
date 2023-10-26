@@ -2,7 +2,7 @@ package dev.neuralnexus.tatercomms.fabric.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.taterlib.common.hooks.LuckPermsHook;
 import dev.neuralnexus.taterlib.fabric.abstractions.player.FabricPlayer;
 import net.minecraft.command.CommandRegistryAccess;
@@ -16,7 +16,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 /**
  * The Fabric implementation of the Discord command.
  */
-public class FabricDiscordCommand {
+public class FabricTaterCommsCommand {
     /**
      * Registers the command.
      * @param dispatcher The command dispatcher.
@@ -32,7 +32,7 @@ public class FabricDiscordCommand {
             permissionLevel = 0;
         }
 
-        dispatcher.register(literal(DiscordCommand.getCommandName())
+        dispatcher.register(literal(TaterCommsCommand.getCommandName())
                 .requires(source -> source.hasPermissionLevel(permissionLevel))
                 .then(argument("command", StringArgumentType.greedyString())
                     .executes(context -> {
@@ -44,7 +44,7 @@ public class FabricDiscordCommand {
                             FabricPlayer player = isPlayer ? new FabricPlayer((ServerPlayerEntity) context.getSource().getEntity()) : null;
 
                             // Execute command
-                            DiscordCommand.executeCommand(player, isPlayer, args);
+                            TaterCommsCommand.executeCommand(player, isPlayer, args);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return 0;

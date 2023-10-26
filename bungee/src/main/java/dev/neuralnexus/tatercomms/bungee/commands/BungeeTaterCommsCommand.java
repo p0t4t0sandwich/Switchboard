@@ -1,14 +1,14 @@
 package dev.neuralnexus.tatercomms.bungee.commands;
 
-import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.taterlib.bungee.abstractions.player.BungeePlayer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class BungeeDiscordCommand extends Command {
-    public BungeeDiscordCommand() {
-        super(DiscordCommand.getCommandName());
+public class BungeeTaterCommsCommand extends Command {
+    public BungeeTaterCommsCommand() {
+        super(TaterCommsCommand.getCommandName());
     }
 
     @Override
@@ -19,9 +19,8 @@ public class BungeeDiscordCommand extends Command {
             BungeePlayer player = isPlayer ? new BungeePlayer((ProxiedPlayer) sender) : null;
 
             // Execute command
-            DiscordCommand.executeCommand(player, isPlayer, args);
+            TaterCommsCommand.executeCommand(player, isPlayer, args);
         } catch (Exception e) {
-            System.err.println(e);
             e.printStackTrace();
         }
     }

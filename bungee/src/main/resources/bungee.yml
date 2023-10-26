@@ -6,6 +6,11 @@ main: dev.neuralnexus.tatercomms.bungee.BungeeTaterCommsPlugin
 depends: [TaterLib]
 softDepends: [LuckPerms]
 commands:
+  tatercomms:
+    description: TaterComms command
+    aliases: [tc]
+    usage: /tatercomms
+    permission: tatercomms.admin
   discord:
     description: Get the discord invite link
     usage: /discord

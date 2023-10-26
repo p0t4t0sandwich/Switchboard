@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.fabric;
 
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.fabric.commands.FabricDiscordCommand;
+import dev.neuralnexus.tatercomms.fabric.commands.FabricTaterCommsCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.fabric.TemplateFabricPlugin;
 import dev.neuralnexus.taterlib.fabric.abstractions.logger.FabricLogger;
@@ -28,6 +29,7 @@ public class FabricTaterCommsPlugin extends TemplateFabricPlugin implements Tate
      */
     @Override
     public void registerCommands() {
+        CommandRegistrationCallback.EVENT.register(FabricTaterCommsCommand::register);
         CommandRegistrationCallback.EVENT.register(FabricDiscordCommand::register);
     }
 

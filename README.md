@@ -27,7 +27,10 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 - Global chat still needs some tweaking and a proper, per-user toggle
 - Sponge death/advancement messages don't translate the component properly
 - Still need to tweak the pass-through system and get that working properly
-- Bukkit b1.7.3 doesn't have proper death/advancement events, so those won't work
+- Bukkit 1.6.4 doesn't have an advancement event
+- Bukkit b1.7.3 doesn't support the following
+  - proper death/advancement events
+  - plugin messaging
 
 ### Compatibility Cheatsheet
 
@@ -58,9 +61,10 @@ TaterComms supports: Bukkit, Fabric, Forge, and Sponge (some versions)
 
 ## Commands and Permissions
 
-| Command    | Permission                   | Description                 |
-|------------|------------------------------|-----------------------------|
-| `/discord` | `tatercomms.command.discord` | Get the Discord invite link |
+| Command              | Permission                   | Description                 |
+|----------------------|------------------------------|-----------------------------|
+| `/tatercomms reload` | `tatercomms.command.reload`  | Reload the plugin           |
+| `/discord`           | `tatercomms.command.discord` | Get the Discord invite link |
 
 ## Configuration
 

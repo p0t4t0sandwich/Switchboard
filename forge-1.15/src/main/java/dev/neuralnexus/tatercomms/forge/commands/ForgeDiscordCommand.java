@@ -20,7 +20,7 @@ import static net.minecraft.command.Commands.literal;
 @Mod.EventBusSubscriber(modid = ForgeTaterCommsPlugin.MOD_ID)
 public final class ForgeDiscordCommand {
     /**
-     * Registers the Discord command.
+     * Registers the command.
      * @param event The register commands event.
      */
     @SubscribeEvent

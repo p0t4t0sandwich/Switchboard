@@ -30,7 +30,7 @@ public class FabricDiscordCommand {
             permissionLevel = 0;
         }
 
-        dispatcher.register(literal(TaterLibCommand.getCommandName())
+        dispatcher.register(literal(DiscordCommand.getCommandName())
                 .requires(source -> source.hasPermissionLevel(permissionLevel))
                 .then(argument("command", StringArgumentType.greedyString())
                         .executes(context -> {

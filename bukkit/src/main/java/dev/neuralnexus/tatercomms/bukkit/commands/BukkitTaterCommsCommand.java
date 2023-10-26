@@ -1,13 +1,13 @@
 package dev.neuralnexus.tatercomms.bukkit.commands;
 
-import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.taterlib.bukkit.abstractions.player.BukkitPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class BukkitDiscordCommand implements CommandExecutor {
+public class BukkitTaterCommsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
@@ -16,7 +16,7 @@ public class BukkitDiscordCommand implements CommandExecutor {
             BukkitPlayer player = isPlayer ? new BukkitPlayer((Player) sender) : null;
 
             // Execute command
-            DiscordCommand.executeCommand(player, isPlayer, args);
+            TaterCommsCommand.executeCommand(player, isPlayer, args);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

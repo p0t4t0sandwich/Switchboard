@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.forge;
 
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
 import dev.neuralnexus.tatercomms.forge.commands.ForgeDiscordCommand;
+import dev.neuralnexus.tatercomms.forge.commands.ForgeTaterCommsCommand;
 import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.forge.TemplateForgePlugin;
 import dev.neuralnexus.taterlib.forge.abstrations.logger.ForgeLogger;
@@ -33,6 +34,7 @@ public class ForgeTaterCommsPlugin extends TemplateForgePlugin implements TaterC
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register commands
+        MinecraftForge.EVENT_BUS.register(ForgeTaterCommsCommand.class);
         MinecraftForge.EVENT_BUS.register(ForgeDiscordCommand.class);
         pluginStart();
     }

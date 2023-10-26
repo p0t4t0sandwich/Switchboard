@@ -1,6 +1,6 @@
 package dev.neuralnexus.tatercomms.sponge.commands;
 
-import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.taterlib.sponge.abstractions.player.SpongePlayer;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.api.command.Command;
@@ -12,7 +12,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
 import org.spongepowered.plugin.PluginContainer;
 
-public class SpongeDiscordCommand implements CommandExecutor {
+public class SpongeTaterCommsReloadCommand implements CommandExecutor {
     /**
      * Register the command
      * @param container The plugin container
@@ -20,7 +20,7 @@ public class SpongeDiscordCommand implements CommandExecutor {
      */
     public void onRegisterCommands(PluginContainer container, final RegisterCommandEvent<Command.Parameterized> event) {
         // Register commands
-        event.register(container, buildCommand(), DiscordCommand.getCommandName());
+        event.register(container, buildCommand(), "reload");
     }
 
     /**
@@ -30,9 +30,9 @@ public class SpongeDiscordCommand implements CommandExecutor {
     public Command.Parameterized buildCommand(){
         return Command
                 .builder()
-                .executor(new SpongeDiscordCommand())
-                .permission(DiscordCommand.getCommandPermission())
-                .shortDescription(Component.text("Get the discord invite link"))
+                .executor(new SpongeTaterCommsReloadCommand())
+                .permission("tatercomms.admin.reload")
+                .shortDescription(Component.text("Reloads the config."))
                 .build();
     }
 
@@ -42,14 +42,14 @@ public class SpongeDiscordCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandContext context) throws CommandException {
         try {
-            String[] args = new String[0];
+            String[] args = new String[]{"reload"};
 
             // Check if sender is a player
             boolean isPlayer = context.cause().root() instanceof Player;
             SpongePlayer player = isPlayer ? new SpongePlayer((Player) context.cause().root()) : null;
 
             // Execute command
-            DiscordCommand.executeCommand(player, isPlayer, args);
+            TaterCommsCommand.executeCommand(player, isPlayer, args);
         } catch (Exception e) {
             e.printStackTrace();
             return CommandResult.builder()

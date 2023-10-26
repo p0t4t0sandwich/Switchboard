@@ -20,11 +20,11 @@ import static net.minecraft.commands.Commands.literal;
 @Mod.EventBusSubscriber(modid = ForgeTaterCommsPlugin.MOD_ID)
 public final class ForgeDiscordCommand {
     /**
-     * Registers the Discord command.
+     * Registers the command.
      * @param event The register commands event.
      */
     @SubscribeEvent
-    public void registerCommand(RegisterCommandsEvent event) {
+    public static void registerCommand(RegisterCommandsEvent event) {
         int permissionLevel;
         if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED) {
             // Check if LuckPerms is hooked

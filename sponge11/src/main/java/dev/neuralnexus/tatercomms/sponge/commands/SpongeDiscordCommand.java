@@ -8,14 +8,11 @@ import org.spongepowered.api.command.CommandExecutor;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.parameter.CommandContext;
-import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
 import org.spongepowered.plugin.PluginContainer;
 
 public class SpongeDiscordCommand implements CommandExecutor {
-    Parameter.Value<String> commandArgs = Parameter.remainingJoinedStrings().key("command").build();
-
     /**
      * Register the command
      * @param container The plugin container
@@ -34,9 +31,8 @@ public class SpongeDiscordCommand implements CommandExecutor {
         return Command
                 .builder()
                 .executor(new SpongeDiscordCommand())
-                .permission("bng.command")
-                .shortDescription(Component.text("A command that generates a name for a bee."))
-                .addParameter(commandArgs)
+                .permission(DiscordCommand.getCommandPermission())
+                .shortDescription(Component.text("Get the discord invite link"))
                 .build();
     }
 
@@ -46,7 +42,7 @@ public class SpongeDiscordCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandContext context) throws CommandException {
         try {
-            String[] args = context.requireOne(commandArgs).split(" ");
+            String[] args = new String[0];
 
             // Check if sender is a player
             boolean isPlayer = context.cause().root() instanceof Player;
