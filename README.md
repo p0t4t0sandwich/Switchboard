@@ -55,7 +55,7 @@ TaterComms supports: Bukkit, Bungee, Fabric, Forge, Sponge, and Velocity
 
 | Server type         | Versions    | Jar Name                        |
 |---------------------|-------------|---------------------------------|
-| All 1.20 (Sponge11) | 1.20-1.20.1 | `TaterComms-1.20-<version>.jar` |
+| All 1.20 (Sponge11) | 1.20-1.20.2 | `TaterComms-1.20-<version>.jar` |
 | All 1.19 (Sponge10) | 1.19-1.19.4 | `TaterComms-1.19-<version>.jar` |
 | All 1.18 (Sponge9)  | 1.18-1.18.2 | `TaterComms-1.18-<version>.jar` |
 | All 1.17 (Sponge9)  | 1.17-1.17.1 | `TaterComms-1.17-<version>.jar` |
@@ -70,7 +70,9 @@ TaterComms supports: Bukkit, Bungee, Fabric, Forge, Sponge, and Velocity
 | `/tatercomms reload` | `tatercomms.admin.reload`    | Reload the plugin           |
 | `/discord`           | `tatercomms.command.discord` | Get the Discord invite link |
 
-## Release Notes v1.0.3
+## Release Notes
+
+### v1.0.3
 
 - Recoded to use TaterLib for easier cross-API support
 - Once again depends on the fabric API
