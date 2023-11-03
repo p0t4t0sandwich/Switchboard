@@ -3,6 +3,7 @@ version: 2
 
 # ServerName for standalone servers (Bukkit, Fabric, or Forge)
 # Proxies will use the server names defined in the config
+# The server.name doesn't have to match the actual Discord server name
 server:
   name: "serverName"
   # Weather the plugin is running in a proxy network
@@ -20,8 +21,10 @@ discord:
   inviteUrl: "&6Join our Discord: &ahttps://discord.gg/yourInvite"
 
   # Server to Discord Channel mapping
+  # The key has to match the server.name value from the very beginning
   channels:
     # in the format of serverName: guildID/channelId
+    # i.e.: bacon: "123456789012345678/123456789012345678"
     global: "123456789012345678/123456789012345678"
     serverName: "123456789012345678/123456789012345678"
 
