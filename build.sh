@@ -2,7 +2,7 @@
 
 PROJ_ID=tatercomms
 PROJ_NAME=TaterComms
-VERSION=1.0.3
+VERSION=1.0.4-R0.1-SNAPSHOT
 GROUP_ID=dev/neuralnexus
 
 # --------------------------- Functions --------------------------------

@@ -72,12 +72,6 @@ TaterComms supports: Bukkit, Bungee, Fabric, Forge, Sponge, and Velocity
 
 ## Release Notes
 
-### v1.0.3
+### v1.0.4-R0.1-SNAPSHOT
 
-- Recoded to use TaterLib for easier cross-API support
-- Once again depends on the fabric API
-- Back ported to 1.14 and added support for Sponge 8-11
-- Added plugin message support for server-side only events
-- Implemented plugin channel support for all platforms
-- Overhauled the message relay system
-  - Added Remote TCP socket support
+- Fixed bug where the plugin didn't unregister the Discord bot events when reloading the plugin

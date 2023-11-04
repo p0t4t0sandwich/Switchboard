@@ -8,7 +8,7 @@ subprojects {
     apply(plugin: 'java')
 
     group = 'dev.neuralnexus'
-    version = '1.0.3'
+    version = '1.0.4-R0.1-SNAPSHOT'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

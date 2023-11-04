@@ -29,13 +29,13 @@ public class TaterComms {
     private static String configPath;
     private static AbstractLogger logger;
     private static boolean STARTED = false;
+    private static boolean RELOADED = false;
     private static final ArrayList<Object> hooks = new ArrayList<>();
     private static DiscordBot discord = null;
     private static Server socketServer = null;
     private static Client socketClient = null;
     private static CommsRelay messageRelay = null;
     public static Supplier<Set<String>> proxyServers = HashSet::new;
-    private static boolean RELOADED = false;
 
     /**
      * Constructor for the TaterComms class.
@@ -96,14 +96,14 @@ public class TaterComms {
             // Register server listeners
             ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
             ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
-        }
 
-        if (TaterCommsConfig.serverUsingProxy()) {
-            // Register plugin channels
-            TaterLib.registerChannels.accept(CommsMessage.MessageType.getTypes());
+            if (TaterCommsConfig.serverUsingProxy()) {
+                // Register plugin channels
+                TaterLib.registerChannels.accept(CommsMessage.MessageType.getTypes());
 
-            // Register plugin message listeners
-            PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
+                // Register plugin message listeners
+                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
+            }
         }
 
         // Get the Discord token from the config
@@ -163,6 +163,9 @@ public class TaterComms {
 
         // Remove references to objects
         TaterCommsConfig.unloadConfig();
+        if (discord != null) {
+            discord.removeListeners();
+        }
         discord = null;
         if (socketServer != null) {
             socketServer.stop();

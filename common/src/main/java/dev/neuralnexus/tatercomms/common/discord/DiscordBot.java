@@ -49,6 +49,13 @@ public class DiscordBot extends ListenerAdapter  {
     }
 
     /**
+     * Remove event listeners.
+     */
+    public void removeListeners() {
+        api.removeEventListener(this);
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
