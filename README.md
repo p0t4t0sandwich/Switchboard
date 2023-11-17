@@ -35,10 +35,6 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 - Sponge death messages are a tad off with how the component serializes (eg: `playerName Skeleton was shot by` instead of `playerName was shot by Skeleton`)
 - Still need to tweak the pass-through system and get that working properly
 - Some implementations fire the shutdown event after the plugin unloads, so the shutdown message doesn't get sent
-- Bukkit 1.6.4 doesn't have an advancement event
-- Bukkit b1.7.3 doesn't support the following
-  - proper death/advancement events
-  - plugin messaging
 
 ## Dependencies
 
@@ -51,17 +47,12 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 ## Compatibility Cheatsheet
 
-TaterComms supports: Bukkit, Bungee, Fabric, Forge, Sponge, and Velocity
+TaterComms supports: Bukkit, BungeeCord, Fabric, Forge, Sponge, and Velocity
 
-| Server type         | Versions    | Jar Name                        |
-|---------------------|-------------|---------------------------------|
-| All 1.20 (Sponge11) | 1.20-1.20.2 | `TaterComms-1.20-<version>.jar` |
-| All 1.19 (Sponge10) | 1.19-1.19.4 | `TaterComms-1.19-<version>.jar` |
-| All 1.18 (Sponge9)  | 1.18-1.18.2 | `TaterComms-1.18-<version>.jar` |
-| All 1.17 (Sponge9)  | 1.17-1.17.1 | `TaterComms-1.17-<version>.jar` |
-| All 1.16 (Sponge8)  | 1.16-1.16.5 | `TaterComms-1.16-<version>.jar` |
-| All 1.15 (Sponge8)  | 1.15-1.15.2 | `TaterComms-1.15-<version>.jar` |
-| All 1.14            | 1.14-1.14.3 | `TaterComms-1.14-<version>.jar` |
+| Server type          | Versions | Jar Name                          |
+|----------------------|----------|-----------------------------------|
+| All 1.13 and up      | 1.13+    | `TaterUtils-<version>.jar`        |
+| All 1.12.2 and below | 1.12.2-  | `TaterUtils-legacy-<version>.jar` |
 
 ## Commands and Permissions
 

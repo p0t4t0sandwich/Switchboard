@@ -15,21 +15,21 @@ sponge {
         version("1.0")
     }
     plugin(project_id) {
-        version("1.16-${version}")
+        version(version)
         displayName(project_name)
-        entrypoint("dev.neuralnexus.tatercomms.sponge.SpongeTaterCommsPlugin")
-        description("A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.")
+        entrypoint("${group_id}.${project_id}.sponge.SpongePlugin")
+        description(project_description)
         links {
-             homepage("https://github.com/p0t4t0sandwich/TaterComms#readme")
-             source("https://github.com/p0t4t0sandwich/TaterComms")
-             issues("https://github.com/p0t4t0sandwich/TaterComms/issues")
+             homepage(homepage_url)
+             source(repo_url)
+             issues(issue_tracker_url)
         }
         dependency("spongeapi") {
             loadOrder(PluginDependency.LoadOrder.AFTER)
             optional(false)
         }
         dependency("taterlib") {
-            version("1.0.2")
+            version(taterlib_version)
             loadOrder(PluginDependency.LoadOrder.AFTER)
             optional(false)
         }
@@ -45,7 +45,7 @@ dependencies {
     implementation(project(path: ':common', configuration: 'shadow'))
 
     // TaterLib
-    compileOnly("dev.neuralnexus:TaterLib:1.16-${taterlib_version}")
+    compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
 }
 
 shadowJar {

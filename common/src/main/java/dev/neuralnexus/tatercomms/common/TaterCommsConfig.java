@@ -23,7 +23,7 @@ public class TaterCommsConfig {
             );
             config.reload();
         } catch (IOException | NullPointerException e) {
-            TaterComms.useLogger("Failed to load tatercomms.config.yml!\n" + e.getMessage());
+            TaterComms.getLogger().info(("Failed to load tatercomms.config.yml!\n" + e.getMessage()));
             e.printStackTrace();
         }
     }
@@ -42,7 +42,7 @@ public class TaterCommsConfig {
         try {
             config.save();
         } catch (IOException e) {
-            TaterComms.useLogger("Failed to save tatercomms.config.yml!\n" + e.getMessage());
+            TaterComms.getLogger().info("Failed to save tatercomms.config.yml!\n" + e.getMessage());
         }
     }
 
@@ -178,7 +178,7 @@ public class TaterCommsConfig {
     public static String remoteSecret() {
         String secret = config.getString("remote.secret");
         if (secret == null || secret.isEmpty()) {
-            TaterComms.useLogger("Generating new remote secret");
+            TaterComms.getLogger().info("Generating new remote secret");
             secret = UUID.randomUUID().toString();
             config.set("remote.secret", secret);
             saveConfig();

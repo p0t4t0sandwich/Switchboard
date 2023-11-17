@@ -42,7 +42,7 @@ public class Server {
      */
     public void start() {
         try {
-            TaterComms.useLogger("Starting Socket server on port " + port);
+            TaterComms.getLogger().info("Starting Socket server on port " + port);
             server = new ServerSocket(port);
             server.setReuseAddress(true);
 
@@ -53,7 +53,7 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            TaterComms.useLogger("Error running Socket server on port " + port);
+            TaterComms.getLogger().info("Error running Socket server on port " + port);
         } finally {
             if (server != null) {
                 try {
@@ -99,7 +99,7 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                     removeClient(server);
-                    TaterComms.useLogger("Error sending message to " + server);
+                    TaterComms.getLogger().info("Error sending message to " + server);
                 }
             }
         }
@@ -185,7 +185,7 @@ public class Server {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    TaterComms.useLogger("Error receiving message from " + clientSocket.getInetAddress().getHostAddress());
+                    TaterComms.getLogger().info("Error receiving message from " + clientSocket.getInetAddress().getHostAddress());
                 }
             }
         }

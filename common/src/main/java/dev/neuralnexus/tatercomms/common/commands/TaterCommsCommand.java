@@ -1,69 +1,78 @@
 package dev.neuralnexus.tatercomms.common.commands;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
+import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.taterlib.common.Utils;
+import dev.neuralnexus.taterlib.common.command.Command;
+import dev.neuralnexus.taterlib.common.command.Sender;
 
-import static dev.neuralnexus.taterlib.common.Utils.ansiiParser;
+/**
+ * TaterComms Command.
+ */
+public class TaterCommsCommand implements Command {
+    private String name = "tatercomms";
 
-
-public interface TaterCommsCommand {
-    static String getCommandName() {
-        return "tatercomms";
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
-    static String getCommandDescription() {
-        return "TaterComms management command.";
+    @Override
+    public String getName() {
+        return name;
     }
 
-    static String getCommandUsage() {
-        return "&cUsage: /tatercomms reload";
+    @Override
+    public String getDescription() {
+        return "TaterComms command";
     }
 
-    static String permissionBuilder(String[] args) {
+    @Override
+    public String getUsage() {
+        return "&a/tatercomms <reload | version>";
+    }
+
+    @Override
+    public String getPermission() {
+        return "tatercomms.admin";
+    }
+
+    @Override
+    public String execute(String[] args) {
+        return null;
+    }
+
+    @Override
+    public boolean execute(Sender sender, String label, String[] args) {
         if (args.length == 0) {
-            return "tatercomms.admin";
-        } else if (args.length == 1) {
-            return "tatercomms.admin." + args[0].toLowerCase();
-        } else if (args.length == 2) {
-            return "tatercomms.admin." + args[0].toLowerCase() + "." + args[1].toLowerCase();
-        } else {
-            return "tatercomms.admin." + args[0].toLowerCase() + "." + args[1].toLowerCase() + "." + args[2].toLowerCase();
-        }
-    }
-
-    static String executeCommand(String[] args) {
-        String text;
-        if (args.length == 0) {
-            return getCommandUsage();
+            sender.sendMessage(Utils.substituteSectionSign(getUsage()));
+            return true;
         }
         switch (args[0].toLowerCase()) {
             case "reload":
+                if (!sender.hasPermission(getPermission() + ".reload")) {
+                    sender.sendMessage(Utils.substituteSectionSign("&cYou do not have permission to use this command."));
+                    return true;
+                }
                 try {
-                    // Try to reload the plugin
                     TaterComms.reload();
-                    text = "&aReloaded TaterComms.";
+                    sender.sendMessage(Utils.substituteSectionSign("&aReloaded " + TaterComms.Constants.PROJECT_NAME + "!"));
                 } catch (Exception e) {
-                    text = "&cAn error occurred while reloading the plugin.";
+                    sender.sendMessage(Utils.substituteSectionSign("&cAn error occurred while reloading the plugin."));
                     e.printStackTrace();
                 }
                 break;
+            case "version":
+                if (!sender.hasPermission(getPermission() + ".version")) {
+                    sender.sendMessage(Utils.substituteSectionSign("&cYou do not have permission to use this command."));
+                    return true;
+                }
+                sender.sendMessage(Utils.substituteSectionSign("&aTaterComms version: " + TaterComms.Constants.PROJECT_VERSION));
+                break;
             default:
-                text = getCommandUsage();
+                sender.sendMessage(Utils.substituteSectionSign(getUsage()));
                 break;
         }
-        return PlaceholderParser.substituteSectionSign(text);
-    }
-
-    static void executeCommand(AbstractPlayer player, boolean isPlayer, String[] args) {
-        if (isPlayer) {
-            if (!player.hasPermission(permissionBuilder(args))) {
-                player.sendMessage("§cYou do not have permission to use this command.");
-            } else {
-                player.sendMessage(executeCommand(args));
-            }
-        } else {
-            TaterComms.useLogger(ansiiParser(executeCommand(args)));
-        }
+        return true;
     }
 }

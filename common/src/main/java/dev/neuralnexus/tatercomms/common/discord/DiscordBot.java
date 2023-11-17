@@ -4,8 +4,6 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.discord.player.DiscordPlayer;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
-import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
-import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -60,7 +58,7 @@ public class DiscordBot extends ListenerAdapter  {
      */
     @Override
     public void onReady(ReadyEvent event) {
-        TaterComms.useLogger("Discord bot is ready!");
+        TaterComms.getLogger().info("Discord bot is ready!");
     }
 
     /**
@@ -97,10 +95,9 @@ public class DiscordBot extends ListenerAdapter  {
         DiscordPlayer discordPlayer = new DiscordPlayer(author);
 
         // Send the message
-        CommsRelay relay = (CommsRelay) TaterLib.getMessageRelay();
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("message", content);
-        relay.relayMessage(new CommsMessage(discordPlayer,
+        TaterComms.getMessageRelay().relayMessage(new CommsMessage(discordPlayer,
                         CommsMessage.MessageType.PLAYER_MESSAGE,
                         content,
                         TaterCommsConfig.formattingChat().get("discord"),

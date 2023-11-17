@@ -1,9 +1,9 @@
 package dev.neuralnexus.tatercomms.common.discord.player;
 
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayerInventory;
-import dev.neuralnexus.taterlib.common.abstractions.utils.Position;
-import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
+import dev.neuralnexus.taterlib.common.entity.Entity;
+import dev.neuralnexus.taterlib.common.inventory.PlayerInventory;
+import dev.neuralnexus.taterlib.common.player.Player;
+import dev.neuralnexus.taterlib.common.utils.Location;
 import net.dv8tion.jda.api.entities.User;
 
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * Abstracts a Discord user to a TaterPlayer.
  */
-public class DiscordPlayer implements AbstractPlayer {
+public class DiscordPlayer implements Player {
     private final User user;
     private final String name;
     private final String displayName;
@@ -31,6 +31,81 @@ public class DiscordPlayer implements AbstractPlayer {
         // TODO: Set up account linking, and get the UUID and name from the database.
     }
 
+    @Override
+    public int getEntityId() {
+        return 0;
+    }
+
+    @Override
+    public void remove() {
+
+    }
+
+    @Override
+    public String getType() {
+        return null;
+    }
+
+    @Override
+    public String getCustomName() {
+        return null;
+    }
+
+    @Override
+    public void setCustomName(String s) {
+
+    }
+
+    @Override
+    public Location getLocation() {
+        return null;
+    }
+
+    @Override
+    public double getX() {
+        return 0;
+    }
+
+    @Override
+    public double getY() {
+        return 0;
+    }
+
+    @Override
+    public double getZ() {
+        return 0;
+    }
+
+    @Override
+    public float getYaw() {
+        return 0;
+    }
+
+    @Override
+    public float getPitch() {
+        return 0;
+    }
+
+    @Override
+    public String getDimension() {
+        return null;
+    }
+
+    @Override
+    public String getBiome() {
+        return null;
+    }
+
+    @Override
+    public void teleport(Location location) {
+
+    }
+
+    @Override
+    public void teleport(Entity entity) {
+
+    }
+
     /**
      * @inheritDoc
      */
@@ -47,16 +122,11 @@ public class DiscordPlayer implements AbstractPlayer {
         return this.displayName;
     }
 
-    @Override
-    public Position getPosition() {
-        return null;
-    }
-
     /**
      * @inheritDoc
      */
     @Override
-    public UUID getUUID() {
+    public UUID getUniqueId() {
         return UUID.fromString("00000000-0000-0000-0000-000000000000");
     }
 
@@ -82,6 +152,11 @@ public class DiscordPlayer implements AbstractPlayer {
         user.openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
     }
 
+    @Override
+    public boolean hasPermission(int i) {
+        return false;
+    }
+
     /**
      * @inheritDoc
      */
@@ -92,7 +167,7 @@ public class DiscordPlayer implements AbstractPlayer {
      * @inheritDoc
      */
     @Override
-    public AbstractPlayerInventory getInventory() {
+    public PlayerInventory getInventory() {
         return null;
     }
 
@@ -103,5 +178,12 @@ public class DiscordPlayer implements AbstractPlayer {
     public void kickPlayer(String message) {}
 
     @Override
-    public void setSpawn(Position position) {}
+    public void setSpawn(Location location, boolean b) {
+
+    }
+
+    @Override
+    public void setSpawn(Location location) {
+
+    }
 }

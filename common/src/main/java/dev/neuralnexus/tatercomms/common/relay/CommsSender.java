@@ -1,13 +1,14 @@
 package dev.neuralnexus.tatercomms.common.relay;
 
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayerInventory;
-import dev.neuralnexus.taterlib.common.abstractions.utils.Position;
-import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
+import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.common.entity.Entity;
+import dev.neuralnexus.taterlib.common.inventory.PlayerInventory;
+import dev.neuralnexus.taterlib.common.player.Player;
+import dev.neuralnexus.taterlib.common.utils.Location;
 
 import java.util.UUID;
 
-public class CommsSender implements AbstractPlayer {
+public class CommsSender implements Player {
     private final String name;
     private final String prefix;
     private final String suffix;
@@ -38,16 +39,16 @@ public class CommsSender implements AbstractPlayer {
      * @param player The player
      * @param serverName The server name
      */
-    public CommsSender(AbstractPlayer player, String serverName) {
-        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUUID(), serverName);
+    public CommsSender(Player player, String serverName) {
+        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), serverName);
     }
 
     /**
      * Constructor for the CommsSender class.
      * @param player The player
      */
-    public CommsSender(AbstractPlayer player) {
-        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUUID(), player.getServerName());
+    public CommsSender(Player player) {
+        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), player.getServerName());
     }
 
     /**
@@ -64,8 +65,83 @@ public class CommsSender implements AbstractPlayer {
     }
 
     @Override
-    public UUID getUUID() {
+    public UUID getUniqueId() {
         return this.uuid;
+    }
+
+    @Override
+    public int getEntityId() {
+        return 0;
+    }
+
+    @Override
+    public void remove() {
+
+    }
+
+    @Override
+    public String getType() {
+        return null;
+    }
+
+    @Override
+    public String getCustomName() {
+        return null;
+    }
+
+    @Override
+    public void setCustomName(String s) {
+
+    }
+
+    @Override
+    public Location getLocation() {
+        return null;
+    }
+
+    @Override
+    public double getX() {
+        return 0;
+    }
+
+    @Override
+    public double getY() {
+        return 0;
+    }
+
+    @Override
+    public double getZ() {
+        return 0;
+    }
+
+    @Override
+    public float getYaw() {
+        return 0;
+    }
+
+    @Override
+    public float getPitch() {
+        return 0;
+    }
+
+    @Override
+    public String getDimension() {
+        return null;
+    }
+
+    @Override
+    public String getBiome() {
+        return null;
+    }
+
+    @Override
+    public void teleport(Location location) {
+
+    }
+
+    @Override
+    public void teleport(Entity entity) {
+
     }
 
     @Override
@@ -76,11 +152,6 @@ public class CommsSender implements AbstractPlayer {
     @Override
     public String getDisplayName() {
         return this.displayName;
-    }
-
-    @Override
-    public Position getPosition() {
-        return new Position(0, 0, 0);
     }
 
     @Override
@@ -95,14 +166,19 @@ public class CommsSender implements AbstractPlayer {
 
     @Override
     public void sendMessage(String message) {
-        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
         if (player == null) return;
         player.sendMessage(message);
     }
 
     @Override
+    public boolean hasPermission(int i) {
+        return false;
+    }
+
+    @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
-        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
         if (player == null) return;
         player.sendPluginMessage(channel, bytes);
     }
@@ -112,13 +188,13 @@ public class CommsSender implements AbstractPlayer {
      * @param message The message
      */
     public void sendPluginMessage(CommsMessage message) {
-        AbstractPlayer player = PlayerCache.getPlayerFromCache(this.uuid);
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
         if (player == null) return;
         player.sendPluginMessage(message.getChannel(), message.toByteArray());
     }
 
     @Override
-    public AbstractPlayerInventory getInventory() {
+    public PlayerInventory getInventory() {
         return null;
     }
 
@@ -126,7 +202,10 @@ public class CommsSender implements AbstractPlayer {
     public void kickPlayer(String message) {}
 
     @Override
-    public void setSpawn(Position position) {}
+    public void setSpawn(Location location, boolean b) {}
+
+    @Override
+    public void setSpawn(Location location) {}
 
     @Override
     public String getPrefix() {

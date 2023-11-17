@@ -4,15 +4,13 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
 import dev.neuralnexus.tatercomms.common.socket.Client;
 import dev.neuralnexus.tatercomms.common.socket.Server;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.player.cache.PlayerCache;
-import dev.neuralnexus.taterlib.common.relay.Message;
-import dev.neuralnexus.taterlib.common.relay.MessageRelay;
+import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.common.player.Player;
 
 /**
  * Class for relaying messages between the server and Discord.
  */
-public class CommsRelay implements MessageRelay {
+public class CommsRelay {
     /**
      * Properties of the MessageRelay class
      * discord: The JDA instance
@@ -31,11 +29,9 @@ public class CommsRelay implements MessageRelay {
 
     /**
      * Relays a CommsMessage from a source to all other sources.
-     * @param message The message
+     * @param commsMessage The message
      */
-    public void relayMessage(Message message) {
-        CommsMessage commsMessage = (CommsMessage) message;
-
+    public void relayMessage(CommsMessage commsMessage) {
         // Set the chat to global if it is enabled
         // TODO: Rework into a per-user setting
         if (TaterCommsConfig.serverGlobalChatEnabledByDefault()
@@ -82,7 +78,7 @@ public class CommsRelay implements MessageRelay {
 
         // Relay messages to players on the server
         if (commsMessage.getChannel().equals(CommsMessage.MessageType.PLAYER_MESSAGE.getIdentifier())) {
-            for (AbstractPlayer player : PlayerCache.getPlayersInCache()) {
+            for (Player player : TaterAPIProvider.get().getServer().getOnlinePlayers()) {
                 if (commsMessage.isGlobal() || commsMessage.isRemote()) {
                     player.sendMessage(commsMessage.applyPlaceHolders());
                 } else if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(commsMessage.getSender().getServerName())) {

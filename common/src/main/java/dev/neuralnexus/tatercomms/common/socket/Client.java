@@ -62,7 +62,7 @@ public class Client {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                TaterComms.useLogger("Error receiving message from " + socket.getInetAddress().getHostAddress());
+                TaterComms.getLogger().info("Error receiving message from " + socket.getInetAddress().getHostAddress());
             }
         }
     }
@@ -90,7 +90,7 @@ public class Client {
         catch (IOException e) {
             e.printStackTrace();
             socket = null;
-            TaterComms.useLogger("Error sending message to " + host + ":" + port);
+            TaterComms.getLogger().info("Error sending message to " + host + ":" + port);
         }
     }
 }

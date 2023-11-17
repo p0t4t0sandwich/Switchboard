@@ -1,10 +1,10 @@
-name: TaterComms
+name: '${project_name}'
 version: '${version}'
-author: p0t4t0sandwich
-description: A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.
-main: dev.neuralnexus.tatercomms.bungee.BungeeTaterCommsPlugin
+author: '${authors}'
+description: '${project_description}'
+main: '${group_id}.${project_id}.bungee.BungeePlugin'
 depends: [TaterLib]
-softDepends: [LuckPerms]
+softdepends: [LuckPerms]
 commands:
   tatercomms:
     description: TaterComms command

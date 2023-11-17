@@ -3,11 +3,10 @@ package dev.neuralnexus.tatercomms.common.relay;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
+import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.common.relay.Message;
+import dev.neuralnexus.taterlib.common.player.Player;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
 import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Class for relaying messages between the server and Discord
  */
-public class CommsMessage implements Message {
+public class CommsMessage {
     private final CommsSender sender;
     private final String channel;
     private final String message;
@@ -81,7 +80,7 @@ public class CommsMessage implements Message {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(AbstractPlayer sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+    public CommsMessage(Player sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
         this(new CommsSender(sender), channel, message, placeHolderMessage, placeHolders);
     }
 
@@ -91,7 +90,7 @@ public class CommsMessage implements Message {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(AbstractPlayer sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+    public CommsMessage(Player sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
         this(new CommsSender(sender), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
@@ -114,7 +113,6 @@ public class CommsMessage implements Message {
     /**
      * @inheritDoc
      */
-    @Override
     public String getMessage() {
         return this.message;
     }
@@ -183,7 +181,6 @@ public class CommsMessage implements Message {
     /**
      * @inheritDoc
      */
-    @Override
     public long getTimestamp() {
         return this.timeStamp;
     }
@@ -245,19 +242,19 @@ public class CommsMessage implements Message {
         MessageType messageType = MessageType.fromIdentifier(message.getChannel());
         switch (messageType) {
             case PLAYER_ADVANCEMENT_FINISHED:
-                CommonPlayerListener.onPlayerAdvancementFinished(new Object[]{message.getSender(), message.getMessage()});
+                TaterCommsPlayerListener.onPlayerAdvancementFinished(new CommsEvents.CommsPlayerAdvancementFinishedEvent(message));
                 break;
             case PLAYER_DEATH:
-                CommonPlayerListener.onPlayerDeath(new Object[]{message.getSender(), message.getMessage()});
+                TaterCommsPlayerListener.onPlayerDeath(new CommsEvents.CommsPlayerDeathEvent(message));
                 break;
             case PLAYER_LOGIN:
-                CommonPlayerListener.onPlayerLogin(new Object[]{message.getSender(), message.getMessage()});
+                TaterCommsPlayerListener.onPlayerLogin(new CommsEvents.CommsPlayerLoginEvent(message));
                 break;
             case PLAYER_LOGOUT:
-                CommonPlayerListener.onPlayerLogout(new Object[]{message.getSender(), message.getMessage()});
+                TaterCommsPlayerListener.onPlayerLogout(new CommsEvents.CommsPlayerLogoutEvent(message));
                 break;
             case PLAYER_MESSAGE:
-                CommonPlayerListener.onPlayerMessage(new Object[]{message.getSender(), message.getMessage()});
+                TaterCommsPlayerListener.onPlayerMessage(new CommsEvents.CommsPlayerMessageEvent(message));
                 break;
             case SERVER_STARTED:
                 CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});

@@ -9,15 +9,22 @@ dependencies {
     compileOnly("net.md-5:bungeecord-api:${minecraft_version}-${bungeecord_version}")
 
     // TaterLib
-    compileOnly("dev.neuralnexus:TaterLib:1.20-${taterlib_version}")
+    compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
 }
 
-processResources {
-    def props = [version: version]
-    inputs.properties(props)
-    filteringCharset('UTF-8')
-    filesMatching('bungee.yml') {
-        expand(props)
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            project_id             : project_id,
+            project_name           : project_name,
+            project_description    : project_description,
+            group_id               : group_id,
+            version                : version,
+            authors                : authors,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['bungee.yml']) {
+        expand replaceProperties + [project: project]
     }
 }
 

@@ -1,45 +1,25 @@
 package dev.neuralnexus.tatercomms.common;
 
-import dev.neuralnexus.taterlib.common.TemplatePlugin;
+import dev.neuralnexus.taterlib.common.Plugin;
+import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
 
 /**
- * The TaterComms plugin interface.
+ * The main plugin interface.
  */
-public interface TaterCommsPlugin extends TemplatePlugin {
+public interface TaterCommsPlugin extends Plugin {
     /**
-     * Starts the TaterComms plugin.
+     * Starts the plugin.
      */
-    default void pluginStart() {
-        try {
-            useLogger("TaterComms is running on " + getServerType() + " " + getServerVersion() + "!");
-
-            // Start
-            TaterComms.start(pluginConfigPath(), pluginLogger());
-
-            // Register hooks
-            registerHooks();
-
-            // Register event listeners
-            registerEventListeners();
-
-            // Register commands
-            registerCommands();
-
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
-        }
+    default void pluginStart(Object plugin, AbstractLogger logger) {
+        logger.info(TaterComms.Constants.PROJECT_NAME + " is running on " + TaterAPIProvider.get().serverType() + " " + TaterAPIProvider.get().minecraftVersion() + "!");
+        TaterComms.start(plugin, logger);
     }
 
     /**
      * Stops the plugin.
      */
     default void pluginStop() {
-        try {
-            TaterComms.stop();
-        } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
-        }
+        TaterComms.stop();
     }
 }

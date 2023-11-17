@@ -1,46 +1,53 @@
 package dev.neuralnexus.tatercomms.common.commands;
 
-import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
-import dev.neuralnexus.taterlib.common.abstractions.player.AbstractPlayer;
-import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterlib.common.Utils;
+import dev.neuralnexus.taterlib.common.command.Command;
+import dev.neuralnexus.taterlib.common.command.Sender;
 
-import static dev.neuralnexus.taterlib.common.Utils.ansiiParser;
+/**
+ * Discord Command.
+ */
+public class DiscordCommand implements Command {
+    private String name = "discord";
 
-public interface DiscordCommand {
-    static String getCommandName() {
-        return "discord";
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
-    static String getCommandDescription() {
-        return "Get the link to the Discord server.";
+    @Override
+    public String getName() {
+        return name;
     }
 
-    static String getCommandUsage() {
-        return "Usage: /discord";
+    @Override
+    public String getDescription() {
+        return "Get the discord invite link";
     }
 
-    static String getCommandPermission() {
+    @Override
+    public String getUsage() {
+        return "/discord";
+    }
+
+    @Override
+    public String getPermission() {
         return "tatercomms.command.discord";
     }
 
-    static String executeCommand(String[] args) {
-        if (args.length != 0) {
-            return getCommandUsage();
-        } else {
-            return new PlaceholderParser(TaterCommsConfig.discordInviteUrl()).parseSectionSign().getResult();
-        }
+    @Override
+    public String execute(String[] args) {
+        return null;
     }
 
-    static void executeCommand(AbstractPlayer player, boolean isPlayer, String[] args) {
-        if (isPlayer) {
-            if (!player.hasPermission(getCommandPermission())) {
-                player.sendMessage("§cYou do not have permission to use this command.");
-            } else {
-                player.sendMessage(executeCommand(args));
-            }
+    @Override
+    public boolean execute(Sender sender, String label, String[] args) {
+        if (!sender.hasPermission(getPermission())) {
+            sender.sendMessage(Utils.substituteSectionSign("&cYou do not have permission to use this command."));
         } else {
-            TaterComms.useLogger(ansiiParser(executeCommand(args)));
+            sender.sendMessage(Utils.substituteSectionSign(TaterCommsConfig.discordInviteUrl()));
         }
+        return true;
     }
 }

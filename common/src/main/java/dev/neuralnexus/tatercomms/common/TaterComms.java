@@ -1,19 +1,22 @@
 package dev.neuralnexus.tatercomms.common;
 
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
+import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
-import dev.neuralnexus.tatercomms.common.listeners.player.CommonPlayerListener;
+import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.tatercomms.common.socket.Client;
 import dev.neuralnexus.tatercomms.common.socket.Server;
-import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.Utils;
-import dev.neuralnexus.taterlib.common.abstractions.logger.AbstractLogger;
-import dev.neuralnexus.taterlib.common.event.player.PlayerEvents;
-import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvents;
-import dev.neuralnexus.taterlib.common.event.server.ServerEvents;
+import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.common.event.api.CommandEvents;
+import dev.neuralnexus.taterlib.common.event.api.PlayerEvents;
+import dev.neuralnexus.taterlib.common.event.api.PluginMessageEvents;
+import dev.neuralnexus.taterlib.common.event.api.ServerEvents;
+import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,10 +29,11 @@ import java.util.function.Supplier;
  */
 public class TaterComms {
     private static final TaterComms instance = new TaterComms();
-    private static String configPath;
-    private static AbstractLogger logger;
+    private Object plugin;
+    private AbstractLogger logger;
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
+
     private static final ArrayList<Object> hooks = new ArrayList<>();
     private static DiscordBot discord = null;
     private static Server socketServer = null;
@@ -38,12 +42,7 @@ public class TaterComms {
     public static Supplier<Set<String>> proxyServers = HashSet::new;
 
     /**
-     * Constructor for the TaterComms class.
-     */
-    public TaterComms() {}
-
-    /**
-     * Getter for the singleton instance of the TaterComms class.
+     * Getter for the singleton instance of the class.
      * @return The singleton instance
      */
     public static TaterComms getInstance() {
@@ -51,72 +50,96 @@ public class TaterComms {
     }
 
     /**
-     * Add a hook to the list of hooks
-     * @param hook The hook to add
+     * Set the plugin
+     * @param plugin The plugin
      */
-    public static void addHook(Object hook) {
-        hooks.add(hook);
+    private static void setPlugin(Object plugin) {
+        instance.plugin = plugin;
     }
 
     /**
-     * Use the Logger
-     * @param message The message to log
+     * Get the plugin
+     * @return The plugin
      */
-    public static void useLogger(String message) {
-        logger.info(message);
+    public static Object getPlugin() {
+        return instance.plugin;
     }
+
+    /**
+     * Set the logger
+     * @param logger The logger
+     */
+    private static void setLogger(AbstractLogger logger) {
+        instance.logger = logger;
+    }
+
+    /**
+     * Get the logger
+     * @return The logger
+     */
+    public static AbstractLogger getLogger() {
+        return instance.logger;
+    }
+
+
 
     /**
      * Start
-     * @param configPath The path to the config file
+     * @param plugin The plugin
      * @param logger The logger
      */
-    public static void start(String configPath, AbstractLogger logger) {
-        TaterComms.configPath = configPath;
-        TaterComms.logger = logger;
+    public static void start(Object plugin, AbstractLogger logger) {
+        setPlugin(plugin);
+        setLogger(logger);
 
         // Config
-        TaterCommsConfig.loadConfig(configPath);
+        TaterCommsConfig.loadConfig(TaterAPIProvider.get().configFolder());
 
         if (STARTED) {
-            useLogger("TaterComms has already started!");
+            logger.info(Constants.PROJECT_NAME + " has already started!");
             return;
         }
         STARTED = true;
 
         if (!RELOADED) {
+            // Register commands
+            CommandEvents.REGISTER_COMMAND.register((event -> {
+                event.registerCommand(TaterComms.getPlugin(), new TaterCommsCommand(), "tc");
+                event.registerCommand(TaterComms.getPlugin(), new DiscordCommand());
+            }));
+
             // Register player listeners
-            PlayerEvents.ADVANCEMENT_FINISHED.register(CommonPlayerListener::onPlayerAdvancementFinished);
-            PlayerEvents.DEATH.register(CommonPlayerListener::onPlayerDeath);
-            PlayerEvents.LOGIN.register(CommonPlayerListener::onPlayerLogin);
-            PlayerEvents.LOGOUT.register(CommonPlayerListener::onPlayerLogout);
-            PlayerEvents.MESSAGE.register(CommonPlayerListener::onPlayerMessage);
-            PlayerEvents.SERVER_SWITCH.register(CommonPlayerListener::onPlayerServerSwitch);
+            PlayerEvents.ADVANCEMENT_FINISHED.register(TaterCommsPlayerListener::onPlayerAdvancementFinished);
+            PlayerEvents.DEATH.register(TaterCommsPlayerListener::onPlayerDeath);
+            PlayerEvents.LOGIN.register(TaterCommsPlayerListener::onPlayerLogin);
+            PlayerEvents.LOGOUT.register(TaterCommsPlayerListener::onPlayerLogout);
+            PlayerEvents.MESSAGE.register(TaterCommsPlayerListener::onPlayerMessage);
+            PlayerEvents.SERVER_SWITCH.register(TaterCommsPlayerListener::onPlayerServerSwitch);
 
             // Register server listeners
-            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
-            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+//            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
+//            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
 
             if (TaterCommsConfig.serverUsingProxy()) {
                 // Register plugin channels
-                TaterLib.registerChannels.accept(CommsMessage.MessageType.getTypes());
+                TaterAPIProvider.get().registerChannels(CommsMessage.MessageType.getTypes());
 
                 // Register plugin message listeners
-                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
+//                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
             }
         }
 
         // Get the Discord token from the config
         String discordToken = TaterCommsConfig.discordToken();
         if (discordToken == null || discordToken.isEmpty()) {
-            useLogger("No Discord token found in tatercomms.config.yml!");
+            logger.info("No Discord token found in tatercomms.config.yml!");
             TaterCommsConfig.setDiscordEnabled(false);
         }
 
         // Get server-channel mappings from the config
         HashMap<String, String> serverChannels = TaterCommsConfig.discordChannels();
         if (serverChannels.isEmpty()) {
-            useLogger("No server-channel mappings found in tatercomms.config.yml!");
+            logger.info("No server-channel mappings found in tatercomms.config.yml!");
             TaterCommsConfig.setDiscordEnabled(false);
         }
 
@@ -136,11 +159,8 @@ public class TaterComms {
         }
         messageRelay = new CommsRelay(discord, socketClient);
 
-        // Cancel chat and set message relay
-        TaterLib.cancelChat = TaterCommsConfig.formattingEnabled();
-        TaterLib.setMessageRelay(messageRelay);
+        logger.info(Constants.PROJECT_NAME + " has been started!");
 
-        useLogger("TaterComms has been started!");
         TaterCommsAPIProvider.register(instance);
     }
 
@@ -148,7 +168,7 @@ public class TaterComms {
      * Start
      */
     public static void start() {
-        start(configPath, TaterLib.logger);
+        start(instance.plugin, instance.logger);
     }
 
     /**
@@ -156,7 +176,7 @@ public class TaterComms {
      */
     public static void stop() {
         if (!STARTED) {
-            useLogger("TaterComms has already stopped!");
+            instance.logger.info(Constants.PROJECT_NAME + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -174,7 +194,7 @@ public class TaterComms {
         socketClient = null;
         messageRelay = null;
 
-        useLogger("TaterComms has been stopped!");
+        instance.logger.info("TaterComms has been stopped!");
         TaterCommsAPIProvider.unregister();
     }
 
@@ -183,7 +203,7 @@ public class TaterComms {
      */
     public static void reload() {
         if (!STARTED) {
-            useLogger("TaterComms has not been started!");
+            instance.logger.info(Constants.PROJECT_NAME + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -192,9 +212,9 @@ public class TaterComms {
         stop();
 
         // Start
-        start(configPath, logger);
+        start();
 
-        useLogger("TaterComms has been reloaded!");
+        instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
     }
 
     /**
@@ -203,5 +223,24 @@ public class TaterComms {
      */
     public static void setProxyServers(Supplier<Set<String>> proxyServers) {
         TaterComms.proxyServers = proxyServers;
+    }
+
+    /**
+     * Get Message Relay
+     */
+    public static CommsRelay getMessageRelay() {
+        return messageRelay;
+    }
+
+    /**
+     * Constants used throughout the plugin.
+     */
+    public static class Constants {
+        public static final String PROJECT_NAME = "TaterComms";
+        public static final String PROJECT_ID = "tatercomms";
+        public static final String PROJECT_VERSION = "1.0.4-R0.1-SNAPSHOT";
+        public static final String PROJECT_AUTHORS = "p0t4t0sandwich";
+        public static final String PROJECT_DESCRIPTION = "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.";
+        public static final String PROJECT_URL = "https://github.com/p0t4t0sandwich/TaterComms";
     }
 }
