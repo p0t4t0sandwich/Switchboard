@@ -1,6 +1,7 @@
 package dev.neuralnexus.tatercomms.common.socket;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.relay.CommsEvents;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 
 import java.io.DataInputStream;
@@ -50,7 +51,7 @@ public class Client {
 
                 CommsMessage message = CommsMessage.fromJSON(decryptedMessage);
                 if (message != null) {
-                    CommsMessage.parseMessageChannel(new Object[]{"", message.toByteArray()});
+                    CommsMessage.parseMessageChannel(new CommsEvents.CommsPluginMessageEvent(message));
                 }
 
                 // Clear the input stream

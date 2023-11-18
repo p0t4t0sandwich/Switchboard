@@ -2,9 +2,12 @@ package dev.neuralnexus.tatercomms.common.relay;
 
 import dev.neuralnexus.taterlib.common.entity.Entity;
 import dev.neuralnexus.taterlib.common.event.player.*;
+import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvent;
 import dev.neuralnexus.taterlib.common.event.server.ServerStartedEvent;
+import dev.neuralnexus.taterlib.common.event.server.ServerStoppedEvent;
 import dev.neuralnexus.taterlib.common.inventory.ItemStack;
 import dev.neuralnexus.taterlib.common.player.Player;
+import dev.neuralnexus.taterlib.common.server.Server;
 
 import java.util.List;
 import java.util.Set;
@@ -163,7 +166,70 @@ public class CommsEvents {
         public void setCancelled(boolean b) {}
     }
 
-    public static class CommsServerStartedEvent implements ServerStartedEvent {
+    public static class CommsServer implements Server {
+        private final CommsMessage message;
 
+        public CommsServer(CommsMessage message) {
+            this.message = message;
+        }
+
+        @Override
+        public String getName() {
+            return message.getSender().getServerName();
+        }
+
+        @Override
+        public Set<Player> getOnlinePlayers() {
+            return null;
+        }
+    }
+
+    public static class CommsServerStartedEvent implements ServerStartedEvent {
+        private final CommsMessage message;
+
+        public CommsServerStartedEvent(CommsMessage message) {
+            this.message = message;
+        }
+
+        @Override
+        public Server getServer() {
+            return new CommsServer(message);
+        }
+    }
+
+    public static class CommsServerStoppedEvent implements ServerStoppedEvent {
+        private final CommsMessage message;
+
+        public CommsServerStoppedEvent(CommsMessage message) {
+            this.message = message;
+        }
+
+        @Override
+        public Server getServer() {
+            return new CommsServer(message);
+        }
+    }
+
+    public static class CommsPluginMessageEvent implements PluginMessageEvent.Server {
+        private final CommsMessage message;
+
+        public CommsPluginMessageEvent(CommsMessage message) {
+            this.message = message;
+        }
+
+        @Override
+        public String getChannel() {
+            return message.getMessage();
+        }
+
+        @Override
+        public byte[] getData() {
+            return message.toByteArray();
+        }
+
+        @Override
+        public Object getServer() {
+            return message.getSender().getServerName();
+        }
     }
 }

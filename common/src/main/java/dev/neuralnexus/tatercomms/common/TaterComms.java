@@ -33,8 +33,6 @@ public class TaterComms {
     private AbstractLogger logger;
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
-
-    private static final ArrayList<Object> hooks = new ArrayList<>();
     private static DiscordBot discord = null;
     private static Server socketServer = null;
     private static Client socketClient = null;
@@ -81,8 +79,6 @@ public class TaterComms {
         return instance.logger;
     }
 
-
-
     /**
      * Start
      * @param plugin The plugin
@@ -117,15 +113,15 @@ public class TaterComms {
             PlayerEvents.SERVER_SWITCH.register(TaterCommsPlayerListener::onPlayerServerSwitch);
 
             // Register server listeners
-//            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
-//            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
+            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
 
             if (TaterCommsConfig.serverUsingProxy()) {
                 // Register plugin channels
                 TaterAPIProvider.get().registerChannels(CommsMessage.MessageType.getTypes());
 
                 // Register plugin message listeners
-//                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
+                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
             }
         }
 

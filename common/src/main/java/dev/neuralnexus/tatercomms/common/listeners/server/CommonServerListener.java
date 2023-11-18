@@ -5,18 +5,20 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.taterlib.common.TaterLib;
+import dev.neuralnexus.taterlib.common.event.server.ServerStartedEvent;
+import dev.neuralnexus.taterlib.common.event.server.ServerStoppedEvent;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public interface CommonServerListener {
     /**
      * Called when a server starts, and sends it to the message relay.
+     * @param event The event
      */
-    static void onServerStarted(Object[] args) {
-        String server;
-        if (args.length > 0) {
-            server = args[0].toString();
-        } else {
+    static void onServerStarted(ServerStartedEvent event) {
+        String server = event.getServer().getName();
+        if (server.equals("local")) {
             server = TaterCommsConfig.serverName();
         }
         TaterComms.getMessageRelay().relayMessage(new CommsMessage(server,
@@ -29,12 +31,11 @@ public interface CommonServerListener {
 
     /**
      * Called when a server stops, and sends it to the message relay.
+     * @param event The event
      */
-    static void onServerStopped(Object[] args) {
-        String server;
-        if (args.length > 0) {
-            server = args[0].toString();
-        } else {
+    static void onServerStopped(ServerStoppedEvent event) {
+        String server = event.getServer().getName();
+        if (server.equals("local")) {
             server = TaterCommsConfig.serverName();
         }
         TaterComms.getMessageRelay().relayMessage(new CommsMessage(server,

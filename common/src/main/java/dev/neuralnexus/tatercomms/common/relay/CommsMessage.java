@@ -5,6 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
 import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
+import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvent;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.common.player.Player;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
@@ -221,11 +222,11 @@ public class CommsMessage {
 
     /**
      * Message channel parser
-     * @param args The arguments
+     * @param event The event
      */
-    public static void parseMessageChannel(Object[] args) {
+    public static void parseMessageChannel(PluginMessageEvent.Server event) {
         CommsMessage message;
-        byte[] data = (byte[]) args[1];
+        byte[] data = event.getData();
         try {
             message = CommsMessage.fromByteArray(data);
         } catch (Exception e) {
@@ -257,10 +258,10 @@ public class CommsMessage {
                 TaterCommsPlayerListener.onPlayerMessage(new CommsEvents.CommsPlayerMessageEvent(message));
                 break;
             case SERVER_STARTED:
-                CommonServerListener.onServerStarted(new Object[]{message.getSender().getServerName()});
+                CommonServerListener.onServerStarted(new CommsEvents.CommsServerStartedEvent(message));
                 break;
             case SERVER_STOPPED:
-                CommonServerListener.onServerStopped(new Object[]{message.getSender().getServerName()});
+                CommonServerListener.onServerStopped(new CommsEvents.CommsServerStoppedEvent(message));
                 break;
             case CUSTOM:
 //                CommonServerListener.onCustomMessage(new Object[]{message.getSender().getServerName(), message.getMessage()});
