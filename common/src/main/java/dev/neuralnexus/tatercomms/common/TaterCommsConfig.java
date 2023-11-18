@@ -47,6 +47,49 @@ public class TaterCommsConfig {
     }
 
     /**
+     * Check to see if a module is enabled
+     * @param module The module
+     */
+    public static boolean isModuleEnabled(String module) {
+        return config.getBoolean("modules" + module + ".enabled");
+    }
+
+    /**
+     * Discord config.
+     */
+    public static class DiscordConfig {
+        /**
+         * Get the Discord token from the config file.
+         * @return The Discord token
+         */
+        public static String token() {
+            return config.getString("modules.discord.token");
+        }
+
+        /**
+         * Get the Discord invite link
+         */
+        public static String inviteUrl() {
+            return config.getString("modules.discord.inviteUrl");
+        }
+
+        /**
+         * Get the Discord channel-server mappings from the config file
+         * @return The map of server channels
+         */
+        public static HashMap<String, String> channels() {
+            HashMap<String, String> serverChannels = new HashMap<>();
+            HashMap<String, Block> channelConfig = (HashMap<String, Block>) config.getBlock("modules.discord.channels").getStoredValue();
+            for (Map.Entry<String, Block> entry: channelConfig.entrySet()) {
+                serverChannels.put(entry.getKey(), (String) entry.getValue().getStoredValue());
+            }
+            return serverChannels;
+        }
+    }
+
+    // TODO: Refactor
+    // ------------------------- Deprecated -------------------------
+    /**
      * Get the server name from the config
      * @return The server name
      */

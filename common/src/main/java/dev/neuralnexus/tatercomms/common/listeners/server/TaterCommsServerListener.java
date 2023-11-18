@@ -3,15 +3,12 @@ package dev.neuralnexus.tatercomms.common.listeners.server;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
-import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
-import dev.neuralnexus.taterlib.common.TaterLib;
 import dev.neuralnexus.taterlib.common.event.server.ServerStartedEvent;
 import dev.neuralnexus.taterlib.common.event.server.ServerStoppedEvent;
 
 import java.util.HashMap;
-import java.util.Objects;
 
-public interface CommonServerListener {
+public interface TaterCommsServerListener {
     /**
      * Called when a server starts, and sends it to the message relay.
      * @param event The event

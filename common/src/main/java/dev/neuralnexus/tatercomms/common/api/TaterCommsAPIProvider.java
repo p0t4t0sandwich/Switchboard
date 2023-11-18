@@ -3,16 +3,16 @@ package dev.neuralnexus.tatercomms.common.api;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 
 /**
- * TaterComms API Provider
+ * API Provider
  */
 public class TaterCommsAPIProvider {
-    private static TaterComms instance = null;
+    private static TaterCommsAPI instance = null;
 
     /**
-     * Get the instance of BeeNameGenerator
-     * @return The instance of BeeNameGenerator
+     * Get the instance of the API
+     * @return The instance of the API
      */
-    public static TaterComms get() {
+    public static TaterCommsAPI get() {
         if (instance == null) {
             throw new NotLoadedException();
         }
@@ -21,9 +21,12 @@ public class TaterCommsAPIProvider {
 
     /**
      * DO NOT USE THIS METHOD, IT IS FOR INTERNAL USE ONLY
-     * @param instance: The instance of TaterComms
+     * @param instance: The instance of the API
      */
-    public static void register(TaterComms instance) {
+    public static void register(TaterCommsAPI instance) {
+        if (TaterCommsAPIProvider.instance != null) {
+            throw new IllegalStateException(TaterComms.Constants.PROJECT_NAME + "API has already been registered!");
+        }
         TaterCommsAPIProvider.instance = instance;
     }
 
@@ -35,10 +38,10 @@ public class TaterCommsAPIProvider {
     }
 
     /**
-     * Throw this exception when the API hasn't loaded yet, or you don't have the BeeNameGenerator plugin installed.
+     * Throw this exception when the API hasn't loaded yet, or you don't have the plugin installed.
      */
     private static final class NotLoadedException extends IllegalStateException {
-        private static final String MESSAGE = "The API hasn't loaded yet, or you don't have the TaterComms plugin installed.";
+        private static final String MESSAGE = "The API hasn't loaded yet, or you don't have the " + TaterComms.Constants.PROJECT_NAME + " plugin installed.";
 
         NotLoadedException() {
             super(MESSAGE);

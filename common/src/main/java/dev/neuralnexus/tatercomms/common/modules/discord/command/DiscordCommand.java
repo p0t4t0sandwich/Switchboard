@@ -1,4 +1,4 @@
-package dev.neuralnexus.tatercomms.common.commands;
+package dev.neuralnexus.tatercomms.common.modules.discord.command;
 
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.taterlib.common.Utils;
@@ -37,16 +37,11 @@ public class DiscordCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
-        return null;
-    }
-
-    @Override
     public boolean execute(Sender sender, String label, String[] args) {
         if (!sender.hasPermission(getPermission())) {
             sender.sendMessage(Utils.substituteSectionSign("&cYou do not have permission to use this command."));
         } else {
-            sender.sendMessage(Utils.substituteSectionSign(TaterCommsConfig.discordInviteUrl()));
+            sender.sendMessage(Utils.substituteSectionSign(TaterCommsConfig.DiscordConfig.inviteUrl()));
         }
         return true;
     }

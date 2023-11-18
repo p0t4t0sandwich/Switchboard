@@ -1,11 +1,12 @@
 package dev.neuralnexus.tatercomms.common;
 
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPI;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
-import dev.neuralnexus.tatercomms.common.commands.DiscordCommand;
+import dev.neuralnexus.tatercomms.common.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
 import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
 import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
-import dev.neuralnexus.tatercomms.common.listeners.server.CommonServerListener;
+import dev.neuralnexus.tatercomms.common.listeners.server.TaterCommsServerListener;
 import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
 import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
 import dev.neuralnexus.tatercomms.common.socket.Client;
@@ -18,7 +19,6 @@ import dev.neuralnexus.taterlib.common.event.api.PluginMessageEvents;
 import dev.neuralnexus.taterlib.common.event.api.ServerEvents;
 import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -99,10 +99,7 @@ public class TaterComms {
 
         if (!RELOADED) {
             // Register commands
-            CommandEvents.REGISTER_COMMAND.register((event -> {
-                event.registerCommand(TaterComms.getPlugin(), new TaterCommsCommand(), "tc");
-                event.registerCommand(TaterComms.getPlugin(), new DiscordCommand());
-            }));
+            CommandEvents.REGISTER_COMMAND.register((event -> event.registerCommand(TaterComms.getPlugin(), new TaterCommsCommand(), "tc")));
 
             // Register player listeners
             PlayerEvents.ADVANCEMENT_FINISHED.register(TaterCommsPlayerListener::onPlayerAdvancementFinished);
@@ -113,8 +110,8 @@ public class TaterComms {
             PlayerEvents.SERVER_SWITCH.register(TaterCommsPlayerListener::onPlayerServerSwitch);
 
             // Register server listeners
-            ServerEvents.STARTED.register(CommonServerListener::onServerStarted);
-            ServerEvents.STOPPED.register(CommonServerListener::onServerStopped);
+            ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
+            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
 
             if (TaterCommsConfig.serverUsingProxy()) {
                 // Register plugin channels
@@ -123,20 +120,6 @@ public class TaterComms {
                 // Register plugin message listeners
                 PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
             }
-        }
-
-        // Get the Discord token from the config
-        String discordToken = TaterCommsConfig.discordToken();
-        if (discordToken == null || discordToken.isEmpty()) {
-            logger.info("No Discord token found in tatercomms.config.yml!");
-            TaterCommsConfig.setDiscordEnabled(false);
-        }
-
-        // Get server-channel mappings from the config
-        HashMap<String, String> serverChannels = TaterCommsConfig.discordChannels();
-        if (serverChannels.isEmpty()) {
-            logger.info("No server-channel mappings found in tatercomms.config.yml!");
-            TaterCommsConfig.setDiscordEnabled(false);
         }
 
         // Start the socket server
@@ -150,14 +133,9 @@ public class TaterComms {
             }
         }
 
-        if (TaterCommsConfig.discordEnabled()) {
-            discord = new DiscordBot(discordToken, serverChannels);
-        }
-        messageRelay = new CommsRelay(discord, socketClient);
-
         logger.info(Constants.PROJECT_NAME + " has been started!");
 
-        TaterCommsAPIProvider.register(instance);
+        TaterCommsAPIProvider.register(new TaterCommsAPI());
     }
 
     /**

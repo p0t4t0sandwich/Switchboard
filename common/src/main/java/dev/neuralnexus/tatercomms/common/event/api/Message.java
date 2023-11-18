@@ -1,11 +1,8 @@
-package dev.neuralnexus.tatercomms.common.relay;
+package dev.neuralnexus.tatercomms.common.event.api;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
-import dev.neuralnexus.tatercomms.common.listeners.server.TaterCommsServerListener;
-import dev.neuralnexus.taterlib.common.event.pluginmessages.PluginMessageEvent;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.common.player.Player;
 import dev.neuralnexus.taterlib.lib.gson.Gson;
@@ -17,10 +14,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Class for relaying messages between the server and Discord
+ * Message object.
  */
-public class CommsMessage {
-    private final CommsSender sender;
+public class Message {
+    private final MessageSender sender;
     private final String channel;
     private final String message;
     private String placeHolderMessage = "";
@@ -35,14 +32,14 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(CommsSender sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+    public Message(MessageSender sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
         this.sender = sender;
         this.channel = channel;
         this.message = message;
         this.placeHolderMessage = placeHolderMessage;
         this.placeHolders = placeHolders;
         placeHolders.put("message", message);
-        this.timeStamp = System.currentTimeMillis(); // ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+        this.timeStamp = System.currentTimeMillis();
     }
 
     /**
@@ -51,7 +48,7 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(CommsSender sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+    public Message(MessageSender sender, Message.MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
         this(sender, channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
@@ -61,8 +58,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(String serverName, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
-        this(new CommsSender(serverName), channel, message, placeHolderMessage, placeHolders);
+    public Message(String serverName, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new MessageSender(serverName), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -71,8 +68,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(String serverName, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
-        this(new CommsSender(serverName), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
+    public Message(String serverName, Message.MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new MessageSender(serverName), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -81,8 +78,8 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(Player sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
-        this(new CommsSender(sender), channel, message, placeHolderMessage, placeHolders);
+    public Message(Player sender, String channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new MessageSender(sender), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -91,15 +88,15 @@ public class CommsMessage {
      * @param channel The channel
      * @param message The message
      */
-    public CommsMessage(Player sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
-        this(new CommsSender(sender), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
+    public Message(Player sender, MessageType channel, String message, String placeHolderMessage, HashMap<String, String> placeHolders) {
+        this(new MessageSender(sender), channel.getIdentifier(), message, placeHolderMessage, placeHolders);
     }
 
     /**
      * Getter for the sender
      * @return The sender
      */
-    public CommsSender getSender() {
+    public MessageSender getSender() {
         return this.sender;
     }
 
@@ -221,55 +218,6 @@ public class CommsMessage {
     static Gson gson = new GsonBuilder().create();
 
     /**
-     * Message channel parser
-     * @param event The event
-     */
-    public static void parseMessageChannel(PluginMessageEvent.Server event) {
-        CommsMessage message;
-        byte[] data = event.getData();
-        try {
-            message = CommsMessage.fromByteArray(data);
-        } catch (Exception e) {
-            // TODO: Make this less jank
-            try {
-                // Forge Support
-                message = gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
-            } catch (Exception ex) {
-                // Fabric Support
-                message = gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), CommsMessage.class);
-            }
-        }
-
-        MessageType messageType = MessageType.fromIdentifier(message.getChannel());
-        switch (messageType) {
-            case PLAYER_ADVANCEMENT_FINISHED:
-                TaterCommsPlayerListener.onPlayerAdvancementFinished(new CommsEvents.CommsPlayerAdvancementFinishedEvent(message));
-                break;
-            case PLAYER_DEATH:
-                TaterCommsPlayerListener.onPlayerDeath(new CommsEvents.CommsPlayerDeathEvent(message));
-                break;
-            case PLAYER_LOGIN:
-                TaterCommsPlayerListener.onPlayerLogin(new CommsEvents.CommsPlayerLoginEvent(message));
-                break;
-            case PLAYER_LOGOUT:
-                TaterCommsPlayerListener.onPlayerLogout(new CommsEvents.CommsPlayerLogoutEvent(message));
-                break;
-            case PLAYER_MESSAGE:
-                TaterCommsPlayerListener.onPlayerMessage(new CommsEvents.CommsPlayerMessageEvent(message));
-                break;
-            case SERVER_STARTED:
-                TaterCommsServerListener.onServerStarted(new CommsEvents.CommsServerStartedEvent(message));
-                break;
-            case SERVER_STOPPED:
-                TaterCommsServerListener.onServerStopped(new CommsEvents.CommsServerStoppedEvent(message));
-                break;
-            case CUSTOM:
-//                TaterCommsServerListener.onCustomMessage(new Object[]{message.getSender().getServerName(), message.getMessage()});
-                break;
-        }
-    }
-
-    /**
      * Enum for the different types of messages that can be sent
      */
     public enum MessageType {
@@ -316,23 +264,23 @@ public class CommsMessage {
      * @param data The byte array
      * @return The CommsMessage
      */
-    public static CommsMessage fromByteArray(byte[] data) {
+    public static Message fromByteArray(byte[] data) {
         try {
             try {
                 ByteArrayDataInput in = ByteStreams.newDataInput(data);
                 String json = in.readUTF();
-                return gson.fromJson(json, CommsMessage.class);
+                return gson.fromJson(json, Message.class);
             } catch (Exception e) {
-                return gson.fromJson(new String(data), CommsMessage.class);
+                return gson.fromJson(new String(data), Message.class);
             }
         } catch (Exception e) {
             // TODO: Make this less jank
             try {
                 // Fabric Support
-                return gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), CommsMessage.class);
+                return gson.fromJson(new String(Arrays.copyOfRange(data, 4, data.length)), Message.class);
             } catch (Exception ex) {
                 // Forge Support
-                return gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), CommsMessage.class);
+                return gson.fromJson(new String(Arrays.copyOfRange(data, 7, data.length)), Message.class);
             }
         }
     }
@@ -342,8 +290,8 @@ public class CommsMessage {
      * @param json The JSON string
      * @return The CommsMessage
      */
-    public static CommsMessage fromJSON(String json) {
-        return gson.fromJson(json, CommsMessage.class);
+    public static Message fromJSON(String json) {
+        return gson.fromJson(json, Message.class);
     }
 
     /**
