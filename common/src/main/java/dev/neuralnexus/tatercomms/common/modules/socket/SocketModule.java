@@ -1,10 +1,12 @@
 package dev.neuralnexus.tatercomms.common.modules.socket;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
+import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.common.modules.Module;
 
 /**
- * Discord module.
+ * Socket module.
  */
 public class SocketModule implements Module {
     private static boolean STARTED = false;
@@ -24,7 +26,12 @@ public class SocketModule implements Module {
         STARTED = true;
 
         if (!RELOADED) {
+            // Register events
+            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> TaterCommsAPIProvider.get().socketAPI().onReceiveMessage(event));
         }
+
+        // Start the socket server
+        TaterCommsAPIProvider.get().socketAPI().startSocket();
 
         TaterComms.getLogger().info("Submodule " + getName() + " has been started!");
     }
@@ -38,6 +45,7 @@ public class SocketModule implements Module {
         STARTED = false;
 
         // Remove references to objects
+        TaterCommsAPIProvider.get().socketAPI().stopSocket();
 
         TaterComms.getLogger().info("Submodule " + getName() + " has been stopped!");
     }

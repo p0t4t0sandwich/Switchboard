@@ -3,9 +3,9 @@ package dev.neuralnexus.tatercomms.common.modules.discord;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
+import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.common.modules.Module;
-import dev.neuralnexus.tatercomms.common.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.tatercomms.common.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.common.event.api.CommandEvents;
 
@@ -41,7 +41,12 @@ public class DiscordModule implements Module {
             }
 
             // Register events
-            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> TaterCommsAPIProvider.get().discordAPI().sendMessage(event.getMessage()));
+            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {
+                if (!event.getMessage().getSender().getServerName().equals("discord")
+                        && event.getMessage().getChannel().equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+                    TaterCommsAPIProvider.get().discordAPI().sendMessage(event.getMessage());
+                }
+            });
 
             // Register commands
             CommandEvents.REGISTER_COMMAND.register((event -> event.registerCommand(TaterComms.getPlugin(), new DiscordCommand())));

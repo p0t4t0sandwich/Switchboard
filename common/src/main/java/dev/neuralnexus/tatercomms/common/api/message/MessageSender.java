@@ -1,4 +1,4 @@
-package dev.neuralnexus.tatercomms.common.relay;
+package dev.neuralnexus.tatercomms.common.api.message;
 
 import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.common.entity.Entity;
@@ -8,7 +8,7 @@ import dev.neuralnexus.taterlib.common.utils.Location;
 
 import java.util.UUID;
 
-public class CommsSender implements Player {
+public class MessageSender implements Player {
     private final String name;
     private final String prefix;
     private final String suffix;
@@ -25,7 +25,7 @@ public class CommsSender implements Player {
      * @param uuid The UUID
      * @param serverName The server name
      */
-    public CommsSender(String name, String prefix, String suffix, String displayName, UUID uuid, String serverName) {
+    public MessageSender(String name, String prefix, String suffix, String displayName, UUID uuid, String serverName) {
         this.name = name;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -39,7 +39,7 @@ public class CommsSender implements Player {
      * @param player The player
      * @param serverName The server name
      */
-    public CommsSender(Player player, String serverName) {
+    public MessageSender(Player player, String serverName) {
         this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), serverName);
     }
 
@@ -47,7 +47,7 @@ public class CommsSender implements Player {
      * Constructor for the CommsSender class.
      * @param player The player
      */
-    public CommsSender(Player player) {
+    public MessageSender(Player player) {
         this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), player.getServerName());
     }
 
@@ -55,7 +55,7 @@ public class CommsSender implements Player {
      * Constructor for the CommsSender class.
      * @param serverName The server name
      */
-    public CommsSender(String serverName) {
+    public MessageSender(String serverName) {
         this.name = "";
         this.prefix = "";
         this.suffix = "";
@@ -65,9 +65,65 @@ public class CommsSender implements Player {
     }
 
     @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    @Override
+    public String getServerName() {
+        return this.serverName;
+    }
+
+    @Override
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    @Override
     public UUID getUniqueId() {
         return this.uuid;
     }
+
+    @Override
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    @Override
+    public String getSuffix() {
+        return this.suffix;
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        if (player == null) return;
+        player.sendMessage(message);
+    }
+
+    @Override
+    public void sendPluginMessage(String channel, byte[] bytes) {
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        if (player == null) return;
+        player.sendPluginMessage(channel, bytes);
+    }
+
+    /**
+     * Sends a plugin message on behalf of the player.
+     * @param message The message
+     */
+    public void sendPluginMessage(Message message) {
+        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        if (player == null) return;
+        player.sendPluginMessage(message.getChannel(), message.toByteArray());
+    }
+
+    // ------------------------- Unused -------------------------
 
     @Override
     public int getEntityId() {
@@ -75,9 +131,7 @@ public class CommsSender implements Player {
     }
 
     @Override
-    public void remove() {
-
-    }
+    public void remove() {}
 
     @Override
     public String getType() {
@@ -90,9 +144,7 @@ public class CommsSender implements Player {
     }
 
     @Override
-    public void setCustomName(String s) {
-
-    }
+    public void setCustomName(String s) {}
 
     @Override
     public Location getLocation() {
@@ -135,62 +187,14 @@ public class CommsSender implements Player {
     }
 
     @Override
-    public void teleport(Location location) {
-
-    }
+    public void teleport(Location location) {}
 
     @Override
-    public void teleport(Entity entity) {
-
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    @Override
-    public String getServerName() {
-        return this.serverName;
-    }
-
-    @Override
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
-        if (player == null) return;
-        player.sendMessage(message);
-    }
+    public void teleport(Entity entity) {}
 
     @Override
     public boolean hasPermission(int i) {
         return false;
-    }
-
-    @Override
-    public void sendPluginMessage(String channel, byte[] bytes) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
-        if (player == null) return;
-        player.sendPluginMessage(channel, bytes);
-    }
-
-    /**
-     * Sends a plugin message on behalf of the player.
-     * @param message The message
-     */
-    public void sendPluginMessage(CommsMessage message) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
-        if (player == null) return;
-        player.sendPluginMessage(message.getChannel(), message.toByteArray());
     }
 
     @Override
@@ -206,14 +210,4 @@ public class CommsSender implements Player {
 
     @Override
     public void setSpawn(Location location) {}
-
-    @Override
-    public String getPrefix() {
-        return this.prefix;
-    }
-
-    @Override
-    public String getSuffix() {
-        return this.suffix;
-    }
 }

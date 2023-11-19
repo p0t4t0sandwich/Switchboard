@@ -59,6 +59,14 @@ public class TaterCommsConfig {
      */
     public static class DiscordConfig {
         /**
+         * Get whether Discord chat is enabled
+         * @return Whether Discord chat is enabled
+         */
+        public static boolean enabled() {
+            return config.getBoolean("modules.discord.enabled");
+        }
+
+        /**
          * Get the Discord token from the config file.
          * @return The Discord token
          */
@@ -87,6 +95,63 @@ public class TaterCommsConfig {
         }
     }
 
+    /**
+     * Socket config.
+     */
+    public static class SocketConfig {
+        /**
+         * Get whether remote chat is enabled
+         *
+         * @return Whether remote chat is enabled
+         */
+        public static boolean enabled() {
+            return config.getBoolean("modules.socket.enabled");
+        }
+
+        /**
+         * Get whether the server is the primary server
+         *
+         * @return Whether the server is the primary server
+         */
+        public static boolean primary() {
+            return config.getBoolean("modules.socket.primary");
+        }
+
+        /**
+         * Get the remote host
+         *
+         * @return The remote host
+         */
+        public static String host() {
+            return config.getString("modules.socket.host");
+        }
+
+        /**
+         * Get the remote port
+         *
+         * @return The remote port
+         */
+        public static int port() {
+            return config.getInt("modules.socket.port");
+        }
+
+        /**
+         * Get the remote secret
+         *
+         * @return The remote secret
+         */
+        public static String secret() {
+            String secret = config.getString("modules.socket.secret");
+            if (secret == null || secret.isEmpty()) {
+                TaterComms.getLogger().info("Generating new remote secret");
+                secret = UUID.randomUUID().toString();
+                config.set("modules.socket.secret", secret);
+                saveConfig();
+            }
+            return secret;
+        }
+    }
+
     // TODO: Refactor
     // ------------------------- Deprecated -------------------------
     /**
@@ -94,7 +159,7 @@ public class TaterCommsConfig {
      * @return The server name
      */
     public static String serverName() {
-        return config.getString("server.name");
+        return config.getString("name");
     }
 
     /**
@@ -102,7 +167,7 @@ public class TaterCommsConfig {
      * @return Whether the server is using a proxy
      */
     public static boolean serverUsingProxy() {
-        return config.getBoolean("server.usingProxy");
+        return config.getBoolean("usingProxy");
     }
 
     /**
@@ -110,51 +175,7 @@ public class TaterCommsConfig {
      * @return Whether global chat is enabled by default
      */
     public static boolean serverGlobalChatEnabledByDefault() {
-        return config.getBoolean("server.globalChatEnabledByDefault");
-    }
-
-    /**
-     * Get weather Discord chat is enabled
-     * @return Whether Discord chat is enabled
-     */
-    public static boolean discordEnabled() {
-        return config.getBoolean("discord.enabled");
-    }
-
-    /**
-     * Set whether Discord chat is enabled
-     * @param enabled Whether Discord chat is enabled
-     */
-    public static void setDiscordEnabled(boolean enabled) {
-        config.set("discord.enabled", enabled);
-    }
-
-    /**
-     * Get the Discord token from the config file.
-     * @return The Discord token
-     */
-    public static String discordToken() {
-        return config.getString("discord.token");
-    }
-
-    /**
-     * Get the Discord invite link
-     */
-    public static String discordInviteUrl() {
-        return config.getString("discord.inviteUrl");
-    }
-
-    /**
-     * Get the Discord channel-server mappings from the config file
-     * @return The map of server channels
-     */
-    public static HashMap<String, String> discordChannels() {
-        HashMap<String, String> serverChannels = new HashMap<>();
-        HashMap<String, Block> channelConfig = (HashMap<String, Block>) config.getBlock("discord.channels").getStoredValue();
-        for (Map.Entry<String, Block> entry: channelConfig.entrySet()) {
-            serverChannels.put(entry.getKey(), (String) entry.getValue().getStoredValue());
-        }
-        return serverChannels;
+        return config.getBoolean("globalChatEnabledByDefault");
     }
 
     /**
@@ -180,52 +201,5 @@ public class TaterCommsConfig {
             formatting.put(entry.getKey(), (String) entry.getValue().getStoredValue());
         }
         return formatting;
-    }
-
-    /**
-     * Get whether remote chat is enabled
-     * @return Whether remote chat is enabled
-     */
-    public static boolean remoteEnabled() {
-        return config.getBoolean("remote.enabled");
-    }
-
-    /**
-     * Get whether the server is the primary server
-     * @return Whether the server is the primary server
-     */
-    public static boolean remotePrimary() {
-        return config.getBoolean("remote.primary");
-    }
-
-    /**
-     * Get the remote host
-     * @return The remote host
-     */
-    public static String remoteHost() {
-        return config.getString("remote.host");
-    }
-
-    /**
-     * Get the remote port
-     * @return The remote port
-     */
-    public static int remotePort() {
-        return config.getInt("remote.port");
-    }
-
-    /**
-     * Get the remote secret
-     * @return The remote secret
-     */
-    public static String remoteSecret() {
-        String secret = config.getString("remote.secret");
-        if (secret == null || secret.isEmpty()) {
-            TaterComms.getLogger().info("Generating new remote secret");
-            secret = UUID.randomUUID().toString();
-            config.set("remote.secret", secret);
-            saveConfig();
-        }
-        return secret;
     }
 }

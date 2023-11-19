@@ -1,4 +1,4 @@
-package dev.neuralnexus.tatercomms.common.commands;
+package dev.neuralnexus.tatercomms.common.modules.minecraft.command;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;

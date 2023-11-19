@@ -2,30 +2,14 @@ package dev.neuralnexus.tatercomms.common;
 
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPI;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
-import dev.neuralnexus.tatercomms.common.modules.discord.command.DiscordCommand;
-import dev.neuralnexus.tatercomms.common.commands.TaterCommsCommand;
-import dev.neuralnexus.tatercomms.common.discord.DiscordBot;
-import dev.neuralnexus.tatercomms.common.listeners.player.TaterCommsPlayerListener;
-import dev.neuralnexus.tatercomms.common.listeners.server.TaterCommsServerListener;
-import dev.neuralnexus.tatercomms.common.relay.CommsMessage;
-import dev.neuralnexus.tatercomms.common.relay.CommsRelay;
-import dev.neuralnexus.tatercomms.common.socket.Client;
-import dev.neuralnexus.tatercomms.common.socket.Server;
-import dev.neuralnexus.taterlib.common.Utils;
+import dev.neuralnexus.tatercomms.common.modules.discord.DiscordModule;
+import dev.neuralnexus.tatercomms.common.modules.minecraft.MinecraftModule;
+import dev.neuralnexus.tatercomms.common.modules.socket.SocketModule;
 import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.common.event.api.CommandEvents;
-import dev.neuralnexus.taterlib.common.event.api.PlayerEvents;
-import dev.neuralnexus.taterlib.common.event.api.PluginMessageEvents;
-import dev.neuralnexus.taterlib.common.event.api.ServerEvents;
 import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Supplier;
-
 /**
- * Main class for the TaterComms plugin.
+ * Main class for the plugin.
  */
 public class TaterComms {
     private static final TaterComms instance = new TaterComms();
@@ -33,11 +17,6 @@ public class TaterComms {
     private AbstractLogger logger;
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
-    private static DiscordBot discord = null;
-    private static Server socketServer = null;
-    private static Client socketClient = null;
-    private static CommsRelay messageRelay = null;
-    public static Supplier<Set<String>> proxyServers = HashSet::new;
 
     /**
      * Getter for the singleton instance of the class.
@@ -98,40 +77,22 @@ public class TaterComms {
         STARTED = true;
 
         if (!RELOADED) {
-            // Register commands
-            CommandEvents.REGISTER_COMMAND.register((event -> event.registerCommand(TaterComms.getPlugin(), new TaterCommsCommand(), "tc")));
 
-            // Register player listeners
-            PlayerEvents.ADVANCEMENT_FINISHED.register(TaterCommsPlayerListener::onPlayerAdvancementFinished);
-            PlayerEvents.DEATH.register(TaterCommsPlayerListener::onPlayerDeath);
-            PlayerEvents.LOGIN.register(TaterCommsPlayerListener::onPlayerLogin);
-            PlayerEvents.LOGOUT.register(TaterCommsPlayerListener::onPlayerLogout);
-            PlayerEvents.MESSAGE.register(TaterCommsPlayerListener::onPlayerMessage);
-            PlayerEvents.SERVER_SWITCH.register(TaterCommsPlayerListener::onPlayerServerSwitch);
-
-            // Register server listeners
-            ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
-            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
-
-            if (TaterCommsConfig.serverUsingProxy()) {
-                // Register plugin channels
-                TaterAPIProvider.get().registerChannels(CommsMessage.MessageType.getTypes());
-
-                // Register plugin message listeners
-                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
-            }
         }
 
-        // Start the socket server
-        if (TaterCommsConfig.remoteEnabled()) {
-            if (TaterCommsConfig.remotePrimary()) {
-                socketServer = new Server(TaterCommsConfig.remotePort(), TaterCommsConfig.remoteSecret());
-                Utils.runTaskAsync(socketServer::start);
-            } else {
-                socketClient = new Client(TaterCommsConfig.remoteHost(), TaterCommsConfig.remotePort(),  TaterCommsConfig.remoteSecret());
-                Utils.runTaskAsync(socketClient::start);
-            }
+        // Register modules
+        if (TaterCommsConfig.isModuleEnabled("minecraft")) {
+            TaterCommsModuleLoader.registerModule(new MinecraftModule());
         }
+        if (TaterCommsConfig.isModuleEnabled("discord")) {
+            TaterCommsModuleLoader.registerModule(new DiscordModule());
+        }
+        if (TaterCommsConfig.isModuleEnabled("socket")) {
+            TaterCommsModuleLoader.registerModule(new SocketModule());
+        }
+
+        // Start modules
+        TaterCommsModuleLoader.startModules();
 
         logger.info(Constants.PROJECT_NAME + " has been started!");
 
@@ -155,18 +116,11 @@ public class TaterComms {
         }
         STARTED = false;
 
+        // Stop modules
+        TaterCommsModuleLoader.stopModules();
+
         // Remove references to objects
         TaterCommsConfig.unloadConfig();
-        if (discord != null) {
-            discord.removeListeners();
-        }
-        discord = null;
-        if (socketServer != null) {
-            socketServer.stop();
-        }
-        socketServer = null;
-        socketClient = null;
-        messageRelay = null;
 
         instance.logger.info("TaterComms has been stopped!");
         TaterCommsAPIProvider.unregister();
@@ -189,21 +143,6 @@ public class TaterComms {
         start();
 
         instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
-    }
-
-    /**
-     * Set the proxyServers consumer
-     * @param proxyServers The registerChannels consumer
-     */
-    public static void setProxyServers(Supplier<Set<String>> proxyServers) {
-        TaterComms.proxyServers = proxyServers;
-    }
-
-    /**
-     * Get Message Relay
-     */
-    public static CommsRelay getMessageRelay() {
-        return messageRelay;
     }
 
     /**
