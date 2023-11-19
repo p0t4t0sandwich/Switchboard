@@ -133,11 +133,12 @@ public class TaterComms {
         }
         RELOADED = true;
 
-        // Stop
-        stop();
+        // Reload config
+        TaterCommsConfig.unloadConfig();
+        TaterCommsConfig.loadConfig(TaterAPIProvider.get().configFolder());
 
-        // Start
-        start();
+        // Reload modules
+        TaterCommsModuleLoader.reloadModules();
 
         instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
     }
