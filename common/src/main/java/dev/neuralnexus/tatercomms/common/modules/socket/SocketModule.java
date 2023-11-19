@@ -5,9 +5,7 @@ import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.common.modules.Module;
 
-/**
- * Socket module.
- */
+/** Socket module. */
 public class SocketModule implements Module {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
@@ -27,7 +25,8 @@ public class SocketModule implements Module {
 
         if (!RELOADED) {
             // Register events
-            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> TaterCommsAPIProvider.get().socketAPI().onReceiveMessage(event));
+            TaterCommsEvents.RECEIVE_MESSAGE.register(
+                    (event) -> TaterCommsAPIProvider.get().socketAPI().onReceiveMessage(event));
         }
 
         // Start the socket server

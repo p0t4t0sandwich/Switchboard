@@ -3,12 +3,12 @@ version: '${version}'
 author: '${authors}'
 description: '${project_description}'
 main: '${group_id}.${project_id}.bungee.BungeePlugin'
-depends: [TaterLib]
-softdepends: [LuckPerms]
+depends: [ TaterLib ]
+softdepends: [ LuckPerms ]
 commands:
   tatercomms:
     description: TaterComms command
-    aliases: [tc]
+    aliases: [ tc ]
     usage: /tatercomms
     permission: tatercomms.admin
   discord:

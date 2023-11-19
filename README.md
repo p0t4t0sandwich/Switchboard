@@ -6,7 +6,8 @@
 [![Discord](https://img.shields.io/discord/1067482396246683708?color=7289da&logo=discord&logoColor=white)](https://discord.neuralnexus.dev)
 [![wakatime](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b.svg)](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b)
 
-A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.
+A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels
+and TCP sockets.
 
 Link to our support: [Discord](https://discord.neuralnexus.dev)
 
@@ -26,13 +27,16 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 - [Configuration guide wiki entry](https://github.com/p0t4t0sandwich/TaterComms/wiki/Configuration-Guide)
 - [Create and add a Discord bot to your server](https://discordpy.readthedocs.io/en/stable/discord.html)
-- The bot will need permissions to read and send messages with whatever permission scopes you set up, and in the channels you want to use
+- The bot will need permissions to read and send messages with whatever permission scopes you set up, and in the
+  channels you want to use
 
 ## Known Issues
 
-- Under certain circumstances with a proxy, prefix/suffix information is not read correctly, still narrowing down the cause 
+- Under certain circumstances with a proxy, prefix/suffix information is not read correctly, still narrowing down the
+  cause
 - Global chat still needs some tweaking and a proper, per-user toggle
-- Sponge death messages are a tad off with how the component serializes (eg: `playerName Skeleton was shot by` instead of `playerName was shot by Skeleton`)
+- Sponge death messages are a tad off with how the component serializes (eg: `playerName Skeleton was shot by` instead
+  of `playerName was shot by Skeleton`)
 - Still need to tweak the pass-through system and get that working properly
 - Some implementations fire the shutdown event after the plugin unloads, so the shutdown message doesn't get sent
 

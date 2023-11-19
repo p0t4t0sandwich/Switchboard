@@ -3,15 +3,12 @@ package dev.neuralnexus.tatercomms.common.modules.discord;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
-import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.common.modules.Module;
 import dev.neuralnexus.tatercomms.common.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.common.event.api.CommandEvents;
 
-/**
- * Discord module.
- */
+/** Discord module. */
 public class DiscordModule implements Module {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
@@ -31,25 +28,31 @@ public class DiscordModule implements Module {
 
         if (!RELOADED) {
             // Check if the token and channel mappings are set
-            if (TaterCommsConfig.DiscordConfig.token() == null || TaterCommsConfig.DiscordConfig.token().isEmpty()) {
+            if (TaterCommsConfig.DiscordConfig.token() == null
+                    || TaterCommsConfig.DiscordConfig.token().isEmpty()) {
                 TaterComms.getLogger().info("No Discord token found in tatercomms.config.yml!");
                 return;
             }
             if (TaterCommsConfig.DiscordConfig.channels().isEmpty()) {
-                TaterComms.getLogger().info("No server-channel mappings found in tatercomms.config.yml!");
+                TaterComms.getLogger()
+                        .info("No server-channel mappings found in tatercomms.config.yml!");
                 return;
             }
 
             // Register events
-            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {
-                // Prevents discord messages from being passed back to discord
-                if (!event.getMessage().getSender().getServerName().equals("discord")) {
-                    TaterCommsAPIProvider.get().discordAPI().sendMessage(event.getMessage());
-                }
-            });
+            TaterCommsEvents.RECEIVE_MESSAGE.register(
+                    (event) -> {
+                        // Prevents discord messages from being passed back to discord
+                        if (!event.getMessage().getSender().getServerName().equals("discord")) {
+                            TaterCommsAPIProvider.get()
+                                    .discordAPI()
+                                    .sendMessage(event.getMessage());
+                        }
+                    });
 
             // Register commands
-            CommandEvents.REGISTER_COMMAND.register((event -> event.registerCommand(TaterComms.getPlugin(), new DiscordCommand())));
+            CommandEvents.REGISTER_COMMAND.register(
+                    (event -> event.registerCommand(TaterComms.getPlugin(), new DiscordCommand())));
         }
 
         // Start the bot

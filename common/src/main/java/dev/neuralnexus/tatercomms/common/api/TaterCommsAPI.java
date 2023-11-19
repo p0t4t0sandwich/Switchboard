@@ -5,11 +5,8 @@ import dev.neuralnexus.tatercomms.common.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.tatercomms.common.modules.socket.api.SocketAPI;
 
 import java.util.HashMap;
-import java.util.Optional;
 
-/**
- * API wrapper class
- */
+/** API wrapper class */
 public class TaterCommsAPI {
     private final Data data;
     private DiscordAPI discordAPI = null;
@@ -27,6 +24,7 @@ public class TaterCommsAPI {
 
     /**
      * Get the Discord API.
+     *
      * @return The Discord API.
      */
     public DiscordAPI discordAPI() {
@@ -35,6 +33,7 @@ public class TaterCommsAPI {
 
     /**
      * Get the Socket API.
+     *
      * @return The Socket API.
      */
     public SocketAPI socketAPI() {
@@ -43,6 +42,7 @@ public class TaterCommsAPI {
 
     /**
      * Get the server name.
+     *
      * @return The server name.
      */
     public String getServerName() {
@@ -51,6 +51,7 @@ public class TaterCommsAPI {
 
     /**
      * Set the server name.
+     *
      * @param serverName The server name.
      */
     public void setServerName(String serverName) {
@@ -59,6 +60,7 @@ public class TaterCommsAPI {
 
     /**
      * Get the formatting.
+     *
      * @return The formatting.
      */
     public HashMap<String, String> getFormatting() {
@@ -67,6 +69,7 @@ public class TaterCommsAPI {
 
     /**
      * Set the formatting.
+     *
      * @param formatting The formatting.
      */
     public void setFormatting(HashMap<String, String> formatting) {
@@ -75,6 +78,7 @@ public class TaterCommsAPI {
 
     /**
      * Get whether the server is using a proxy.
+     *
      * @return Whether the server is using a proxy.
      */
     public boolean isUsingProxy() {
@@ -83,15 +87,14 @@ public class TaterCommsAPI {
 
     /**
      * Set whether the server is using a proxy.
+     *
      * @param usingProxy Whether the server is using a proxy.
      */
     public void setUsingProxy(boolean usingProxy) {
         data.setUsingProxy(usingProxy);
     }
 
-    /**
-     * The data for the API.
-     */
+    /** The data for the API. */
     static class Data {
         private String serverName = "";
         private HashMap<String, String> formatting = new HashMap<>();
@@ -99,6 +102,7 @@ public class TaterCommsAPI {
 
         /**
          * Get the server name.
+         *
          * @return The server name.
          */
         public String getServerName() {
@@ -107,6 +111,7 @@ public class TaterCommsAPI {
 
         /**
          * Set the server name.
+         *
          * @param serverName The server name.
          */
         public void setServerName(String serverName) {
@@ -115,6 +120,7 @@ public class TaterCommsAPI {
 
         /**
          * Get the formatting.
+         *
          * @return The formatting.
          */
         public HashMap<String, String> getFormatting() {
@@ -123,6 +129,7 @@ public class TaterCommsAPI {
 
         /**
          * Set the formatting.
+         *
          * @param formatting The formatting.
          */
         public void setFormatting(HashMap<String, String> formatting) {
@@ -131,6 +138,7 @@ public class TaterCommsAPI {
 
         /**
          * Get whether the server is using a proxy.
+         *
          * @return Whether the server is using a proxy.
          */
         public boolean isUsingProxy() {
@@ -139,6 +147,7 @@ public class TaterCommsAPI {
 
         /**
          * Set whether the server is using a proxy.
+         *
          * @param usingProxy Whether the server is using a proxy.
          */
         public void setUsingProxy(boolean usingProxy) {

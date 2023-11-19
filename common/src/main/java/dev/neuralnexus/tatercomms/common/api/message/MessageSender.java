@@ -18,6 +18,7 @@ public class MessageSender implements Player {
 
     /**
      * Constructor for the CommsSender class.
+     *
      * @param name The name
      * @param prefix The prefix
      * @param suffix The suffix
@@ -25,7 +26,13 @@ public class MessageSender implements Player {
      * @param uuid The UUID
      * @param serverName The server name
      */
-    public MessageSender(String name, String prefix, String suffix, String displayName, UUID uuid, String serverName) {
+    public MessageSender(
+            String name,
+            String prefix,
+            String suffix,
+            String displayName,
+            UUID uuid,
+            String serverName) {
         this.name = name;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -36,23 +43,38 @@ public class MessageSender implements Player {
 
     /**
      * Constructor for the CommsSender class.
+     *
      * @param player The player
      * @param serverName The server name
      */
     public MessageSender(Player player, String serverName) {
-        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), serverName);
+        this(
+                player.getName(),
+                player.getPrefix(),
+                player.getSuffix(),
+                player.getDisplayName(),
+                player.getUniqueId(),
+                serverName);
     }
 
     /**
      * Constructor for the CommsSender class.
+     *
      * @param player The player
      */
     public MessageSender(Player player) {
-        this(player.getName(), player.getPrefix(), player.getSuffix(), player.getDisplayName(), player.getUniqueId(), player.getServerName());
+        this(
+                player.getName(),
+                player.getPrefix(),
+                player.getSuffix(),
+                player.getDisplayName(),
+                player.getUniqueId(),
+                player.getServerName());
     }
 
     /**
      * Constructor for the CommsSender class.
+     *
      * @param serverName The server name
      */
     public MessageSender(String serverName) {
@@ -101,24 +123,37 @@ public class MessageSender implements Player {
 
     @Override
     public void sendMessage(String message) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        Player player =
+                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
+                        .filter(p -> p.getUniqueId().equals(this.uuid))
+                        .findFirst()
+                        .orElse(null);
         if (player == null) return;
         player.sendMessage(message);
     }
 
     @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        Player player =
+                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
+                        .filter(p -> p.getUniqueId().equals(this.uuid))
+                        .findFirst()
+                        .orElse(null);
         if (player == null) return;
         player.sendPluginMessage(channel, bytes);
     }
 
     /**
      * Sends a plugin message on behalf of the player.
+     *
      * @param message The message
      */
     public void sendPluginMessage(Message message) {
-        Player player = TaterAPIProvider.get().getServer().getOnlinePlayers().stream().filter(p -> p.getUniqueId().equals(this.uuid)).findFirst().orElse(null);
+        Player player =
+                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
+                        .filter(p -> p.getUniqueId().equals(this.uuid))
+                        .findFirst()
+                        .orElse(null);
         if (player == null) return;
         player.sendPluginMessage(message.getChannel(), message.toByteArray());
     }

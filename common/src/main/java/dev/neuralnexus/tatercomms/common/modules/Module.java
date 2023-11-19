@@ -1,27 +1,20 @@
 package dev.neuralnexus.tatercomms.common.modules;
 
-/**
- * Module interface.
- */
+/** Module interface. */
 public interface Module {
     /**
      * Get the name of the module.
+     *
      * @return The name of the module
      */
     String getName();
 
-    /**
-     * Start the module.
-     */
+    /** Start the module. */
     void start();
 
-    /**
-     * Stop the module.
-     */
+    /** Stop the module. */
     void stop();
 
-    /**
-     * Reload the module.
-     */
+    /** Reload the module. */
     void reload();
 }

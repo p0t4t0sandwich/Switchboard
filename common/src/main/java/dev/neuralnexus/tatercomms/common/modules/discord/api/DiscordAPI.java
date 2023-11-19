@@ -3,14 +3,15 @@ package dev.neuralnexus.tatercomms.common.modules.discord.api;
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
-import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
+import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.common.entity.Entity;
 import dev.neuralnexus.taterlib.common.inventory.PlayerInventory;
 import dev.neuralnexus.taterlib.common.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.common.player.Player;
 import dev.neuralnexus.taterlib.common.utils.Location;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -24,24 +25,18 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * API for the Discord module.
- */
+/** API for the Discord module. */
 public class DiscordAPI {
     private static Bot bot = null;
 
-    /**
-     * Start the bot.
-     */
+    /** Start the bot. */
     public void startBot() {
         if (bot == null) {
             bot = new Bot();
         }
     }
 
-    /**
-     * Remove the bot.
-     */
+    /** Remove the bot. */
     public void removeBot() {
         if (bot != null) {
             bot.removeListeners();
@@ -51,6 +46,7 @@ public class DiscordAPI {
 
     /**
      * Send a message to a Discord channel
+     *
      * @param message The message
      */
     public void sendMessage(Message message) {
@@ -65,7 +61,10 @@ public class DiscordAPI {
         Bot() {
             try {
                 // Create the JDA instance
-                api = JDABuilder.createDefault(TaterCommsConfig.DiscordConfig.token()).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
+                api =
+                        JDABuilder.createDefault(TaterCommsConfig.DiscordConfig.token())
+                                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                                .build();
 
                 // Add the listener
                 api.addEventListener(this);
@@ -75,9 +74,7 @@ public class DiscordAPI {
             }
         }
 
-        /**
-         * Remove event listeners.
-         */
+        /** Remove event listeners. */
         public void removeListeners() {
             api.removeEventListener(this);
         }
@@ -92,6 +89,7 @@ public class DiscordAPI {
 
         /**
          * Converts the Discord message to a Message object, then invokes the ReceiveMessageEvent.
+         *
          * @param event The event
          */
         @Override
@@ -108,7 +106,9 @@ public class DiscordAPI {
 
             String server = null;
             for (String key : TaterCommsConfig.DiscordConfig.channels().keySet()) {
-                if (TaterCommsConfig.DiscordConfig.channels().get(key).equals(guildID + "/" + channelID)) {
+                if (TaterCommsConfig.DiscordConfig.channels()
+                        .get(key)
+                        .equals(guildID + "/" + channelID)) {
                     server = key;
                     break;
                 }
@@ -126,17 +126,19 @@ public class DiscordAPI {
             // Send the message
             HashMap<String, String> placeholders = new HashMap<>();
             placeholders.put("message", content);
-            TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(
-                    discordPlayer,
-                    Message.MessageType.PLAYER_MESSAGE,
-                    content,
-                    TaterCommsAPIProvider.get().getFormatting().get("discord"),
-                    placeholders
-            )));
+            TaterCommsEvents.RECEIVE_MESSAGE.invoke(
+                    new ReceiveMessageEvent(
+                            new Message(
+                                    discordPlayer,
+                                    Message.MessageType.PLAYER_MESSAGE,
+                                    content,
+                                    TaterCommsAPIProvider.get().getFormatting().get("discord"),
+                                    placeholders)));
         }
 
         /**
          * Send a message to a Discord channel
+         *
          * @param message The message
          */
         public void sendMessage(Message message) {
@@ -152,12 +154,14 @@ public class DiscordAPI {
             // Get the guild and channel
             Guild guild = api.getGuildById(channelGuildId.split("/")[0]);
             if (guild == null) {
-                System.err.println("Guild not found for server " + server + ", please check the config!");
+                System.err.println(
+                        "Guild not found for server " + server + ", please check the config!");
                 return;
             }
             TextChannel channel = guild.getTextChannelById(channelGuildId.split("/")[1]);
             if (channel == null) {
-                System.err.println("Channel not found for server " + server + ", please check the config!");
+                System.err.println(
+                        "Channel not found for server " + server + ", please check the config!");
                 return;
             }
 
@@ -166,9 +170,7 @@ public class DiscordAPI {
         }
     }
 
-    /**
-     * Discord implementation of {@link Player}.
-     */
+    /** Discord implementation of {@link Player}. */
     public static class DiscordPlayer implements Player {
         private final User user;
         private final String name;
@@ -177,6 +179,7 @@ public class DiscordAPI {
 
         /**
          * Constructor.
+         *
          * @param user The Discord user.
          */
         public DiscordPlayer(User user) {
@@ -195,9 +198,7 @@ public class DiscordAPI {
         }
 
         @Override
-        public void remove() {
-
-        }
+        public void remove() {}
 
         @Override
         public String getType() {
@@ -210,9 +211,7 @@ public class DiscordAPI {
         }
 
         @Override
-        public void setCustomName(String s) {
-
-        }
+        public void setCustomName(String s) {}
 
         @Override
         public Location getLocation() {
@@ -255,14 +254,10 @@ public class DiscordAPI {
         }
 
         @Override
-        public void teleport(Location location) {
-
-        }
+        public void teleport(Location location) {}
 
         @Override
-        public void teleport(Entity entity) {
-
-        }
+        public void teleport(Entity entity) {}
 
         /**
          * @inheritDoc
@@ -336,13 +331,9 @@ public class DiscordAPI {
         public void kickPlayer(String message) {}
 
         @Override
-        public void setSpawn(Location location, boolean b) {
-
-        }
+        public void setSpawn(Location location, boolean b) {}
 
         @Override
-        public void setSpawn(Location location) {
-
-        }
+        public void setSpawn(Location location) {}
     }
 }
