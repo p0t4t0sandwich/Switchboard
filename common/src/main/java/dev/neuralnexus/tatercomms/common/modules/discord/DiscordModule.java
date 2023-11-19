@@ -42,8 +42,8 @@ public class DiscordModule implements Module {
 
             // Register events
             TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {
-                if (!event.getMessage().getSender().getServerName().equals("discord")
-                        && event.getMessage().getChannel().equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+                // Prevents discord messages from being passed back to discord
+                if (!event.getMessage().getSender().getServerName().equals("discord")) {
                     TaterCommsAPIProvider.get().discordAPI().sendMessage(event.getMessage());
                 }
             });

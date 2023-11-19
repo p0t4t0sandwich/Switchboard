@@ -57,7 +57,7 @@ public class MinecraftModule implements Module {
 //                PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
             }
 
-            // Might be useful
+            // TODO: Might be useful
             // if (commsMessage.isGlobal() || commsMessage.isRemote()) {
             //     player.sendMessage(commsMessage.applyPlaceHolders());
             // } else if (TaterCommsConfig.formattingEnabled() || !player.getServerName().equals(commsMessage.getSender().getServerName())) {
