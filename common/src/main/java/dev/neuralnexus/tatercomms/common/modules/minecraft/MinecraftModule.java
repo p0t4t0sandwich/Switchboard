@@ -65,10 +65,14 @@ public class MinecraftModule implements Module {
             // }
 
             // Register TaterComms events
-            TaterCommsEvents.RECEIVE_MESSAGE.register((event) ->
-                    TaterAPIProvider.get().getServer().getOnlinePlayers().forEach((player) ->
-                            player.sendMessage(event.getMessage().applyPlaceHolders())));
-
+            TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {
+                // Prevents re-sending the message on the originating server
+                if (!TaterCommsConfig.formattingEnabled() && event.getMessage().getSender().getServerName().equals(TaterCommsConfig.serverName())) {
+                    return;
+                }
+                TaterAPIProvider.get().getServer().getOnlinePlayers().forEach((player) ->
+                        player.sendMessage(event.getMessage().applyPlaceHolders()));
+            });
 
             // TODO: Abstract to Proxy module
             TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {

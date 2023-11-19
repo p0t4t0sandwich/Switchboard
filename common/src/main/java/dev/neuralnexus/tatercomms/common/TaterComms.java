@@ -76,9 +76,8 @@ public class TaterComms {
         }
         STARTED = true;
 
-        if (!RELOADED) {
-
-        }
+        // Register API
+        TaterCommsAPIProvider.register(new TaterCommsAPI());
 
         // Register modules
         if (TaterCommsConfig.isModuleEnabled("minecraft")) {
@@ -95,8 +94,6 @@ public class TaterComms {
         TaterCommsModuleLoader.startModules();
 
         logger.info(Constants.PROJECT_NAME + " has been started!");
-
-        TaterCommsAPIProvider.register(new TaterCommsAPI());
     }
 
     /**
