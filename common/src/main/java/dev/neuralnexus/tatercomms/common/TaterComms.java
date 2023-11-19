@@ -67,40 +67,39 @@ public class TaterComms {
         setPlugin(plugin);
         setLogger(logger);
 
-        // Config
-        TaterCommsConfig.loadConfig(TaterAPIProvider.get().configFolder());
-
         if (STARTED) {
             logger.info(Constants.PROJECT_NAME + " has already started!");
             return;
         }
         STARTED = true;
 
+        // Config
+        TaterCommsConfig.loadConfig(TaterAPIProvider.get().configFolder());
+
         // Register API
         TaterCommsAPIProvider.register(new TaterCommsAPI());
+        TaterCommsAPI api = TaterCommsAPIProvider.get();
+        api.setServerName(TaterCommsConfig.serverName());
+        api.setFormatting(TaterCommsConfig.formattingChat());
+        api.setUsingProxy(TaterCommsConfig.serverUsingProxy());
 
-        // Register modules
-        if (TaterCommsConfig.isModuleEnabled("minecraft")) {
-            TaterCommsModuleLoader.registerModule(new MinecraftModule());
-        }
-        if (TaterCommsConfig.isModuleEnabled("discord")) {
-            TaterCommsModuleLoader.registerModule(new DiscordModule());
-        }
-        if (TaterCommsConfig.isModuleEnabled("socket")) {
-            TaterCommsModuleLoader.registerModule(new SocketModule());
+        if (!RELOADED) {
+            // Register modules
+            if (TaterCommsConfig.isModuleEnabled("minecraft")) {
+                TaterCommsModuleLoader.registerModule(new MinecraftModule());
+            }
+            if (TaterCommsConfig.isModuleEnabled("discord")) {
+                TaterCommsModuleLoader.registerModule(new DiscordModule());
+            }
+            if (TaterCommsConfig.isModuleEnabled("socket")) {
+                TaterCommsModuleLoader.registerModule(new SocketModule());
+            }
         }
 
         // Start modules
         TaterCommsModuleLoader.startModules();
 
         logger.info(Constants.PROJECT_NAME + " has been started!");
-    }
-
-    /**
-     * Start
-     */
-    public static void start() {
-        start(instance.plugin, instance.logger);
     }
 
     /**
@@ -112,6 +111,7 @@ public class TaterComms {
             return;
         }
         STARTED = false;
+        RELOADED = true;
 
         // Stop modules
         TaterCommsModuleLoader.stopModules();
@@ -120,7 +120,6 @@ public class TaterComms {
         TaterCommsConfig.unloadConfig();
 
         instance.logger.info("TaterComms has been stopped!");
-        TaterCommsAPIProvider.unregister();
     }
 
     /**
@@ -133,12 +132,14 @@ public class TaterComms {
         }
         RELOADED = true;
 
-        // Reload config
-        TaterCommsConfig.unloadConfig();
-        TaterCommsConfig.loadConfig(TaterAPIProvider.get().configFolder());
+        // Stop
+        stop();
 
-        // Reload modules
-        TaterCommsModuleLoader.reloadModules();
+        // Unregister API
+        TaterCommsAPIProvider.unregister();
+
+        // Start
+        start(instance.plugin, instance.logger);
 
         instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
     }

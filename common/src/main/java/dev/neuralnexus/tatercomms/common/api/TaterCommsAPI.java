@@ -4,6 +4,7 @@ import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.tatercomms.common.modules.socket.api.SocketAPI;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -41,7 +42,107 @@ public class TaterCommsAPI {
     }
 
     /**
+     * Get the server name.
+     * @return The server name.
+     */
+    public String getServerName() {
+        return data.getServerName();
+    }
+
+    /**
+     * Set the server name.
+     * @param serverName The server name.
+     */
+    public void setServerName(String serverName) {
+        data.setServerName(serverName);
+    }
+
+    /**
+     * Get the formatting.
+     * @return The formatting.
+     */
+    public HashMap<String, String> getFormatting() {
+        return data.getFormatting();
+    }
+
+    /**
+     * Set the formatting.
+     * @param formatting The formatting.
+     */
+    public void setFormatting(HashMap<String, String> formatting) {
+        data.setFormatting(formatting);
+    }
+
+    /**
+     * Get whether the server is using a proxy.
+     * @return Whether the server is using a proxy.
+     */
+    public boolean isUsingProxy() {
+        return data.isUsingProxy();
+    }
+
+    /**
+     * Set whether the server is using a proxy.
+     * @param usingProxy Whether the server is using a proxy.
+     */
+    public void setUsingProxy(boolean usingProxy) {
+        data.setUsingProxy(usingProxy);
+    }
+
+    /**
      * The data for the API.
      */
-    static class Data {}
+    static class Data {
+        private String serverName = "";
+        private HashMap<String, String> formatting = new HashMap<>();
+        private boolean usingProxy = false;
+
+        /**
+         * Get the server name.
+         * @return The server name.
+         */
+        public String getServerName() {
+            return serverName;
+        }
+
+        /**
+         * Set the server name.
+         * @param serverName The server name.
+         */
+        public void setServerName(String serverName) {
+            this.serverName = serverName;
+        }
+
+        /**
+         * Get the formatting.
+         * @return The formatting.
+         */
+        public HashMap<String, String> getFormatting() {
+            return formatting;
+        }
+
+        /**
+         * Set the formatting.
+         * @param formatting The formatting.
+         */
+        public void setFormatting(HashMap<String, String> formatting) {
+            this.formatting = formatting;
+        }
+
+        /**
+         * Get whether the server is using a proxy.
+         * @return Whether the server is using a proxy.
+         */
+        public boolean isUsingProxy() {
+            return usingProxy;
+        }
+
+        /**
+         * Set whether the server is using a proxy.
+         * @param usingProxy Whether the server is using a proxy.
+         */
+        public void setUsingProxy(boolean usingProxy) {
+            this.usingProxy = usingProxy;
+        }
+    }
 }

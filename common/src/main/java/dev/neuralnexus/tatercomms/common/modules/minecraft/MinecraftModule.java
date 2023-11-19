@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.common.modules.minecraft;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.modules.minecraft.command.TaterCommsCommand;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
@@ -49,7 +50,7 @@ public class MinecraftModule implements Module {
             ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
             ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
 
-            if (TaterAPIProvider.get().serverType().isProxy() || TaterCommsConfig.serverUsingProxy()) {
+            if (TaterAPIProvider.get().serverType().isProxy() || TaterCommsAPIProvider.get().isUsingProxy()) {
                 // Register plugin channels
                 TaterAPIProvider.get().registerChannels(Message.MessageType.getTypes());
 
@@ -66,10 +67,17 @@ public class MinecraftModule implements Module {
 
             // Register TaterComms events
             TaterCommsEvents.RECEIVE_MESSAGE.register((event) -> {
-                // Prevents re-sending the message on the originating server
-                if (!TaterCommsConfig.formattingEnabled() && event.getMessage().getSender().getServerName().equals(TaterCommsConfig.serverName())) {
+                // Skips server start/stop messages
+                if (event.getMessage().getChannel().equals(Message.MessageType.SERVER_STARTED.getIdentifier())
+                        || event.getMessage().getChannel().equals(Message.MessageType.SERVER_STOPPED.getIdentifier())) {
                     return;
                 }
+
+                // Prevents re-sending the message on the originating server
+                if (!TaterCommsConfig.formattingEnabled() && event.getMessage().getSender().getServerName().equals(TaterCommsAPIProvider.get().getServerName())) {
+                    return;
+                }
+
                 TaterAPIProvider.get().getServer().getOnlinePlayers().forEach((player) ->
                         player.sendMessage(event.getMessage().applyPlaceHolders()));
             });
@@ -79,7 +87,7 @@ public class MinecraftModule implements Module {
                 Message message = event.getMessage();
 
                 // Send the message using proxy channels
-                if (TaterCommsConfig.serverUsingProxy()
+                if (TaterCommsAPIProvider.get().isUsingProxy()
                         && !TaterCommsConfig.SocketConfig.enabled()
                         && !message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())
                         && !message.getChannel().equals(Message.MessageType.PLAYER_LOGIN.getIdentifier())
@@ -99,6 +107,7 @@ public class MinecraftModule implements Module {
             return;
         }
         STARTED = false;
+        RELOADED = true;
 
         // Remove references to objects
 

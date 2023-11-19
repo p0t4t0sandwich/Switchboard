@@ -1,6 +1,6 @@
 package dev.neuralnexus.tatercomms.common.event;
 
-import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 
 /**
@@ -11,9 +11,9 @@ public class ReceiveMessageEvent {
 
     public ReceiveMessageEvent(Message message) {
         if (message.isRemote()) {
-            message.setPlaceHolderMessage(TaterCommsConfig.formattingChat().get("remote"));
+            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting().get("remote"));
         } else if (message.isGlobal()) {
-            message.setPlaceHolderMessage(TaterCommsConfig.formattingChat().get("global"));
+            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting().get("global"));
         }
         this.message = message;
     }

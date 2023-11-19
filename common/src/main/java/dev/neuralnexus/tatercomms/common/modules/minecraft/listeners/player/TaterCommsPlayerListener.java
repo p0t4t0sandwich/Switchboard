@@ -1,6 +1,6 @@
 package dev.neuralnexus.tatercomms.common.modules.minecraft.listeners.player;
 
-import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.api.message.MessageSender;
 import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
@@ -22,14 +22,14 @@ public interface TaterCommsPlayerListener {
         Player player = event.getPlayer();
         String advancement = event.getAdvancement();
         if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsConfig.serverName());
+            player.setServerName(TaterCommsAPIProvider.get().getServerName());
         }
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("advancement", advancement);
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                         Message.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(),
                         advancement,
-                        TaterCommsConfig.formattingChat().get("advancement"),
+                        TaterCommsAPIProvider.get().getFormatting().get("advancement"),
                         placeholders
         )));
     }
@@ -42,14 +42,14 @@ public interface TaterCommsPlayerListener {
         Player player = event.getPlayer();
         String deathMessage = event.getDeathMessage();
         if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsConfig.serverName());
+            player.setServerName(TaterCommsAPIProvider.get().getServerName());
         }
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("deathmessage", deathMessage);
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                 Message.MessageType.PLAYER_DEATH,
                 deathMessage,
-                TaterCommsConfig.formattingChat().get("death"),
+                TaterCommsAPIProvider.get().getFormatting().get("death"),
                 placeholders
         )));
     }
@@ -61,12 +61,12 @@ public interface TaterCommsPlayerListener {
     static void onPlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
         if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsConfig.serverName());
+            player.setServerName(TaterCommsAPIProvider.get().getServerName());
         }
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                 Message.MessageType.PLAYER_LOGIN,
                 player.getName(),
-                TaterCommsConfig.formattingChat().get("login"),
+                TaterCommsAPIProvider.get().getFormatting().get("login"),
                 new HashMap<>()
         )));
     }
@@ -78,12 +78,12 @@ public interface TaterCommsPlayerListener {
     static void onPlayerLogout(PlayerLogoutEvent event) {
         Player player = event.getPlayer();
         if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsConfig.serverName());
+            player.setServerName(TaterCommsAPIProvider.get().getServerName());
         }
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                 Message.MessageType.PLAYER_LOGOUT,
                 player.getName(),
-                TaterCommsConfig.formattingChat().get("logout"),
+                TaterCommsAPIProvider.get().getFormatting().get("logout"),
                 new HashMap<>()
         )));
     }
@@ -96,12 +96,12 @@ public interface TaterCommsPlayerListener {
         Player player = event.getPlayer();
         String message = event.getMessage();
         if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsConfig.serverName());
+            player.setServerName(TaterCommsAPIProvider.get().getServerName());
         }
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                 Message.MessageType.PLAYER_MESSAGE,
                 message,
-                TaterCommsConfig.formattingChat().get("local"),
+                TaterCommsAPIProvider.get().getFormatting().get("local"),
                 new HashMap<>()
         )));
     }
@@ -118,13 +118,13 @@ public interface TaterCommsPlayerListener {
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(new MessageSender(player, fromServer),
                 Message.MessageType.PLAYER_LOGOUT,
                 player.getName(),
-                TaterCommsConfig.formattingChat().get("logout"),
+                TaterCommsAPIProvider.get().getFormatting().get("logout"),
                 new HashMap<>()
         )));
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(player,
                 Message.MessageType.PLAYER_LOGIN,
                 player.getName(),
-                TaterCommsConfig.formattingChat().get("login"),
+                TaterCommsAPIProvider.get().getFormatting().get("login"),
                 new HashMap<>()
         )));
     }

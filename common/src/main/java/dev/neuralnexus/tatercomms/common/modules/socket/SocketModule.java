@@ -43,6 +43,7 @@ public class SocketModule implements Module {
             return;
         }
         STARTED = false;
+        RELOADED = true;
 
         // Remove references to objects
         TaterCommsAPIProvider.get().socketAPI().stopSocket();

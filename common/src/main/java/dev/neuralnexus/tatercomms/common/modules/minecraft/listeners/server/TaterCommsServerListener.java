@@ -1,6 +1,6 @@
 package dev.neuralnexus.tatercomms.common.modules.minecraft.listeners.server;
 
-import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
@@ -17,12 +17,13 @@ public interface TaterCommsServerListener {
     static void onServerStarted(ServerStartedEvent event) {
         String server = event.getServer().getName();
         if (server.equals("local")) {
-            server = TaterCommsConfig.serverName();
+            server = TaterCommsAPIProvider.get().getServerName();
         }
-        TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(server,
+        TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(
+                server,
                 Message.MessageType.SERVER_STARTED,
                 "**Server has started**",
-                TaterCommsConfig.formattingChat().get("serverStarted"),
+                TaterCommsAPIProvider.get().getFormatting().get("serverStarted"),
                 new HashMap<>()
         )));
     }
@@ -34,12 +35,13 @@ public interface TaterCommsServerListener {
     static void onServerStopped(ServerStoppedEvent event) {
         String server = event.getServer().getName();
         if (server.equals("local")) {
-            server = TaterCommsConfig.serverName();
+            server = TaterCommsAPIProvider.get().getServerName();
         }
-        TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(server,
+        TaterCommsEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(new Message(
+                server,
                 Message.MessageType.SERVER_STOPPED,
                 "**Server has stopped**",
-                TaterCommsConfig.formattingChat().get("serverStopped"),
+                TaterCommsAPIProvider.get().getFormatting().get("serverStopped"),
                 new HashMap<>()
         )));
     }

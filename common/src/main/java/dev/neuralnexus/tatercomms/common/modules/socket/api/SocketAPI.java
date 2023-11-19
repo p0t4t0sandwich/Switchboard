@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.common.modules.socket.api;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
@@ -72,8 +73,8 @@ public class SocketAPI {
         }
 
         // Relay the message to socket server
-        if (socketClient != null && TaterCommsConfig.serverName().equals(message.getSender().getServerName()) &&
-                !(TaterCommsConfig.serverUsingProxy()
+        if (socketClient != null && message.getSender().getServerName().equals(TaterCommsAPIProvider.get().getServerName()) &&
+                !(TaterCommsAPIProvider.get().isUsingProxy()
                         && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())
                         || message.getChannel().equals(Message.MessageType.PLAYER_LOGIN.getIdentifier())
                         || message.getChannel().equals(Message.MessageType.PLAYER_LOGOUT.getIdentifier())))) {
@@ -184,7 +185,7 @@ public class SocketAPI {
          */
         public static void addClient(String serverName, Socket client) {
             if ((TaterAPIProvider.get().serverType().isProxy() && ((ProxyServer) TaterAPIProvider.get().getServer()).getServers().stream().anyMatch(s -> s.getName().equals(serverName))
-                    && !TaterCommsConfig.serverName().equals(serverName))) {
+                    && !TaterCommsAPIProvider.get().getServerName().equals(serverName))) {
                 clients.put(serverName, client);
             }
         }

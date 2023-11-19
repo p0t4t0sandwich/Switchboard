@@ -65,6 +65,7 @@ public class DiscordModule implements Module {
             return;
         }
         STARTED = false;
+        RELOADED = true;
 
         // Remove references to objects
         TaterCommsAPIProvider.get().discordAPI().removeBot();

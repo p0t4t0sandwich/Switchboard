@@ -2,6 +2,7 @@ package dev.neuralnexus.tatercomms.common.modules.discord.api;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
@@ -129,7 +130,7 @@ public class DiscordAPI {
                     discordPlayer,
                     Message.MessageType.PLAYER_MESSAGE,
                     content,
-                    TaterCommsConfig.formattingChat().get("discord"),
+                    TaterCommsAPIProvider.get().getFormatting().get("discord"),
                     placeholders
             )));
         }
