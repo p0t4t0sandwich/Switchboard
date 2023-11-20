@@ -12,6 +12,7 @@ import dev.neuralnexus.tatercomms.common.modules.minecraft.listeners.server.Tate
 import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.common.event.api.CommandEvents;
 import dev.neuralnexus.taterlib.common.event.api.PlayerEvents;
+import dev.neuralnexus.taterlib.common.event.api.PluginMessageEvents;
 import dev.neuralnexus.taterlib.common.event.api.ServerEvents;
 
 /** Minecraft module. */
@@ -52,13 +53,14 @@ public class MinecraftModule implements Module {
             ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
             ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
 
+            // TODO: Abstract to Proxy module
             if (TaterAPIProvider.get().serverType().isProxy()
                     || TaterCommsAPIProvider.get().isUsingProxy()) {
                 // Register plugin channels
-                TaterAPIProvider.get().registerChannels(Message.MessageType.getTypes());
+                PluginMessageEvents.REGISTER_PLUGIN_MESSAGES.register(
+                        (event) -> event.registerPluginChannels(Message.MessageType.getTypes()));
 
                 // Register plugin message listeners
-                //
                 // PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
             }
 
