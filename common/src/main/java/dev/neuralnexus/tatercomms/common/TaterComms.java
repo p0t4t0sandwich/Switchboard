@@ -10,20 +10,10 @@ import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
 
 /** Main class for the plugin. */
 public class TaterComms {
-    private static final TaterComms instance = new TaterComms();
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
-    private Object plugin;
-    private AbstractLogger logger;
-
-    /**
-     * Getter for the singleton instance of the class.
-     *
-     * @return The singleton instance
-     */
-    public static TaterComms getInstance() {
-        return instance;
-    }
+    private static Object plugin;
+    private static AbstractLogger logger;
 
     /**
      * Get the plugin
@@ -31,7 +21,7 @@ public class TaterComms {
      * @return The plugin
      */
     public static Object getPlugin() {
-        return instance.plugin;
+        return plugin;
     }
 
     /**
@@ -40,7 +30,7 @@ public class TaterComms {
      * @param plugin The plugin
      */
     private static void setPlugin(Object plugin) {
-        instance.plugin = plugin;
+        TaterComms.plugin = plugin;
     }
 
     /**
@@ -49,7 +39,7 @@ public class TaterComms {
      * @return The logger
      */
     public static AbstractLogger getLogger() {
-        return instance.logger;
+        return logger;
     }
 
     /**
@@ -58,7 +48,7 @@ public class TaterComms {
      * @param logger The logger
      */
     private static void setLogger(AbstractLogger logger) {
-        instance.logger = logger;
+        TaterComms.logger = logger;
     }
 
     /**
@@ -109,7 +99,7 @@ public class TaterComms {
     /** Stop */
     public static void stop() {
         if (!STARTED) {
-            instance.logger.info(Constants.PROJECT_NAME + " has already stopped!");
+            logger.info(Constants.PROJECT_NAME + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -121,13 +111,13 @@ public class TaterComms {
         // Remove references to objects
         TaterCommsConfig.unloadConfig();
 
-        instance.logger.info("TaterComms has been stopped!");
+        logger.info(Constants.PROJECT_NAME + " has been stopped!");
     }
 
     /** Reload */
     public static void reload() {
         if (!STARTED) {
-            instance.logger.info(Constants.PROJECT_NAME + " has not been started!");
+            logger.info(Constants.PROJECT_NAME + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -139,9 +129,9 @@ public class TaterComms {
         TaterCommsAPIProvider.unregister();
 
         // Start
-        start(instance.plugin, instance.logger);
+        start(plugin, logger);
 
-        instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
+        logger.info(Constants.PROJECT_NAME + " has been reloaded!");
     }
 
     /** Constants used throughout the plugin. */

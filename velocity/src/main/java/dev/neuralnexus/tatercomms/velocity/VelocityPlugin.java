@@ -7,7 +7,6 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
 import dev.neuralnexus.tatercomms.common.TaterCommsPlugin;
-import dev.neuralnexus.taterlib.common.event.api.ServerEvents;
 import dev.neuralnexus.taterlib.velocity.logger.VelocityLogger;
 
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ import org.slf4j.Logger;
 public class VelocityPlugin implements TaterCommsPlugin {
     @Inject
     public VelocityPlugin(ProxyServer server, Logger logger) {
-        ServerEvents.STOPPED.register(event -> pluginStop());
         pluginStart(server, new VelocityLogger(logger));
     }
 }
