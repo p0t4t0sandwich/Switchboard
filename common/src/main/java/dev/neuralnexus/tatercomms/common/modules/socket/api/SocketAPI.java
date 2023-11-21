@@ -74,8 +74,7 @@ public class SocketAPI {
         // Relay player messages to socket clients
         if (socketServer != null
                 && TaterCommsConfig.SocketConfig.primary()
-                && message.getChannel()
-                        .equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())) {
+                && message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())) {
             socketServer.sendMessageToAll(message);
         }
 
@@ -85,14 +84,11 @@ public class SocketAPI {
                         .getServerName()
                         .equals(TaterCommsAPIProvider.get().getServerName())
                 && !(TaterCommsAPIProvider.get().isUsingProxy()
-                        && (message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())
+                        && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
                                 || message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGIN.getIdentifier())
+                                        .equals(Message.MessageType.PLAYER_LOGIN.id())
                                 || message.getChannel()
-                                        .equals(
-                                                Message.MessageType.PLAYER_LOGOUT
-                                                        .getIdentifier())))) {
+                                        .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
             socketClient.sendMessage(message);
         }
     }

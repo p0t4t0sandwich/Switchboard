@@ -35,9 +35,9 @@ public class MinecraftModule implements Module {
         if (!RELOADED) {
             // Register commands
             CommandEvents.REGISTER_COMMAND.register(
-                    (event ->
+                    event ->
                             event.registerCommand(
-                                    TaterComms.getPlugin(), new TaterCommsCommand(), "tc")));
+                                    TaterComms.getPlugin(), new TaterCommsCommand(), "tc"));
 
             // Register player listeners
             PlayerEvents.ADVANCEMENT_FINISHED.register(
@@ -61,35 +61,26 @@ public class MinecraftModule implements Module {
 
             // Register TaterComms events
             TaterCommsEvents.RECEIVE_MESSAGE.register(
-                    (event) -> {
-                        // Skips server start/stop messages
-                        if (event.getMessage()
-                                        .getChannel()
-                                        .equals(Message.MessageType.SERVER_STARTED.getIdentifier())
-                                || event.getMessage()
-                                        .getChannel()
-                                        .equals(
-                                                Message.MessageType.SERVER_STOPPED
-                                                        .getIdentifier())) {
-                            return;
-                        }
+                    event -> {
+                        Message message = event.getMessage();
 
                         // Prevents re-sending the message on the originating server
                         if (!TaterCommsConfig.formattingEnabled()
-                                && event.getMessage()
-                                        .getSender()
+                                && message.getSender()
                                         .getServerName()
                                         .equals(TaterCommsAPIProvider.get().getServerName())) {
+                            return;
+                        }
+
+                        // Return if the message is not a player message
+                        if (!message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())) {
                             return;
                         }
 
                         TaterAPIProvider.get()
                                 .getServer()
                                 .getOnlinePlayers()
-                                .forEach(
-                                        (player) ->
-                                                player.sendMessage(
-                                                        event.getMessage().applyPlaceHolders()));
+                                .forEach(player -> player.sendMessage(message.applyPlaceHolders()));
                     });
         }
 

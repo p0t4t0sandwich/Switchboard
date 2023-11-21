@@ -28,7 +28,7 @@ public interface TaterCommsPlayerListener {
                 new ReceiveMessageEvent(
                         new Message(
                                 player,
-                                Message.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(),
+                                Message.MessageType.PLAYER_ADVANCEMENT_FINISHED.id(),
                                 advancement,
                                 TaterCommsAPIProvider.get().getFormatting("advancement"),
                                 placeholders)));

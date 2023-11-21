@@ -186,10 +186,53 @@ public class DiscordAPI {
             this.user = user;
             this.name = user.getName();
             this.displayName = user.getEffectiveName();
-
             this.serverName = "discord";
+        }
 
-            // TODO: Set up account linking, and get the UUID and name from the database.
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public String getDisplayName() {
+            return this.displayName;
+        }
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public UUID getUniqueId() {
+            return UUID.fromString("00000000-0000-0000-0000-000000000000");
+        }
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public String getServerName() {
+            return this.serverName;
+        }
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public void setServerName(String serverName) {}
+
+        /**
+         * @inheritDoc
+         */
+        @Override
+        public void sendMessage(String message) {
+            user.openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
         }
 
         @Override
@@ -258,52 +301,6 @@ public class DiscordAPI {
 
         @Override
         public void teleport(Entity entity) {}
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public String getDisplayName() {
-            return this.displayName;
-        }
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public UUID getUniqueId() {
-            return UUID.fromString("00000000-0000-0000-0000-000000000000");
-        }
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public String getServerName() {
-            return this.serverName;
-        }
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public void setServerName(String serverName) {}
-
-        /**
-         * @inheritDoc
-         */
-        @Override
-        public void sendMessage(String message) {
-            user.openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
-        }
 
         @Override
         public boolean hasPermission(int i) {

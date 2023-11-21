@@ -61,7 +61,7 @@ public class Message {
             String message,
             String placeHolderMessage,
             HashMap<String, String> placeHolders) {
-        this(sender, channel.getIdentifier(), message, placeHolderMessage, placeHolders);
+        this(sender, channel.id(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Message {
             HashMap<String, String> placeHolders) {
         this(
                 new MessageSender(serverName),
-                channel.getIdentifier(),
+                channel.id(),
                 message,
                 placeHolderMessage,
                 placeHolders);
@@ -130,12 +130,7 @@ public class Message {
             String message,
             String placeHolderMessage,
             HashMap<String, String> placeHolders) {
-        this(
-                new MessageSender(sender),
-                channel.getIdentifier(),
-                message,
-                placeHolderMessage,
-                placeHolders);
+        this(new MessageSender(sender), channel.id(), message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -344,27 +339,27 @@ public class Message {
         SERVER_STOPPED("tc:s_stop"),
         CUSTOM("tc:custom");
 
-        private final String identifier;
+        private final String id;
 
-        MessageType(String identifier) {
-            this.identifier = identifier;
+        MessageType(String id) {
+            this.id = id;
         }
 
         public static Set<String> getTypes() {
             return Arrays.stream(MessageType.values())
-                    .map(MessageType::getIdentifier)
+                    .map(MessageType::id)
                     .collect(Collectors.toSet());
         }
 
-        public static MessageType fromIdentifier(String identifier) {
+        public static MessageType fromId(String id) {
             return Arrays.stream(MessageType.values())
-                    .filter(messageType -> messageType.getIdentifier().equals(identifier))
+                    .filter(messageType -> messageType.id().equals(id))
                     .findFirst()
                     .orElse(null);
         }
 
-        public String getIdentifier() {
-            return this.identifier;
+        public String id() {
+            return this.id;
         }
     }
 }

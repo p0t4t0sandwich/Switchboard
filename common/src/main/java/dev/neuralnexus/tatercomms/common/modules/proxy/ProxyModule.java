@@ -1,7 +1,6 @@
 package dev.neuralnexus.tatercomms.common.modules.proxy;
 
 import dev.neuralnexus.tatercomms.common.TaterComms;
-import dev.neuralnexus.tatercomms.common.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
 import dev.neuralnexus.tatercomms.common.api.message.MessageSender;
@@ -63,33 +62,27 @@ public class ProxyModule implements Module {
                         });
             }
 
-            // TODO: Abstract to Proxy module
-            if (TaterAPIProvider.get().serverType().isProxy()
-                    || TaterCommsAPIProvider.get().isUsingProxy()) {
-                // Register plugin channels
-                PluginMessageEvents.REGISTER_PLUGIN_MESSAGES.register(
-                        (event) -> event.registerPluginChannels(Message.MessageType.getTypes()));
+            // Register plugin channels
+            PluginMessageEvents.REGISTER_PLUGIN_MESSAGES.register(
+                    event -> event.registerPluginChannels(Message.MessageType.getTypes()));
 
-                // Register plugin message listeners
-                // PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(CommsMessage::parseMessageChannel);
-            }
+            // Register plugin message listener
+            PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(
+                    event ->
+                            TaterCommsEvents.RECEIVE_MESSAGE.invoke(
+                                    new ReceiveMessageEvent(
+                                            Message.fromByteArray(event.getData()))));
 
-            // TODO: Abstract to Proxy module
+            // Register TaterComms message listener
             TaterCommsEvents.RECEIVE_MESSAGE.register(
-                    (event) -> {
+                    event -> {
                         Message message = event.getMessage();
 
                         // Send the message using proxy channels
-                        if (TaterCommsAPIProvider.get().isUsingProxy()
-                                && !TaterCommsConfig.SocketConfig.enabled()
-                                && !message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_MESSAGE.getIdentifier())
-                                && !message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGIN.getIdentifier())
-                                && !message.getChannel()
-                                        .equals(
-                                                Message.MessageType.PLAYER_LOGOUT
-                                                        .getIdentifier())) {
+                        if (!TaterAPIProvider.get().serverType().isProxy()
+                                && !event.getMessage()
+                                        .getChannel()
+                                        .equals(Message.MessageType.PLAYER_MESSAGE.id())) {
                             message.getSender().sendPluginMessage(message);
                         }
                     });

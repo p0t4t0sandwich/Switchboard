@@ -74,9 +74,9 @@ public class TaterComms {
         // Register API
         TaterCommsAPIProvider.register(new TaterCommsAPI());
         TaterCommsAPI api = TaterCommsAPIProvider.get();
-        api.setServerName(TaterCommsConfig.serverName());
+        api.setServerName(TaterCommsConfig.name());
         api.setFormatting(TaterCommsConfig.formattingChat());
-        api.setUsingProxy(TaterCommsConfig.serverUsingProxy());
+        api.setUsingProxy(TaterCommsConfig.ProxyConfig.enabled());
 
         if (!RELOADED) {
             // Register modules

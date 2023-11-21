@@ -68,28 +68,16 @@ public class TaterCommsConfig {
      *
      * @return The server name
      */
-    public static String serverName() {
+    public static String name() {
         return config.getString("name");
     }
-
-    /**
-     * Get whether the server is using a proxy from the config file
-     *
-     * @return Whether the server is using a proxy
-     */
-    public static boolean serverUsingProxy() {
-        return config.getBoolean("usingProxy");
-    }
-
-    // TODO: Refactor
-    // ------------------------- Deprecated -------------------------
 
     /**
      * Get whether global chat is enabled by default from the config file
      *
      * @return Whether global chat is enabled by default
      */
-    public static boolean serverGlobalChatEnabledByDefault() {
+    public static boolean globalChatEnabledByDefault() {
         return config.getBoolean("globalChatEnabledByDefault");
     }
 
@@ -160,6 +148,30 @@ public class TaterCommsConfig {
                 serverChannels.put(entry.getKey(), (String) entry.getValue().getStoredValue());
             }
             return serverChannels;
+        }
+    }
+
+    /** Minecraft config. */
+    public static class MinecraftConfig {
+        /**
+         * Get whether Minecraft chat is enabled
+         *
+         * @return Whether Minecraft chat is enabled
+         */
+        public static boolean enabled() {
+            return config.getBoolean("modules.minecraft.enabled");
+        }
+    }
+
+    /** Proxy config. */
+    public static class ProxyConfig {
+        /**
+         * Get whether proxy chat is enabled
+         *
+         * @return Whether proxy chat is enabled
+         */
+        public static boolean enabled() {
+            return config.getBoolean("modules.proxy.enabled");
         }
     }
 

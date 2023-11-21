@@ -5,9 +5,7 @@ version: 3
 # Proxies will use the server names defined in the config
 # The server.name doesn't have to match the actual Discord server name
 name: "serverName"
-# Weather the plugin is running in a proxy network
-# Set this to true on both ends to enable plugin messaging for some events (player advancements, death messages, etc.)
-usingProxy: false
+
 # Weather global chat should be the default chat channel for players
 globalChatEnabledByDefault: false
 
@@ -58,9 +56,6 @@ formatting:
     remote: "&4[%server%]&r %displayname% >> %message%"
 
 modules:
-  minecraft:
-    enabled: true
-
   # Discord bot configuration
   # You only need one Discord bot per server network. You can use either proxy methods or the
   # socket module to send/receive messages from the other servers.
@@ -79,6 +74,14 @@ modules:
       # i.e.: bacon: "123456789012345678/123456789012345678"
       global: "123456789012345678/123456789012345678"
       serverName: "123456789012345678/123456789012345678"
+
+  minecraft:
+    enabled: true
+
+  proxy:
+    # Whether the plugin is running in a proxy network
+    # Set this to true on both ends to enable plugin messaging for some events (player advancements, death messages, etc.)
+    enabled: false
 
   # Remote TCP socket configuration (for servers that you can't run behind a proxy)
   # Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
