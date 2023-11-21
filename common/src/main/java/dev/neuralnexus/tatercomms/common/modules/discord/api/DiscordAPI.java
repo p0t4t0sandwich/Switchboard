@@ -132,7 +132,7 @@ public class DiscordAPI {
                                     discordPlayer,
                                     Message.MessageType.PLAYER_MESSAGE,
                                     content,
-                                    TaterCommsAPIProvider.get().getFormatting().get("discord"),
+                                    TaterCommsAPIProvider.get().getFormatting("discord"),
                                     placeholders)));
         }
 

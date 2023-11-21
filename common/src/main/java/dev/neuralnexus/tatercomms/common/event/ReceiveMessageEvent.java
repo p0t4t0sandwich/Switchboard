@@ -9,11 +9,9 @@ public class ReceiveMessageEvent {
 
     public ReceiveMessageEvent(Message message) {
         if (message.isRemote()) {
-            message.setPlaceHolderMessage(
-                    TaterCommsAPIProvider.get().getFormatting().get("remote"));
+            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting("remote"));
         } else if (message.isGlobal()) {
-            message.setPlaceHolderMessage(
-                    TaterCommsAPIProvider.get().getFormatting().get("global"));
+            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting("global"));
         }
         this.message = message;
     }

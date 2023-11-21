@@ -26,7 +26,7 @@ public interface TaterCommsServerListener {
                                 server,
                                 Message.MessageType.SERVER_STARTED,
                                 "**Server has started**",
-                                TaterCommsAPIProvider.get().getFormatting().get("serverStarted"),
+                                TaterCommsAPIProvider.get().getFormatting("serverStarted"),
                                 new HashMap<>())));
     }
 
@@ -46,7 +46,7 @@ public interface TaterCommsServerListener {
                                 server,
                                 Message.MessageType.SERVER_STOPPED,
                                 "**Server has stopped**",
-                                TaterCommsAPIProvider.get().getFormatting().get("serverStopped"),
+                                TaterCommsAPIProvider.get().getFormatting("serverStopped"),
                                 new HashMap<>())));
     }
 }

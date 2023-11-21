@@ -4,6 +4,7 @@ import dev.neuralnexus.tatercomms.common.api.TaterCommsAPI;
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.modules.discord.DiscordModule;
 import dev.neuralnexus.tatercomms.common.modules.minecraft.MinecraftModule;
+import dev.neuralnexus.tatercomms.common.modules.proxy.ProxyModule;
 import dev.neuralnexus.tatercomms.common.modules.socket.SocketModule;
 import dev.neuralnexus.taterlib.common.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.common.logger.AbstractLogger;
@@ -84,6 +85,9 @@ public class TaterComms {
             }
             if (TaterCommsConfig.isModuleEnabled("discord")) {
                 TaterCommsModuleLoader.registerModule(new DiscordModule());
+            }
+            if (TaterCommsConfig.isModuleEnabled("proxy")) {
+                TaterCommsModuleLoader.registerModule(new ProxyModule());
             }
             if (TaterCommsConfig.isModuleEnabled("socket")) {
                 TaterCommsModuleLoader.registerModule(new SocketModule());

@@ -61,10 +61,12 @@ public class TaterCommsAPI {
     /**
      * Get the formatting.
      *
+     * @param key The key.
      * @return The formatting.
      */
-    public HashMap<String, String> getFormatting() {
-        return data.getFormatting();
+    public String getFormatting(String key) {
+        String formatting = data.getFormatting().get(key);
+        return formatting == null ? "%message%" : formatting;
     }
 
     /**

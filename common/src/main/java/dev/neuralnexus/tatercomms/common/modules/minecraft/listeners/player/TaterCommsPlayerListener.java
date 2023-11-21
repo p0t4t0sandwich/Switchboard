@@ -2,7 +2,6 @@ package dev.neuralnexus.tatercomms.common.modules.minecraft.listeners.player;
 
 import dev.neuralnexus.tatercomms.common.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.common.api.message.Message;
-import dev.neuralnexus.tatercomms.common.api.message.MessageSender;
 import dev.neuralnexus.tatercomms.common.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.common.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.common.event.player.*;
@@ -31,7 +30,7 @@ public interface TaterCommsPlayerListener {
                                 player,
                                 Message.MessageType.PLAYER_ADVANCEMENT_FINISHED.getIdentifier(),
                                 advancement,
-                                TaterCommsAPIProvider.get().getFormatting().get("advancement"),
+                                TaterCommsAPIProvider.get().getFormatting("advancement"),
                                 placeholders)));
     }
 
@@ -54,7 +53,7 @@ public interface TaterCommsPlayerListener {
                                 player,
                                 Message.MessageType.PLAYER_DEATH,
                                 deathMessage,
-                                TaterCommsAPIProvider.get().getFormatting().get("death"),
+                                TaterCommsAPIProvider.get().getFormatting("death"),
                                 placeholders)));
     }
 
@@ -74,7 +73,7 @@ public interface TaterCommsPlayerListener {
                                 player,
                                 Message.MessageType.PLAYER_LOGIN,
                                 player.getName(),
-                                TaterCommsAPIProvider.get().getFormatting().get("login"),
+                                TaterCommsAPIProvider.get().getFormatting("login"),
                                 new HashMap<>())));
     }
 
@@ -94,7 +93,7 @@ public interface TaterCommsPlayerListener {
                                 player,
                                 Message.MessageType.PLAYER_LOGOUT,
                                 player.getName(),
-                                TaterCommsAPIProvider.get().getFormatting().get("logout"),
+                                TaterCommsAPIProvider.get().getFormatting("logout"),
                                 new HashMap<>())));
     }
 
@@ -115,35 +114,7 @@ public interface TaterCommsPlayerListener {
                                 player,
                                 Message.MessageType.PLAYER_MESSAGE,
                                 message,
-                                TaterCommsAPIProvider.get().getFormatting().get("local"),
-                                new HashMap<>())));
-    }
-
-    /**
-     * Called when a player logs out, and sends it to the message relay.
-     *
-     * @param event The event.
-     */
-    static void onPlayerServerSwitch(PlayerServerSwitchEvent event) {
-        Player player = event.getPlayer();
-        String fromServer = event.getFromServer();
-
-        // Construct and send two messages
-        TaterCommsEvents.RECEIVE_MESSAGE.invoke(
-                new ReceiveMessageEvent(
-                        new Message(
-                                new MessageSender(player, fromServer),
-                                Message.MessageType.PLAYER_LOGOUT,
-                                player.getName(),
-                                TaterCommsAPIProvider.get().getFormatting().get("logout"),
-                                new HashMap<>())));
-        TaterCommsEvents.RECEIVE_MESSAGE.invoke(
-                new ReceiveMessageEvent(
-                        new Message(
-                                player,
-                                Message.MessageType.PLAYER_LOGIN,
-                                player.getName(),
-                                TaterCommsAPIProvider.get().getFormatting().get("login"),
+                                TaterCommsAPIProvider.get().getFormatting("local"),
                                 new HashMap<>())));
     }
 }
