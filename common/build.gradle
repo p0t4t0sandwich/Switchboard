@@ -40,13 +40,6 @@ shadowJar {
     destinationDirectory = file('../target')
     archiveFileName = "${project_name}-common-${version}.jar"
 }
-shadowJar.doLast {
-    task ->
-        ant.checksum(file: task.archivePath) {
-            hashAlgorithm = 'md5'
-            property = 'md5sum'
-        }
-}
 
 artifacts {
     archives(shadowJar)
