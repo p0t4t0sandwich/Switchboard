@@ -2,14 +2,12 @@ import org.spongepowered.gradle.plugin.config.PluginLoaders
 import org.spongepowered.plugin.metadata.model.PluginDependency
 
 plugins {
-    id('com.github.johnrengelman.shadow') version('8.1.1')
-    id('java-library')
     id("org.spongepowered.gradle.plugin") version('2.1.1')
 }
 
 sponge {
     apiVersion(spongeapi_version)
-    license("GPL-3.0")
+    license(project.license)
     loader {
         name(PluginLoaders.JAVA_PLAIN)
         version("1.0")
@@ -17,7 +15,7 @@ sponge {
     plugin(project_id) {
         version(version)
         displayName(project_name)
-        entrypoint("${group_id}.${project_id}.platforms.SpongePlugin")
+        entrypoint("${group_id}.${project_id}.platforms.Sponge8Plugin")
         description(project_description)
         links {
             homepage(homepage_url)
@@ -42,21 +40,11 @@ sponge {
 }
 
 dependencies {
-    implementation(project(path: ':common', configuration: 'shadow'))
-
-    // TaterLib
+    compileOnly(project(':common'))
     compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
 }
 
-shadowJar {
-    dependencies {
-        include(project(":common"))
-    }
-
+jar {
     destinationDirectory = file('../../target')
     archiveFileName = "${project_name}-sponge8-${version}.jar"
-}
-
-artifacts {
-    archives(shadowJar)
 }

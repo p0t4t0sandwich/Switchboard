@@ -1,4 +1,4 @@
-package dev.neuralnexus.tatercomms.platforms;
+package com.example.pluginname.platforms;
 
 import com.google.inject.Inject;
 
@@ -12,9 +12,9 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 /** Sponge entry point. */
 @Plugin(TaterComms.Constants.PROJECT_ID)
-public class SpongePlugin implements TaterCommsPlugin {
+public class Sponge8Plugin implements TaterCommsPlugin {
     @Inject
-    public SpongePlugin(PluginContainer container, Logger logger) {
+    public Sponge8Plugin(PluginContainer container, Logger logger) {
         pluginStart(container, new LoggerAdapter(TaterComms.Constants.PROJECT_NAME, logger));
     }
 }
