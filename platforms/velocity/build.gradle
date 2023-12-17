@@ -2,7 +2,7 @@ dependencies {
     compileOnly("com.velocitypowered:velocity-api:${velocityapi_version}")
     annotationProcessor("com.velocitypowered:velocity-api:${velocityapi_version}")
     compileOnly(project(':common'))
-    compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
+    compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
 }
 
 java.disableAutoTargetJvm()

@@ -221,9 +221,6 @@ public class DiscordAPI {
             return this.serverName;
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public void setServerName(String serverName) {}
 
@@ -307,23 +304,19 @@ public class DiscordAPI {
             return false;
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public void sendPluginMessage(String channel, byte[] message) {}
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public PlayerInventory getInventory() {
             return null;
         }
 
-        /**
-         * @inheritDoc
-         */
+        @Override
+        public int getPing() {
+            return -1;
+        }
+
         @Override
         public void kickPlayer(String message) {}
 

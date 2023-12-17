@@ -238,6 +238,11 @@ public class MessageSender implements Player {
     }
 
     @Override
+    public int getPing() {
+        return -1;
+    }
+
+    @Override
     public void kickPlayer(String message) {}
 
     @Override

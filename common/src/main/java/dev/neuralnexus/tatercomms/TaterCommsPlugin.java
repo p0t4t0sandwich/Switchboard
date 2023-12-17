@@ -12,9 +12,9 @@ public interface TaterCommsPlugin extends Plugin {
         logger.info(
                 TaterComms.Constants.PROJECT_NAME
                         + " is running on "
-                        + TaterAPIProvider.get().serverType()
+                        + TaterAPIProvider.serverType()
                         + " "
-                        + TaterAPIProvider.get().minecraftVersion()
+                        + TaterAPIProvider.minecraftVersion()
                         + "!");
         PluginEvents.DISABLED.register(event -> pluginStop());
         TaterComms.start(plugin, logger);

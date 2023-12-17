@@ -9,7 +9,7 @@ targetCompatibility = java_version
 dependencies {
     compileOnly("net.neoforged:neoforge:${neo_version}")
     compileOnly(project(':common'))
-    compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
+    compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
 }
 
 tasks.withType(ProcessResources).configureEach {

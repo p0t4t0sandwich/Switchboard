@@ -7,7 +7,7 @@ dependencies {
     mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
     compileOnly(project(':common'))
-    compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
+    compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -1,7 +1,7 @@
 package dev.neuralnexus.tatercomms;
 
-import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.YamlDocument;
-import dev.neuralnexus.taterlib.lib.dejvokep.boostedyaml.block.Block;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.Block;
 
 import java.io.File;
 import java.io.IOException;

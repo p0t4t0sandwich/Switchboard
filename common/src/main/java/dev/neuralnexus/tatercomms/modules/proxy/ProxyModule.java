@@ -34,7 +34,7 @@ public class ProxyModule implements Module {
 
         if (!RELOADED) {
             // Register player listeners
-            if (TaterAPIProvider.get().serverType().isProxy()) {
+            if (TaterAPIProvider.serverType().isProxy()) {
                 PlayerEvents.SERVER_SWITCH.register(
                         event -> {
                             Player player = event.getPlayer();
@@ -79,7 +79,7 @@ public class ProxyModule implements Module {
                         Message message = event.getMessage();
 
                         // Send the message using proxy channels
-                        if (!TaterAPIProvider.get().serverType().isProxy()
+                        if (!TaterAPIProvider.serverType().isProxy()
                                 && !event.getMessage()
                                         .getChannel()
                                         .equals(Message.MessageType.PLAYER_MESSAGE.id())) {

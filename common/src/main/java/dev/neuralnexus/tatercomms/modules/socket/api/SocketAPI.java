@@ -128,7 +128,7 @@ public class SocketAPI {
          * @param client The client
          */
         public static void addClient(String serverName, Socket client) {
-            if ((TaterAPIProvider.get().serverType().isProxy()
+            if ((TaterAPIProvider.serverType().isProxy()
                     && ((ProxyServer) TaterAPIProvider.get().getServer())
                             .getServers().stream().anyMatch(s -> s.getName().equals(serverName))
                     && !TaterCommsAPIProvider.get().getServerName().equals(serverName))) {

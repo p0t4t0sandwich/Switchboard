@@ -3,9 +3,9 @@ package dev.neuralnexus.tatercomms.api.message;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import dev.neuralnexus.taterlib.lib.gson.Gson;
-import dev.neuralnexus.taterlib.lib.gson.GsonBuilder;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.player.Player;
 
