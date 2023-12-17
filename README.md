@@ -49,14 +49,10 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 - [LuckPerms](https://luckperms.net/) - For permissions/prefix/suffix support
 
-## Compatibility Cheatsheet
+### Compatibility
 
-TaterComms supports: Bukkit, BungeeCord, Fabric, Forge, Sponge, and Velocity
-
-| Server type          | Versions | Jar Name                          |
-|----------------------|----------|-----------------------------------|
-| All 1.13 and up      | 1.13+    | `TaterUtils-<version>.jar`        |
-| All 1.12.2 and below | 1.12.2-  | `TaterUtils-legacy-<version>.jar` |
+- Platforms: Bukkit, BungeeCord, Fabric, Forge, Sponge, and Velocity
+- Versions: Any version that TaterLib supports
 
 ## Commands and Permissions
 

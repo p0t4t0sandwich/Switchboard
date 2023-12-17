@@ -7,35 +7,27 @@ dependencies {
     compileOnly("dev.neuralnexus:TaterLib:${taterlib_version}")
 
     // JDA
-    implementation("net.dv8tion:JDA:5.0.0-beta.10") {
-        exclude(module: "opus-java")
+    implementation('net.dv8tion:JDA:5.0.0-beta.10') {
+        exclude(module: 'opus-java')
     }
 
-    // Websocket
-    implementation("com.neovisionaries:nv-websocket-client:2.14")
-
     // Guava
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation('com.google.guava:guava:30.1.1-jre')
 }
 
 shadowJar {
-    dependencies {}
+    dependencies {
+        include(dependency("${group_id}:${project_id}:${version}"))
+        include(dependency("net.dv8tion:JDA:5.0.0-beta.10"))
+        include(dependency("com.google.guava:guava:30.1.1-jre"))
+    }
     // JDA
-    relocate("net.dv8tion", "dev.neuralnexus.tatercomms.lib.dv8tion")
-    relocate("org.apache", "dev.neuralnexus.tatercomms.lib.apache")
-    relocate("okhttp3", "dev.neuralnexus.tatercomms.lib.okhttp3")
-    relocate("com.iwebpp", "dev.neuralnexus.tatercomms.lib.iwebpp")
-    relocate("kotlin", "dev.neuralnexus.tatercomms.lib.kotlin")
-    relocate("com.fasterxml.jackson", "dev.neuralnexus.tatercomms.lib.jackson")
-    relocate("gnu.trove", "dev.neuralnexus.tatercomms.lib.trove")
-    relocate("okio", "dev.neuralnexus.tatercomms.lib.okio")
-    relocate("org.slf4j", "dev.neuralnexus.tatercomms.lib.slf4j")
-
-    // Websocket
-    relocate("com.neovisionaries", "dev.neuralnexus.tatercomms.lib.neovisionaries")
+    relocate('net.dv8tion', "${group_id}.${project_id}.lib.dv8tion")
+    relocate('com.iwebpp', "${group_id}.${project_id}.lib.iwebpp")
 
     // Guava
-    relocate("com.google.common", "dev.neuralnexus.tatercomms.lib.guava")
+    relocate('com.google.common', "${group_id}.${project_id}.lib.guava")
+    relocate('com.google.thirdparty', "${group_id}.${project_id}.lib.google.thirdparty")
 
     destinationDirectory = file('../target')
     archiveFileName = "${project_name}-common-${version}.jar"

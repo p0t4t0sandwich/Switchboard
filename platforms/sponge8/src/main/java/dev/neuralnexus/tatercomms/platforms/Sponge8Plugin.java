@@ -1,4 +1,4 @@
-package com.example.pluginname.platforms;
+package dev.neuralnexus.tatercomms.platforms;
 
 import com.google.inject.Inject;
 

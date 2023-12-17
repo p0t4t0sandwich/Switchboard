@@ -7,9 +7,6 @@ defaultTasks('build')
 subprojects {
     apply(plugin: 'java')
 
-    group = 'dev.neuralnexus'
-    version = '1.0.4-R0.1-SNAPSHOT'
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
@@ -18,13 +15,8 @@ subprojects {
     }
 
     repositories {
+        mavenLocal()
         mavenCentral()
-
-        // Common
-        maven {
-            name = "jitpack"
-            url = "https://jitpack.io"
-        }
 
         // Bukkit/Bungee
         maven {
@@ -52,6 +44,35 @@ subprojects {
     }
 }
 
+task taterBuild(type: Jar) {
+    dependsOn(subprojects*.build)
+    archiveFileName = "${project_id}-${version}.jar"
+    destinationDirectory = file("./build/libs")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        fileTree("./target").findAll {
+            it.name.contains('jar')
+        }.collect {
+            if (it.name.contains('-forge')) {
+                zipTree(it).matching {
+                    exclude 'META-INF/mods.toml'
+                }
+            } else if (it.name.contains('sponge7')) {
+                zipTree(it).matching {
+                    exclude('META-INF/sponge_plugins.json')
+                    exclude('mcmod.info')
+                }
+            } else {
+                zipTree(it)
+            }
+        }
+    }
+    from(["README.md", "LICENSE", "LICENSE-API"]) {
+        into("META-INF")
+    }
+}
+
 clean {
-    delete "target"
+    delete('target')
 }
