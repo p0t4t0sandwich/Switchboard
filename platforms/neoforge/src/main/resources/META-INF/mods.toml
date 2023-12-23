@@ -49,5 +49,5 @@ modId = "taterlib"
 mandatory = true
 type = "required"
 versionRange = "[${taterlib_version},)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "SERVER"

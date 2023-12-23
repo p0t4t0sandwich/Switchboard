@@ -37,13 +37,5 @@ side = "BOTH"
 modId = "taterlib"
 mandatory = true
 versionRange = "[${taterlib_version},)"
-ordering = "NONE"
-side = "SERVER"
-
-# LuckPerms Dependency
-[[dependencies.${ project_id }]]
-modId = "luckperms"
-mandatory = false
-versionRange = "[5.3,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "SERVER"
