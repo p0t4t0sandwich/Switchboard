@@ -4,25 +4,47 @@ plugins {
 
 dependencies {
     implementation('dev.dejvokep:boosted-yaml:1.3.1')
-    implementation('net.dv8tion:JDA:5.0.0-beta.10') {
+    implementation('net.dv8tion:JDA:5.0.0-beta.19') {
         exclude(module: 'opus-java')
     }
     implementation('com.google.code.gson:gson:2.10.1')
-    implementation('com.google.guava:guava:30.1.1-jre')
+    implementation('com.google.guava:guava:32.0.0-android')
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
 }
 
 shadowJar {
     dependencies {
         include(dependency("${group_id}:${project_id}:${version}"))
-        include(dependency("dev.dejvokep:boosted-yaml:1.3.1"))
-        include(dependency("net.dv8tion:JDA:5.0.0-beta.10"))
+        include(dependency('dev.dejvokep:boosted-yaml:1.3.1'))
+
+        include(dependency('net.dv8tion:JDA:5.0.0-beta.19'))
+        include(dependency('org.apache.commons:commons-collections4:4.4'))
+        include(dependency('com.squareup.okhttp3:okhttp:4.12.0'))
+        include(dependency('com.squareup.okio:okio-jvm:3.6.0'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
+        include(dependency('com.neovisionaries:nv-websocket-client:2.14'))
+        include(dependency('net.sf.trove4j:trove4j:3.0.3'))
+        include(dependency('com.fasterxml.jackson.core:jackson-core:2.16.0'))
+        include(dependency('com.fasterxml.jackson.core:jackson-databind:2.16.0'))
+        include(dependency('com.fasterxml.jackson.core:jackson-annotations:2.16.0'))
+
         include(dependency('com.google.code.gson:gson:2.10.1'))
-        include(dependency("com.google.guava:guava:30.1.1-jre"))
+        include(dependency('com.google.guava:guava:32.0.0-android'))
     }
     relocate('dev.dejvokep', "${group_id}.${project_id}.lib.dejvokep")
+    relocate('org.intellij', "${group_id}.${project_id}.lib.intellij")
+    relocate('org.jetbrains', "${group_id}.${project_id}.lib.jetbrains")
+
     relocate('net.dv8tion', "${group_id}.${project_id}.lib.dv8tion")
+    relocate('org.apache.commons', "${group_id}.${project_id}.lib.commons")
+    relocate('okhttp3', "${group_id}.${project_id}.lib.okhttp3")
+    relocate('okio', "${group_id}.${project_id}.lib.okio")
+    relocate('kotlin', "${group_id}.${project_id}.lib.kotlin")
+    relocate('com.neovisionaries', "${group_id}.${project_id}.lib.neovisionaries")
+    relocate('net.sf.trove4j', "${group_id}.${project_id}.lib.trove4j")
     relocate('com.iwebpp', "${group_id}.${project_id}.lib.iwebpp")
+    relocate('com.fasterxml.jackson', "${group_id}.${project_id}.lib.jackson")
+
     relocate('com.google.gson', "${group_id}.${project_id}.lib.gson")
     relocate('com.google.common', "${group_id}.${project_id}.lib.guava")
     relocate('com.google.thirdparty', "${group_id}.${project_id}.lib.google.thirdparty")

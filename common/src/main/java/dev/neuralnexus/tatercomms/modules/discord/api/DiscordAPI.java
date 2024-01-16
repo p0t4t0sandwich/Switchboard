@@ -9,6 +9,7 @@ import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.entity.Entity;
 import dev.neuralnexus.taterlib.inventory.PlayerInventory;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterlib.player.GameMode;
 import dev.neuralnexus.taterlib.player.Player;
 import dev.neuralnexus.taterlib.utils.Location;
 
@@ -205,6 +206,11 @@ public class DiscordAPI {
             return this.displayName;
         }
 
+        @Override
+        public String getIPAddress() {
+            return null;
+        }
+
         /**
          * @inheritDoc
          */
@@ -325,5 +331,13 @@ public class DiscordAPI {
 
         @Override
         public void setSpawn(Location location) {}
+
+        @Override
+        public GameMode getGameMode() {
+            return null;
+        }
+
+        @Override
+        public void setGameMode(GameMode gameMode) {}
     }
 }

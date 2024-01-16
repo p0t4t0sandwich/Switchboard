@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.api.message;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.entity.Entity;
 import dev.neuralnexus.taterlib.inventory.PlayerInventory;
+import dev.neuralnexus.taterlib.player.GameMode;
 import dev.neuralnexus.taterlib.player.Player;
 import dev.neuralnexus.taterlib.utils.Location;
 
@@ -94,6 +95,11 @@ public class MessageSender implements Player {
     @Override
     public String getDisplayName() {
         return this.displayName;
+    }
+
+    @Override
+    public String getIPAddress() {
+        return null;
     }
 
     @Override
@@ -250,4 +256,12 @@ public class MessageSender implements Player {
 
     @Override
     public void setSpawn(Location location) {}
+
+    @Override
+    public GameMode getGameMode() {
+        return null;
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {}
 }

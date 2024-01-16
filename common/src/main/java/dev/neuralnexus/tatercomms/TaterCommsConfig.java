@@ -99,6 +99,7 @@ public class TaterCommsConfig {
      *
      * @return The map of formatting
      */
+    @SuppressWarnings("unchecked")
     public static HashMap<String, String> formattingChat() {
         HashMap<String, String> formatting = new HashMap<>();
         HashMap<String, Block> formattingConfig =
@@ -139,6 +140,7 @@ public class TaterCommsConfig {
          *
          * @return The map of server channels
          */
+        @SuppressWarnings({"unchecked", "rawtypes"})
         public static HashMap<String, String> channels() {
             HashMap<String, String> serverChannels = new HashMap<>();
             HashMap<String, Block> channelConfig =
