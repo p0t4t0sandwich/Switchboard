@@ -8,7 +8,9 @@ import dev.neuralnexus.tatercomms.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.event.api.CommandEvents;
 import dev.neuralnexus.taterlib.plugin.Module;
 
-/** Discord module. */
+/**
+ * Discord module.
+ */
 public class DiscordModule implements Module {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;

@@ -5,6 +5,7 @@ import dev.neuralnexus.taterlib.entity.Entity;
 import dev.neuralnexus.taterlib.inventory.PlayerInventory;
 import dev.neuralnexus.taterlib.player.GameMode;
 import dev.neuralnexus.taterlib.player.Player;
+import dev.neuralnexus.taterlib.server.SimpleServer;
 import dev.neuralnexus.taterlib.utils.Location;
 
 import java.util.UUID;
@@ -20,12 +21,12 @@ public class MessageSender implements Player {
     /**
      * Constructor for the CommsSender class.
      *
-     * @param name The name
-     * @param prefix The prefix
-     * @param suffix The suffix
+     * @param name        The name
+     * @param prefix      The prefix
+     * @param suffix      The suffix
      * @param displayName The display name
-     * @param uuid The UUID
-     * @param serverName The server name
+     * @param uuid        The UUID
+     * @param serverName  The server name
      */
     public MessageSender(
             String name,
@@ -45,7 +46,7 @@ public class MessageSender implements Player {
     /**
      * Constructor for the CommsSender class.
      *
-     * @param player The player
+     * @param player     The player
      * @param serverName The server name
      */
     public MessageSender(Player player, String serverName) {
@@ -140,8 +141,10 @@ public class MessageSender implements Player {
 
     @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
+        SimpleServer server = TaterAPIProvider.get().getServer();
+        if (server == null) return;
         Player player =
-                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
+                server.getOnlinePlayers().stream()
                         .filter(p -> p.getUniqueId().equals(this.uuid))
                         .findFirst()
                         .orElse(null);
@@ -172,7 +175,8 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public void remove() {}
+    public void remove() {
+    }
 
     @Override
     public String getType() {
@@ -185,7 +189,8 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public void setCustomName(String s) {}
+    public void setCustomName(String s) {
+    }
 
     @Override
     public Location getLocation() {
@@ -228,10 +233,12 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public void teleport(Location location) {}
+    public void teleport(Location location) {
+    }
 
     @Override
-    public void teleport(Entity entity) {}
+    public void teleport(Entity entity) {
+    }
 
     @Override
     public boolean hasPermission(int i) {
@@ -249,13 +256,16 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public void kickPlayer(String message) {}
+    public void kickPlayer(String message) {
+    }
 
     @Override
-    public void setSpawn(Location location, boolean b) {}
+    public void setSpawn(Location location, boolean b) {
+    }
 
     @Override
-    public void setSpawn(Location location) {}
+    public void setSpawn(Location location) {
+    }
 
     @Override
     public GameMode getGameMode() {
@@ -263,5 +273,6 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public void setGameMode(GameMode gameMode) {}
+    public void setGameMode(GameMode gameMode) {
+    }
 }

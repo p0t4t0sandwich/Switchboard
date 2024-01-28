@@ -5,7 +5,9 @@ import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.plugin.Module;
 
-/** Socket module. */
+/**
+ * Socket module.
+ */
 public class SocketModule implements Module {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;

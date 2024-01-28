@@ -14,7 +14,9 @@ import dev.neuralnexus.taterlib.event.api.PlayerEvents;
 import dev.neuralnexus.taterlib.event.api.ServerEvents;
 import dev.neuralnexus.taterlib.plugin.Module;
 
-/** Minecraft module. */
+/**
+ * Minecraft module.
+ */
 public class MinecraftModule implements Module {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
@@ -49,7 +51,9 @@ public class MinecraftModule implements Module {
 
             // Register server listeners
             ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
-            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
+            // TODO: Find the null pointer here
+//            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
+            ServerEvents.STOPPING.register(TaterCommsServerListener::onServerStopped);
 
             // TODO: Might be useful
             // if (commsMessage.isGlobal() || commsMessage.isRemote()) {
@@ -67,8 +71,8 @@ public class MinecraftModule implements Module {
                         // Prevents re-sending the message on the originating server
                         if (!TaterCommsConfig.formattingEnabled()
                                 && message.getSender()
-                                        .getServerName()
-                                        .equals(TaterCommsAPIProvider.get().getServerName())) {
+                                .getServerName()
+                                .equals(TaterCommsAPIProvider.get().getServerName())) {
                             return;
                         }
 

@@ -5,7 +5,6 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.player.Player;
 
@@ -14,7 +13,9 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Message object. */
+/**
+ * Message object.
+ */
 public class Message {
     static Gson gson = new GsonBuilder().create();
     private final MessageSender sender;
@@ -29,7 +30,7 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender The sender
+     * @param sender  The sender
      * @param channel The channel
      * @param message The message
      */
@@ -51,7 +52,7 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender The sender
+     * @param sender  The sender
      * @param channel The channel
      * @param message The message
      */
@@ -68,8 +69,8 @@ public class Message {
      * Constructor for the CommsMessage class
      *
      * @param serverName The server name
-     * @param channel The channel
-     * @param message The message
+     * @param channel    The channel
+     * @param message    The message
      */
     public Message(
             String serverName,
@@ -84,8 +85,8 @@ public class Message {
      * Constructor for the CommsMessage class
      *
      * @param serverName The server name
-     * @param channel The channel
-     * @param message The message
+     * @param channel    The channel
+     * @param message    The message
      */
     public Message(
             String serverName,
@@ -104,7 +105,7 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender The sender
+     * @param sender  The sender
      * @param channel The channel
      * @param message The message
      */
@@ -120,7 +121,7 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender The sender
+     * @param sender  The sender
      * @param channel The channel
      * @param message The message
      */
@@ -328,7 +329,9 @@ public class Message {
         return gson.toJson(this);
     }
 
-    /** Enum for the different types of messages that can be sent */
+    /**
+     * Enum for the different types of messages that can be sent
+     */
     public enum MessageType {
         PLAYER_ADVANCEMENT_FINISHED("tc:p_adv_fin"),
         PLAYER_DEATH("tc:p_death"),

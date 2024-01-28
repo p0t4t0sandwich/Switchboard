@@ -9,7 +9,9 @@ import dev.neuralnexus.tatercomms.modules.socket.SocketModule;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
 
-/** Main class for the plugin. */
+/**
+ * Main class for the plugin.
+ */
 public class TaterComms {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
@@ -100,7 +102,9 @@ public class TaterComms {
         logger.info(Constants.PROJECT_NAME + " has been started!");
     }
 
-    /** Stop */
+    /**
+     * Stop
+     */
     public static void stop() {
         if (!STARTED) {
             logger.info(Constants.PROJECT_NAME + " has already stopped!");
@@ -118,7 +122,9 @@ public class TaterComms {
         logger.info(Constants.PROJECT_NAME + " has been stopped!");
     }
 
-    /** Reload */
+    /**
+     * Reload
+     */
     public static void reload() {
         if (!STARTED) {
             logger.info(Constants.PROJECT_NAME + " has not been started!");
@@ -138,7 +144,9 @@ public class TaterComms {
         logger.info(Constants.PROJECT_NAME + " has been reloaded!");
     }
 
-    /** Constants used throughout the plugin. */
+    /**
+     * Constants used throughout the plugin.
+     */
     public static class Constants {
         public static final String PROJECT_NAME = "TaterComms";
         public static final String PROJECT_ID = "tatercomms";

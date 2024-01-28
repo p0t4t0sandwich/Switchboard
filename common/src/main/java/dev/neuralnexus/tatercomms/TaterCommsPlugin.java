@@ -5,7 +5,9 @@ import dev.neuralnexus.taterlib.event.api.PluginEvents;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.plugin.Plugin;
 
-/** The main plugin interface. */
+/**
+ * The main plugin interface.
+ */
 public interface TaterCommsPlugin extends Plugin {
     @Override
     default String getName() {
@@ -17,7 +19,9 @@ public interface TaterCommsPlugin extends Plugin {
         return TaterComms.Constants.PROJECT_ID;
     }
 
-    /** Starts the plugin. */
+    /**
+     * Starts the plugin.
+     */
     default void pluginStart(Object plugin, AbstractLogger logger) {
         logger.info(
                 TaterComms.Constants.PROJECT_NAME
@@ -30,7 +34,9 @@ public interface TaterCommsPlugin extends Plugin {
         TaterComms.start(plugin, logger);
     }
 
-    /** Stops the plugin. */
+    /**
+     * Stops the plugin.
+     */
     default void pluginStop() {
         TaterComms.stop();
     }

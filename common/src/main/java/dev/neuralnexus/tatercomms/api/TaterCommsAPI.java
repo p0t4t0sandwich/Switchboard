@@ -6,7 +6,9 @@ import dev.neuralnexus.tatercomms.modules.socket.api.SocketAPI;
 
 import java.util.HashMap;
 
-/** API wrapper class */
+/**
+ * API wrapper class
+ */
 public class TaterCommsAPI {
     private final Data data;
     private DiscordAPI discordAPI = null;
@@ -96,7 +98,9 @@ public class TaterCommsAPI {
         data.setUsingProxy(usingProxy);
     }
 
-    /** The data for the API. */
+    /**
+     * The data for the API.
+     */
     static class Data {
         private String serverName = "";
         private HashMap<String, String> formatting = new HashMap<>();

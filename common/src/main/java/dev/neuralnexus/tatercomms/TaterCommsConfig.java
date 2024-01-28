@@ -9,8 +9,7 @@ import java.util.*;
 
 public class TaterCommsConfig {
     private static YamlDocument config;
-
-    public TaterCommsConfig() {}
+    private static boolean formatting = false;
 
     /**
      * Load the config
@@ -40,12 +39,16 @@ public class TaterCommsConfig {
         }
     }
 
-    /** Unload the config */
+    /**
+     * Unload the config
+     */
     public static void unloadConfig() {
         config = null;
     }
 
-    /** Save the config */
+    /**
+     * Save the config
+     */
     public static void saveConfig() {
         try {
             config.save();
@@ -87,7 +90,10 @@ public class TaterCommsConfig {
      * @return Whether chat formatting is enabled
      */
     public static boolean formattingEnabled() {
-        return config.getBoolean("formatting.enabled");
+        if (config != null) {
+            formatting = config.getBoolean("formatting.enabled");
+        }
+        return formatting;
     }
 
     public static Set<String> formattingPassthrough() {
@@ -110,7 +116,9 @@ public class TaterCommsConfig {
         return formatting;
     }
 
-    /** Discord config. */
+    /**
+     * Discord config.
+     */
     public static class DiscordConfig {
         /**
          * Get whether Discord chat is enabled
@@ -130,7 +138,9 @@ public class TaterCommsConfig {
             return config.getString("modules.discord.token");
         }
 
-        /** Get the Discord invite link */
+        /**
+         * Get the Discord invite link
+         */
         public static String inviteUrl() {
             return config.getString("modules.discord.inviteUrl");
         }
@@ -153,7 +163,9 @@ public class TaterCommsConfig {
         }
     }
 
-    /** Minecraft config. */
+    /**
+     * Minecraft config.
+     */
     public static class MinecraftConfig {
         /**
          * Get whether Minecraft chat is enabled
@@ -165,7 +177,9 @@ public class TaterCommsConfig {
         }
     }
 
-    /** Proxy config. */
+    /**
+     * Proxy config.
+     */
     public static class ProxyConfig {
         /**
          * Get whether proxy chat is enabled
@@ -177,7 +191,9 @@ public class TaterCommsConfig {
         }
     }
 
-    /** Socket config. */
+    /**
+     * Socket config.
+     */
     public static class SocketConfig {
         /**
          * Get whether remote chat is enabled

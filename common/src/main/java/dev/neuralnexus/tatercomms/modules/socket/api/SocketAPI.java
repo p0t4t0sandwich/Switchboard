@@ -21,7 +21,9 @@ public class SocketAPI {
     private Server socketServer = null;
     private Client socketClient = null;
 
-    /** Start the socket client or server */
+    /**
+     * Start the socket client or server
+     */
     public void startSocket() {
         if (TaterCommsConfig.SocketConfig.primary()) {
             socketServer =
@@ -39,7 +41,9 @@ public class SocketAPI {
         }
     }
 
-    /** Stop the socket client or server */
+    /**
+     * Stop the socket client or server
+     */
     public void stopSocket() {
         if (TaterCommsConfig.SocketConfig.primary()) {
             socketServer.stop();
@@ -81,19 +85,21 @@ public class SocketAPI {
         // Relay the message to socket server
         if (socketClient != null
                 && message.getSender()
-                        .getServerName()
-                        .equals(TaterCommsAPIProvider.get().getServerName())
+                .getServerName()
+                .equals(TaterCommsAPIProvider.get().getServerName())
                 && !(TaterCommsAPIProvider.get().isUsingProxy()
-                        && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
-                                || message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGIN.id())
-                                || message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
+                && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
+                || message.getChannel()
+                .equals(Message.MessageType.PLAYER_LOGIN.id())
+                || message.getChannel()
+                .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
             socketClient.sendMessage(message);
         }
     }
 
-    /** Server class */
+    /**
+     * Server class
+     */
     public static class Server {
         private static final HashMap<String, Socket> clients = new HashMap<>();
         private static ServerSocket server;
@@ -109,7 +115,7 @@ public class SocketAPI {
          * Really basic XOR obfuscation until some form of SSL is implemented
          *
          * @param message The message
-         * @param secret The secret
+         * @param secret  The secret
          * @return The encrypted message
          */
         public static String XORMessage(String message, String secret) {
@@ -125,12 +131,12 @@ public class SocketAPI {
          * Add a client to the client hashmap
          *
          * @param serverName The server name
-         * @param client The client
+         * @param client     The client
          */
         public static void addClient(String serverName, Socket client) {
             if ((TaterAPIProvider.serverType().isProxy()
                     && ((ProxyServer) TaterAPIProvider.get().getServer())
-                            .getServers().stream().anyMatch(s -> s.getName().equals(serverName))
+                    .getServers().stream().anyMatch(s -> s.getName().equals(serverName))
                     && !TaterCommsAPIProvider.get().getServerName().equals(serverName))) {
                 clients.put(serverName, client);
             }
@@ -163,7 +169,9 @@ public class SocketAPI {
             return clients.containsKey(serverName) && clients.get(serverName).isConnected();
         }
 
-        /** Start the server */
+        /**
+         * Start the server
+         */
         public void start() {
             try {
                 TaterComms.getLogger().info("Starting Socket server on port " + port);
@@ -189,7 +197,9 @@ public class SocketAPI {
             }
         }
 
-        /** Stop the server */
+        /**
+         * Stop the server
+         */
         public void stop() {
             try {
                 server.close();
@@ -227,7 +237,9 @@ public class SocketAPI {
             }
         }
 
-        /** ClientHandler class */
+        /**
+         * ClientHandler class
+         */
         public static class SocketHandler implements Runnable {
             private final Socket clientSocket;
 
@@ -240,7 +252,9 @@ public class SocketAPI {
                 this.clientSocket = socket;
             }
 
-            /** Run the client handler and receive messages from the client */
+            /**
+             * Run the client handler and receive messages from the client
+             */
             public void run() {
                 while (!clientSocket.isClosed()) {
                     try {
@@ -283,7 +297,9 @@ public class SocketAPI {
         }
     }
 
-    /** Client class */
+    /**
+     * Client class
+     */
     public static class Client {
         private static boolean STARTED = true;
         private final int port;
@@ -297,7 +313,9 @@ public class SocketAPI {
             this.secret = secret;
         }
 
-        /** Start the client */
+        /**
+         * Start the client
+         */
         public void start() {
             while (STARTED) {
                 try {
@@ -341,7 +359,9 @@ public class SocketAPI {
             }
         }
 
-        /** Stop the client */
+        /**
+         * Stop the client
+         */
         public void stop() {
             STARTED = false;
             try {

@@ -12,7 +12,6 @@ import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.player.GameMode;
 import dev.neuralnexus.taterlib.player.Player;
 import dev.neuralnexus.taterlib.utils.Location;
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -26,18 +25,24 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import java.util.HashMap;
 import java.util.UUID;
 
-/** API for the Discord module. */
+/**
+ * API for the Discord module.
+ */
 public class DiscordAPI {
     private static Bot bot = null;
 
-    /** Start the bot. */
+    /**
+     * Start the bot.
+     */
     public void startBot() {
         if (bot == null) {
             bot = new Bot();
         }
     }
 
-    /** Remove the bot. */
+    /**
+     * Remove the bot.
+     */
     public void removeBot() {
         if (bot != null) {
             bot.removeListeners();
@@ -75,7 +80,9 @@ public class DiscordAPI {
             }
         }
 
-        /** Remove event listeners. */
+        /**
+         * Remove event listeners.
+         */
         public void removeListeners() {
             api.removeEventListener(this);
         }
@@ -171,7 +178,9 @@ public class DiscordAPI {
         }
     }
 
-    /** Discord implementation of {@link Player}. */
+    /**
+     * Discord implementation of {@link Player}.
+     */
     public static class DiscordPlayer implements Player {
         private final User user;
         private final String name;
@@ -228,7 +237,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void setServerName(String serverName) {}
+        public void setServerName(String serverName) {
+        }
 
         /**
          * @inheritDoc
@@ -244,7 +254,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void remove() {}
+        public void remove() {
+        }
 
         @Override
         public String getType() {
@@ -257,7 +268,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void setCustomName(String s) {}
+        public void setCustomName(String s) {
+        }
 
         @Override
         public Location getLocation() {
@@ -300,10 +312,12 @@ public class DiscordAPI {
         }
 
         @Override
-        public void teleport(Location location) {}
+        public void teleport(Location location) {
+        }
 
         @Override
-        public void teleport(Entity entity) {}
+        public void teleport(Entity entity) {
+        }
 
         @Override
         public boolean hasPermission(int i) {
@@ -311,7 +325,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void sendPluginMessage(String channel, byte[] message) {}
+        public void sendPluginMessage(String channel, byte[] message) {
+        }
 
         @Override
         public PlayerInventory getInventory() {
@@ -324,13 +339,16 @@ public class DiscordAPI {
         }
 
         @Override
-        public void kickPlayer(String message) {}
+        public void kickPlayer(String message) {
+        }
 
         @Override
-        public void setSpawn(Location location, boolean b) {}
+        public void setSpawn(Location location, boolean b) {
+        }
 
         @Override
-        public void setSpawn(Location location) {}
+        public void setSpawn(Location location) {
+        }
 
         @Override
         public GameMode getGameMode() {
@@ -338,6 +356,7 @@ public class DiscordAPI {
         }
 
         @Override
-        public void setGameMode(GameMode gameMode) {}
+        public void setGameMode(GameMode gameMode) {
+        }
     }
 }

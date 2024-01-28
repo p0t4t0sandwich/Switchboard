@@ -5,7 +5,9 @@ import dev.neuralnexus.taterlib.plugin.Module;
 import java.util.HashSet;
 import java.util.Set;
 
-/** Module loader. */
+/**
+ * Module loader.
+ */
 public class TaterCommsModuleLoader {
     private static final Set<Module> modules = new HashSet<>();
 
@@ -27,17 +29,23 @@ public class TaterCommsModuleLoader {
         modules.removeIf(module -> module.getName().equals(moduleName));
     }
 
-    /** Start the modules. */
+    /**
+     * Start the modules.
+     */
     public static void startModules() {
         modules.forEach(Module::start);
     }
 
-    /** Stop the modules. */
+    /**
+     * Stop the modules.
+     */
     public static void stopModules() {
         modules.forEach(Module::stop);
     }
 
-    /** Reload the modules. */
+    /**
+     * Reload the modules.
+     */
     public static void reloadModules() {
         modules.forEach(Module::reload);
     }

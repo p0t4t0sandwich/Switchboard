@@ -5,7 +5,9 @@ import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
 import dev.neuralnexus.taterlib.command.CommandSender;
 
-/** TaterComms Command. */
+/**
+ * TaterComms Command.
+ */
 public class TaterCommsCommand implements Command {
     private String name = "tatercomms";
 

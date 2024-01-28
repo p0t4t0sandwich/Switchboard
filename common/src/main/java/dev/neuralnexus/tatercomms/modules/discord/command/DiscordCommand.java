@@ -5,7 +5,9 @@ import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
 import dev.neuralnexus.taterlib.command.CommandSender;
 
-/** Discord Command. */
+/**
+ * Discord Command.
+ */
 public class DiscordCommand implements Command {
     private String name = "discord";
 

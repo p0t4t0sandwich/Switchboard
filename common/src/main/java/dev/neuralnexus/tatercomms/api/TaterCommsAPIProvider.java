@@ -2,7 +2,9 @@ package dev.neuralnexus.tatercomms.api;
 
 import dev.neuralnexus.tatercomms.TaterComms;
 
-/** API Provider */
+/**
+ * API Provider
+ */
 public class TaterCommsAPIProvider {
     private static TaterCommsAPI instance = null;
 
@@ -31,7 +33,9 @@ public class TaterCommsAPIProvider {
         TaterCommsAPIProvider.instance = instance;
     }
 
-    /** DO NOT USE THIS METHOD, IT IS FOR INTERNAL USE ONLY */
+    /**
+     * DO NOT USE THIS METHOD, IT IS FOR INTERNAL USE ONLY
+     */
     public static void unregister() {
         TaterCommsAPIProvider.instance = null;
     }
