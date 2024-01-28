@@ -3,7 +3,7 @@ package dev.neuralnexus.tatercomms.modules.discord.command;
 import dev.neuralnexus.tatercomms.TaterCommsConfig;
 import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
-import dev.neuralnexus.taterlib.command.Sender;
+import dev.neuralnexus.taterlib.command.CommandSender;
 
 /** Discord Command. */
 public class DiscordCommand implements Command {
@@ -35,7 +35,7 @@ public class DiscordCommand implements Command {
     }
 
     @Override
-    public boolean execute(Sender sender, String label, String[] args) {
+    public boolean execute(CommandSender sender, String label, String[] args) {
         if (!sender.hasPermission(getPermission())) {
             sender.sendMessage(
                     Utils.substituteSectionSign(

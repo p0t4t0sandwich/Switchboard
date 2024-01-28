@@ -3,7 +3,7 @@ package dev.neuralnexus.tatercomms.modules.minecraft.command;
 import dev.neuralnexus.tatercomms.TaterComms;
 import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
-import dev.neuralnexus.taterlib.command.Sender;
+import dev.neuralnexus.taterlib.command.CommandSender;
 
 /** TaterComms Command. */
 public class TaterCommsCommand implements Command {
@@ -40,7 +40,7 @@ public class TaterCommsCommand implements Command {
     }
 
     @Override
-    public boolean execute(Sender sender, String label, String[] args) {
+    public boolean execute(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(Utils.substituteSectionSign(getUsage()));
             return true;
