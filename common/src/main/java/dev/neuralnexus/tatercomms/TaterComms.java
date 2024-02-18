@@ -1,5 +1,7 @@
 package dev.neuralnexus.tatercomms;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.neuralnexus.tatercomms.api.TaterCommsAPI;
 import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.modules.discord.DiscordModule;
@@ -7,6 +9,8 @@ import dev.neuralnexus.tatercomms.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.tatercomms.modules.proxy.ProxyModule;
 import dev.neuralnexus.tatercomms.modules.socket.SocketModule;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.api.info.ServerType;
+import dev.neuralnexus.taterlib.bstats.MetricsAdapter;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.plugin.ModuleLoader;
 
@@ -104,16 +108,16 @@ public class TaterComms {
         setLogger(logger);
 
         // Set up bStats
-        //        MetricsAdapter.setupMetrics(
-        //                plugin,
-        //                pluginServer,
-        //                pluginLogger,
-        //                ImmutableMap.<ServerType, Integer>builder()
-        //                        .put(ServerType.BUKKIT, 21008)
-        //                        .put(ServerType.BUNGEECORD, 21009)
-        //                        .put(ServerType.SPONGE, 21010)
-        //                        .put(ServerType.VELOCITY, 21011)
-        //                        .build());
+        MetricsAdapter.setupMetrics(
+                plugin,
+                pluginServer,
+                pluginLogger,
+                ImmutableMap.<ServerType, Integer>builder()
+                        .put(ServerType.BUKKIT, 21038)
+                        .put(ServerType.BUNGEECORD, 21039)
+                        .put(ServerType.SPONGE, 21040)
+                        .put(ServerType.VELOCITY, 21041)
+                        .build());
 
         if (STARTED) {
             logger.info(Constants.PROJECT_NAME + " has already started!");

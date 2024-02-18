@@ -79,9 +79,6 @@ public class DiscordAPI {
             api.removeEventListener(this);
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public void onReady(ReadyEvent event) {
             TaterComms.logger().info("Discord bot is ready!");
@@ -188,17 +185,11 @@ public class DiscordAPI {
             this.server = new DiscordServer(message);
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public String name() {
             return this.name;
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public String displayName() {
             return this.displayName;
@@ -215,11 +206,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void kick(String s) {}
+        public void kick(String message) {}
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public UUID uuid() {
             return UUID.fromString("00000000-0000-0000-0000-000000000000");
@@ -230,16 +218,13 @@ public class DiscordAPI {
             return this.server;
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
         public void sendMessage(String message) {
             user.openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
         }
 
         @Override
-        public boolean hasPermission(int i) {
+        public boolean hasPermission(int permissionLevel) {
             return false;
         }
 

@@ -38,16 +38,10 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 - Sponge death messages are a tad off with how the component serializes (eg: `playerName Skeleton was shot by` instead
   of `playerName was shot by Skeleton`)
 - Still need to tweak the pass-through system and get that working properly
-- Some implementations fire the shutdown event after the plugin unloads, so the shutdown message doesn't get sent
 
 ## Dependencies
 
-- [TaterLib](https://github.com/p0t4t0sandwich/TaterLib) - Required on all platforms
-- [FabricAPI](https://modrinth.com/mod/fabric-api) - Required on Fabric
-
-### Optional Dependencies
-
-- [LuckPerms](https://luckperms.net/) - For permissions/prefix/suffix support
+- [TaterLib](https://github.com/p0t4t0sandwich/TaterLib)
 
 ### Compatibility
 
@@ -60,6 +54,24 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 |----------------------|------------------------------|-----------------------------|
 | `/tatercomms reload` | `tatercomms.admin.reload`    | Reload the plugin           |
 | `/discord`           | `tatercomms.command.discord` | Get the Discord invite link |
+
+## Metrics
+
+### Bukkit
+
+![image](https://bstats.org/signatures/bukkit/TaterComms.svg)
+
+### BungeeCord
+
+![image](https://bstats.org/signatures/bungeecord/TaterComms.svg)
+
+### Sponge
+
+![image](https://bstats.org/signatures/sponge/TaterComms.svg)
+
+### Velocity
+
+![image](https://bstats.org/signatures/velocity/TaterComms.svg)
 
 ## Release Notes
 
