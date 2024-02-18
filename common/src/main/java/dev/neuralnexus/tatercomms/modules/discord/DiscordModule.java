@@ -6,24 +6,22 @@ import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.event.api.CommandEvents;
-import dev.neuralnexus.taterlib.plugin.Module;
+import dev.neuralnexus.taterlib.plugin.PluginModule;
 
-/**
- * Discord module.
- */
-public class DiscordModule implements Module {
+/** Discord module. */
+public class DiscordModule implements PluginModule {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
 
     @Override
-    public String getName() {
+    public String name() {
         return "Discord";
     }
 
     @Override
     public void start() {
         if (STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already started!");
+            TaterComms.logger().info("Submodule " + name() + " has already started!");
             return;
         }
         STARTED = true;
@@ -32,11 +30,11 @@ public class DiscordModule implements Module {
             // Check if the token and channel mappings are set
             if (TaterCommsConfig.DiscordConfig.token() == null
                     || TaterCommsConfig.DiscordConfig.token().isEmpty()) {
-                TaterComms.getLogger().info("No Discord token found in tatercomms.config.yml!");
+                TaterComms.logger().info("No Discord token found in tatercomms.config.yml!");
                 return;
             }
             if (TaterCommsConfig.DiscordConfig.channels().isEmpty()) {
-                TaterComms.getLogger()
+                TaterComms.logger()
                         .info("No server-channel mappings found in tatercomms.config.yml!");
                 return;
             }
@@ -45,7 +43,7 @@ public class DiscordModule implements Module {
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
                         // Prevents discord messages from being passed back to discord
-                        if (!event.getMessage().getSender().getServerName().equals("discord")) {
+                        if (!event.getMessage().getSender().server().name().equals("discord")) {
                             TaterCommsAPIProvider.get()
                                     .discordAPI()
                                     .sendMessage(event.getMessage());
@@ -54,19 +52,19 @@ public class DiscordModule implements Module {
 
             // Register commands
             CommandEvents.REGISTER_COMMAND.register(
-                    (event -> event.registerCommand(TaterComms.getPlugin(), new DiscordCommand())));
+                    (event -> event.registerCommand(TaterComms.plugin(), new DiscordCommand())));
         }
 
         // Start the bot
         TaterCommsAPIProvider.get().discordAPI().startBot();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been started!");
+        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
     public void stop() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already stopped!");
+            TaterComms.logger().info("Submodule " + name() + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -75,13 +73,13 @@ public class DiscordModule implements Module {
         // Remove references to objects
         TaterCommsAPIProvider.get().discordAPI().removeBot();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been stopped!");
+        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
     }
 
     @Override
     public void reload() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has not been started!");
+            TaterComms.logger().info("Submodule " + name() + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -92,6 +90,6 @@ public class DiscordModule implements Module {
         // Start
         start();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been reloaded!");
+        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

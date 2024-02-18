@@ -2,9 +2,12 @@ package dev.neuralnexus.tatercomms.event;
 
 import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.taterlib.event.Event;
 
-/** Receive message event. */
-public class ReceiveMessageEvent {
+/**
+ * Receive message event.
+ */
+public class ReceiveMessageEvent implements Event {
     private final Message message;
 
     public ReceiveMessageEvent(Message message) {

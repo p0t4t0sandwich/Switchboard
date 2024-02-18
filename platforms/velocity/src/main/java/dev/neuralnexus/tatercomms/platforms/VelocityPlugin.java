@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.platforms;
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import dev.neuralnexus.tatercomms.TaterComms;
@@ -25,7 +26,11 @@ import org.slf4j.Logger;
         })
 public class VelocityPlugin implements TaterCommsPlugin {
     @Inject
-    public VelocityPlugin(ProxyServer server, Logger logger) {
-        pluginStart(server, new LoggerAdapter(TaterComms.Constants.PROJECT_NAME, logger));
+    public VelocityPlugin(PluginContainer plugin, ProxyServer server, Logger logger) {
+        pluginStart(
+                plugin,
+                server,
+                logger,
+                new LoggerAdapter(TaterComms.Constants.PROJECT_NAME, logger));
     }
 }

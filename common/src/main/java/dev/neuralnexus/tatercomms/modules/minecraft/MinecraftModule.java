@@ -12,24 +12,22 @@ import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.event.api.CommandEvents;
 import dev.neuralnexus.taterlib.event.api.PlayerEvents;
 import dev.neuralnexus.taterlib.event.api.ServerEvents;
-import dev.neuralnexus.taterlib.plugin.Module;
+import dev.neuralnexus.taterlib.plugin.PluginModule;
 
-/**
- * Minecraft module.
- */
-public class MinecraftModule implements Module {
+/** Minecraft module. */
+public class MinecraftModule implements PluginModule {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
 
     @Override
-    public String getName() {
+    public String name() {
         return "Minecraft";
     }
 
     @Override
     public void start() {
         if (STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already started!");
+            TaterComms.logger().info("Submodule " + name() + " has already started!");
             return;
         }
         STARTED = true;
@@ -39,7 +37,7 @@ public class MinecraftModule implements Module {
             CommandEvents.REGISTER_COMMAND.register(
                     event ->
                             event.registerCommand(
-                                    TaterComms.getPlugin(), new TaterCommsCommand(), "tc"));
+                                    TaterComms.plugin(), new TaterCommsCommand(), "tc"));
 
             // Register player listeners
             PlayerEvents.ADVANCEMENT_FINISHED.register(
@@ -52,7 +50,7 @@ public class MinecraftModule implements Module {
             // Register server listeners
             ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
             // TODO: Find the null pointer here
-//            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
+            //            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
             ServerEvents.STOPPING.register(TaterCommsServerListener::onServerStopped);
 
             // TODO: Might be useful
@@ -71,8 +69,9 @@ public class MinecraftModule implements Module {
                         // Prevents re-sending the message on the originating server
                         if (!TaterCommsConfig.formattingEnabled()
                                 && message.getSender()
-                                .getServerName()
-                                .equals(TaterCommsAPIProvider.get().getServerName())) {
+                                        .server()
+                                        .name()
+                                        .equals(TaterCommsAPIProvider.get().getServerName())) {
                             return;
                         }
 
@@ -83,18 +82,18 @@ public class MinecraftModule implements Module {
 
                         TaterAPIProvider.get()
                                 .getServer()
-                                .getOnlinePlayers()
+                                .onlinePlayers()
                                 .forEach(player -> player.sendMessage(message.applyPlaceHolders()));
                     });
         }
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been started!");
+        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
     public void stop() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already stopped!");
+            TaterComms.logger().info("Submodule " + name() + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -102,13 +101,13 @@ public class MinecraftModule implements Module {
 
         // Remove references to objects
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been stopped!");
+        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
     }
 
     @Override
     public void reload() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has not been started!");
+            TaterComms.logger().info("Submodule " + name() + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -119,6 +118,6 @@ public class MinecraftModule implements Module {
         // Start
         start();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been reloaded!");
+        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

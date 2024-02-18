@@ -9,7 +9,7 @@ import net.fabricmc.api.ModInitializer;
 /** Fabric entry point. */
 public class FabricPlugin implements ModInitializer, TaterCommsPlugin {
     public FabricPlugin() {
-        pluginStart(this, new LoggerAdapter(TaterComms.Constants.PROJECT_NAME));
+        pluginStart(this, null, null, new LoggerAdapter(TaterComms.Constants.PROJECT_NAME));
     }
 
     @Override

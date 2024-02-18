@@ -5,7 +5,7 @@ import dev.neuralnexus.tatercomms.api.message.Message;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.event.player.*;
-import dev.neuralnexus.taterlib.player.Player;
+import dev.neuralnexus.taterlib.player.SimplePlayer;
 
 import java.util.HashMap;
 
@@ -17,11 +17,8 @@ public interface TaterCommsPlayerListener {
      * @param event The event.
      */
     static void onPlayerAdvancementFinished(PlayerAdvancementEvent.AdvancementFinished event) {
-        Player player = event.getPlayer();
-        String advancement = event.getAdvancement();
-        if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsAPIProvider.get().getServerName());
-        }
+        SimplePlayer player = event.player();
+        String advancement = event.advancement();
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("advancement", advancement);
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
@@ -40,11 +37,8 @@ public interface TaterCommsPlayerListener {
      * @param event The event.
      */
     static void onPlayerDeath(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
-        String deathMessage = event.getDeathMessage();
-        if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsAPIProvider.get().getServerName());
-        }
+        SimplePlayer player = event.player();
+        String deathMessage = event.deathMessage();
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("deathmessage", deathMessage);
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
@@ -63,16 +57,13 @@ public interface TaterCommsPlayerListener {
      * @param event The event.
      */
     static void onPlayerLogin(PlayerLoginEvent event) {
-        Player player = event.getPlayer();
-        if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsAPIProvider.get().getServerName());
-        }
+        SimplePlayer player = event.player();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
                                 player,
                                 Message.MessageType.PLAYER_LOGIN,
-                                player.getName(),
+                                player.name(),
                                 TaterCommsAPIProvider.get().getFormatting("login"),
                                 new HashMap<>())));
     }
@@ -83,16 +74,13 @@ public interface TaterCommsPlayerListener {
      * @param event The event.
      */
     static void onPlayerLogout(PlayerLogoutEvent event) {
-        Player player = event.getPlayer();
-        if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsAPIProvider.get().getServerName());
-        }
+        SimplePlayer player = event.player();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
                                 player,
                                 Message.MessageType.PLAYER_LOGOUT,
-                                player.getName(),
+                                player.name(),
                                 TaterCommsAPIProvider.get().getFormatting("logout"),
                                 new HashMap<>())));
     }
@@ -103,11 +91,8 @@ public interface TaterCommsPlayerListener {
      * @param event The event.
      */
     static void onPlayerMessage(PlayerMessageEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-        if (player.getServerName().equals("local")) {
-            player.setServerName(TaterCommsAPIProvider.get().getServerName());
-        }
+        SimplePlayer player = event.player();
+        String message = event.message();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(

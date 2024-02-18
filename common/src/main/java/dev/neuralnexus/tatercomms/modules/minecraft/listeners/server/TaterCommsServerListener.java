@@ -16,14 +16,11 @@ public interface TaterCommsServerListener {
      * @param event The event
      */
     static void onServerStarted(ServerStartedEvent event) {
-        String server = event.getServer().getName();
-        if (server.equals("local")) {
-            server = TaterCommsAPIProvider.get().getServerName();
-        }
+        String serverName = event.server().name();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
-                                server,
+                                serverName,
                                 Message.MessageType.SERVER_STARTED,
                                 "**Server has started**",
                                 TaterCommsAPIProvider.get().getFormatting("serverStarted"),
@@ -36,14 +33,11 @@ public interface TaterCommsServerListener {
      * @param event The event
      */
     static void onServerStopped(ServerStoppingEvent event) {
-        String server = event.getServer().getName();
-        if (server.equals("local")) {
-            server = TaterCommsAPIProvider.get().getServerName();
-        }
+        String serverName = event.server().name();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
-                                server,
+                                serverName,
                                 Message.MessageType.SERVER_STOPPED,
                                 "**Server has stopped**",
                                 TaterCommsAPIProvider.get().getFormatting("serverStopped"),

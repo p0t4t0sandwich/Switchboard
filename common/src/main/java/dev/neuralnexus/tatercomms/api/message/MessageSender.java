@@ -1,22 +1,19 @@
 package dev.neuralnexus.tatercomms.api.message;
 
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.entity.Entity;
-import dev.neuralnexus.taterlib.inventory.PlayerInventory;
-import dev.neuralnexus.taterlib.player.GameMode;
-import dev.neuralnexus.taterlib.player.Player;
+import dev.neuralnexus.taterlib.player.SimplePlayer;
 import dev.neuralnexus.taterlib.server.SimpleServer;
-import dev.neuralnexus.taterlib.utils.Location;
 
+import java.util.Optional;
 import java.util.UUID;
 
-public class MessageSender implements Player {
+public class MessageSender implements SimplePlayer {
     private final String name;
     private final String prefix;
     private final String suffix;
     private final String displayName;
     private final UUID uuid;
-    private String serverName;
+    private final String serverName;
 
     /**
      * Constructor for the CommsSender class.
@@ -49,13 +46,13 @@ public class MessageSender implements Player {
      * @param player     The player
      * @param serverName The server name
      */
-    public MessageSender(Player player, String serverName) {
+    public MessageSender(SimplePlayer player, String serverName) {
         this(
-                player.getName(),
-                player.getPrefix(),
-                player.getSuffix(),
-                player.getDisplayName(),
-                player.getUniqueId(),
+                player.name(),
+                player.prefix(),
+                player.suffix(),
+                player.displayName(),
+                player.uuid(),
                 serverName);
     }
 
@@ -64,14 +61,14 @@ public class MessageSender implements Player {
      *
      * @param player The player
      */
-    public MessageSender(Player player) {
+    public MessageSender(SimplePlayer player) {
         this(
-                player.getName(),
-                player.getPrefix(),
-                player.getSuffix(),
-                player.getDisplayName(),
-                player.getUniqueId(),
-                player.getServerName());
+                player.name(),
+                player.prefix(),
+                player.suffix(),
+                player.displayName(),
+                player.uuid(),
+                player.server().name());
     }
 
     /**
@@ -89,67 +86,72 @@ public class MessageSender implements Player {
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     @Override
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
     @Override
-    public String getIPAddress() {
-        return null;
+    public SimpleServer server() {
+        return TaterAPIProvider.get().getServer();
     }
 
     @Override
-    public String getServerName() {
-        return this.serverName;
-    }
-
-    @Override
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
-    @Override
-    public UUID getUniqueId() {
+    public UUID uuid() {
         return this.uuid;
     }
 
     @Override
-    public String getPrefix() {
+    public boolean hasPermission(int permissionLevel) {
+        return false;
+    }
+
+    @Override
+    public String prefix() {
         return this.prefix;
     }
 
     @Override
-    public String getSuffix() {
+    public String suffix() {
         return this.suffix;
     }
 
     @Override
     public void sendMessage(String message) {
-        Player player =
-                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
-                        .filter(p -> p.getUniqueId().equals(this.uuid))
-                        .findFirst()
-                        .orElse(null);
-        if (player == null) return;
-        player.sendMessage(message);
+        Optional<SimplePlayer> player =
+                TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                        .filter(p -> p.uuid().equals(this.uuid))
+                        .findFirst();
+        if (!player.isPresent()) return;
+        player.get().sendMessage(message);
+    }
+
+    @Override
+    public String ipAddress() {
+        return "";
+    }
+
+    @Override
+    public int ping() {
+        return 0;
+    }
+
+    @Override
+    public void kick(String message) {
     }
 
     @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
-        SimpleServer server = TaterAPIProvider.get().getServer();
-        if (server == null) return;
-        Player player =
-                server.getOnlinePlayers().stream()
-                        .filter(p -> p.getUniqueId().equals(this.uuid))
-                        .findFirst()
-                        .orElse(null);
-        if (player == null) return;
-        player.sendPluginMessage(channel, bytes);
+        Optional<SimplePlayer> player =
+                TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                        .filter(p -> p.uuid().equals(this.uuid))
+                        .findFirst();
+        if (!player.isPresent()) return;
+        player.get().sendPluginMessage(channel, bytes);
     }
 
     /**
@@ -158,121 +160,11 @@ public class MessageSender implements Player {
      * @param message The message
      */
     public void sendPluginMessage(Message message) {
-        Player player =
-                TaterAPIProvider.get().getServer().getOnlinePlayers().stream()
-                        .filter(p -> p.getUniqueId().equals(this.uuid))
-                        .findFirst()
-                        .orElse(null);
-        if (player == null) return;
-        player.sendPluginMessage(message.getChannel(), message.toByteArray());
-    }
-
-    // ------------------------- Unused -------------------------
-
-    @Override
-    public int getEntityId() {
-        return 0;
-    }
-
-    @Override
-    public void remove() {
-    }
-
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String getCustomName() {
-        return null;
-    }
-
-    @Override
-    public void setCustomName(String s) {
-    }
-
-    @Override
-    public Location getLocation() {
-        return null;
-    }
-
-    @Override
-    public double getX() {
-        return 0;
-    }
-
-    @Override
-    public double getY() {
-        return 0;
-    }
-
-    @Override
-    public double getZ() {
-        return 0;
-    }
-
-    @Override
-    public float getYaw() {
-        return 0;
-    }
-
-    @Override
-    public float getPitch() {
-        return 0;
-    }
-
-    @Override
-    public String getDimension() {
-        return null;
-    }
-
-    @Override
-    public String getBiome() {
-        return null;
-    }
-
-    @Override
-    public void teleport(Location location) {
-    }
-
-    @Override
-    public void teleport(Entity entity) {
-    }
-
-    @Override
-    public boolean hasPermission(int i) {
-        return false;
-    }
-
-    @Override
-    public PlayerInventory getInventory() {
-        return null;
-    }
-
-    @Override
-    public int getPing() {
-        return -1;
-    }
-
-    @Override
-    public void kickPlayer(String message) {
-    }
-
-    @Override
-    public void setSpawn(Location location, boolean b) {
-    }
-
-    @Override
-    public void setSpawn(Location location) {
-    }
-
-    @Override
-    public GameMode getGameMode() {
-        return null;
-    }
-
-    @Override
-    public void setGameMode(GameMode gameMode) {
+        Optional<SimplePlayer> player =
+                TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                        .filter(p -> p.uuid().equals(this.uuid))
+                        .findFirst();
+        if (!player.isPresent()) return;
+        player.get().sendPluginMessage(message.getChannel(), message.toByteArray());
     }
 }

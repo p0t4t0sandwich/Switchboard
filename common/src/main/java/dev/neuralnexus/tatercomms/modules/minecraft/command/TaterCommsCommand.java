@@ -5,14 +5,12 @@ import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
 import dev.neuralnexus.taterlib.command.CommandSender;
 
-/**
- * TaterComms Command.
- */
+/** TaterComms Command. */
 public class TaterCommsCommand implements Command {
     private String name = "tatercomms";
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -22,34 +20,29 @@ public class TaterCommsCommand implements Command {
     }
 
     @Override
-    public String getDescription() {
+    public String description() {
         return "TaterComms command";
     }
 
     @Override
-    public String getUsage() {
+    public String usage() {
         return "&a/tatercomms <reload | version>";
     }
 
     @Override
-    public String getPermission() {
+    public String permission() {
         return "tatercomms.admin";
-    }
-
-    @Override
-    public String execute(String[] args) {
-        return null;
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Utils.substituteSectionSign(getUsage()));
+            sender.sendMessage(Utils.substituteSectionSign(usage()));
             return true;
         }
         switch (args[0].toLowerCase()) {
             case "reload":
-                if (!sender.hasPermission(getPermission() + ".reload")) {
+                if (!sender.hasPermission(permission() + ".reload")) {
                     sender.sendMessage(
                             Utils.substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
@@ -68,7 +61,7 @@ public class TaterCommsCommand implements Command {
                 }
                 break;
             case "version":
-                if (!sender.hasPermission(getPermission() + ".version")) {
+                if (!sender.hasPermission(permission() + ".version")) {
                     sender.sendMessage(
                             Utils.substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
@@ -79,7 +72,7 @@ public class TaterCommsCommand implements Command {
                                 "&aTaterComms version: " + TaterComms.Constants.PROJECT_VERSION));
                 break;
             default:
-                sender.sendMessage(Utils.substituteSectionSign(getUsage()));
+                sender.sendMessage(Utils.substituteSectionSign(usage()));
                 break;
         }
         return true;

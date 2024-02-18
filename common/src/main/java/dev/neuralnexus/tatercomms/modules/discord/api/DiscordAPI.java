@@ -6,12 +6,11 @@ import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
-import dev.neuralnexus.taterlib.entity.Entity;
-import dev.neuralnexus.taterlib.inventory.PlayerInventory;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.player.GameMode;
 import dev.neuralnexus.taterlib.player.Player;
-import dev.neuralnexus.taterlib.utils.Location;
+import dev.neuralnexus.taterlib.player.SimplePlayer;
+import dev.neuralnexus.taterlib.server.SimpleServer;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -25,24 +24,18 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * API for the Discord module.
- */
+/** API for the Discord module. */
 public class DiscordAPI {
     private static Bot bot = null;
 
-    /**
-     * Start the bot.
-     */
+    /** Start the bot. */
     public void startBot() {
         if (bot == null) {
             bot = new Bot();
         }
     }
 
-    /**
-     * Remove the bot.
-     */
+    /** Remove the bot. */
     public void removeBot() {
         if (bot != null) {
             bot.removeListeners();
@@ -75,14 +68,12 @@ public class DiscordAPI {
                 // Add the listener
                 api.addEventListener(this);
             } catch (Exception e) {
-                TaterComms.getLogger().info("Failed to start Discord Bot!");
+                TaterComms.logger().info("Failed to start Discord Bot!");
                 e.printStackTrace();
             }
         }
 
-        /**
-         * Remove event listeners.
-         */
+        /** Remove event listeners. */
         public void removeListeners() {
             api.removeEventListener(this);
         }
@@ -92,7 +83,7 @@ public class DiscordAPI {
          */
         @Override
         public void onReady(ReadyEvent event) {
-            TaterComms.getLogger().info("Discord bot is ready!");
+            TaterComms.logger().info("Discord bot is ready!");
         }
 
         /**
@@ -151,7 +142,7 @@ public class DiscordAPI {
          */
         public void sendMessage(Message message) {
             String messageContent = PlaceholderParser.stripSectionSign(message.applyPlaceHolders());
-            String server = message.getSender().getServerName();
+            String server = message.getSender().server().name();
 
             // Get the channel
             String channelGuildId = TaterCommsConfig.DiscordConfig.channels().get(server);
@@ -178,14 +169,11 @@ public class DiscordAPI {
         }
     }
 
-    /**
-     * Discord implementation of {@link Player}.
-     */
-    public static class DiscordPlayer implements Player {
+    /** Discord implementation of {@link Player}. */
+    public static class DiscordPlayer implements SimplePlayer {
         private final User user;
         private final String name;
         private final String displayName;
-        private final String serverName;
 
         /**
          * Constructor.
@@ -196,14 +184,14 @@ public class DiscordAPI {
             this.user = user;
             this.name = user.getName();
             this.displayName = user.getEffectiveName();
-            this.serverName = "discord";
+            //            this.serverName = "discord";
         }
 
         /**
          * @inheritDoc
          */
         @Override
-        public String getName() {
+        public String name() {
             return this.name;
         }
 
@@ -211,33 +199,34 @@ public class DiscordAPI {
          * @inheritDoc
          */
         @Override
-        public String getDisplayName() {
+        public String displayName() {
             return this.displayName;
         }
 
         @Override
-        public String getIPAddress() {
-            return null;
+        public String ipAddress() {
+            return "";
         }
+
+        @Override
+        public int ping() {
+            return 0;
+        }
+
+        @Override
+        public void kick(String s) {}
 
         /**
          * @inheritDoc
          */
         @Override
-        public UUID getUniqueId() {
+        public UUID uuid() {
             return UUID.fromString("00000000-0000-0000-0000-000000000000");
         }
 
-        /**
-         * @inheritDoc
-         */
         @Override
-        public String getServerName() {
-            return this.serverName;
-        }
-
-        @Override
-        public void setServerName(String serverName) {
+        public SimpleServer server() {
+            return null; // TODO: Create Discord server abstraction
         }
 
         /**
@@ -249,114 +238,11 @@ public class DiscordAPI {
         }
 
         @Override
-        public int getEntityId() {
-            return 0;
-        }
-
-        @Override
-        public void remove() {
-        }
-
-        @Override
-        public String getType() {
-            return null;
-        }
-
-        @Override
-        public String getCustomName() {
-            return null;
-        }
-
-        @Override
-        public void setCustomName(String s) {
-        }
-
-        @Override
-        public Location getLocation() {
-            return null;
-        }
-
-        @Override
-        public double getX() {
-            return 0;
-        }
-
-        @Override
-        public double getY() {
-            return 0;
-        }
-
-        @Override
-        public double getZ() {
-            return 0;
-        }
-
-        @Override
-        public float getYaw() {
-            return 0;
-        }
-
-        @Override
-        public float getPitch() {
-            return 0;
-        }
-
-        @Override
-        public String getDimension() {
-            return null;
-        }
-
-        @Override
-        public String getBiome() {
-            return null;
-        }
-
-        @Override
-        public void teleport(Location location) {
-        }
-
-        @Override
-        public void teleport(Entity entity) {
-        }
-
-        @Override
         public boolean hasPermission(int i) {
             return false;
         }
 
         @Override
-        public void sendPluginMessage(String channel, byte[] message) {
-        }
-
-        @Override
-        public PlayerInventory getInventory() {
-            return null;
-        }
-
-        @Override
-        public int getPing() {
-            return -1;
-        }
-
-        @Override
-        public void kickPlayer(String message) {
-        }
-
-        @Override
-        public void setSpawn(Location location, boolean b) {
-        }
-
-        @Override
-        public void setSpawn(Location location) {
-        }
-
-        @Override
-        public GameMode getGameMode() {
-            return null;
-        }
-
-        @Override
-        public void setGameMode(GameMode gameMode) {
-        }
+        public void sendPluginMessage(String channel, byte[] message) {}
     }
 }

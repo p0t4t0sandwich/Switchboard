@@ -5,24 +5,22 @@ import dev.neuralnexus.taterlib.event.api.PluginEvents;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
 import dev.neuralnexus.taterlib.plugin.Plugin;
 
-/**
- * The main plugin interface.
- */
+/** The main plugin interface. */
 public interface TaterCommsPlugin extends Plugin {
     @Override
-    default String getName() {
+    default String name() {
         return TaterComms.Constants.PROJECT_NAME;
     }
 
     @Override
-    default String getId() {
+    default String id() {
         return TaterComms.Constants.PROJECT_ID;
     }
 
-    /**
-     * Starts the plugin.
-     */
-    default void pluginStart(Object plugin, AbstractLogger logger) {
+    /** Starts the plugin. */
+    @Override
+    default void pluginStart(
+            Object plugin, Object pluginServer, Object pluginLogger, AbstractLogger logger) {
         logger.info(
                 TaterComms.Constants.PROJECT_NAME
                         + " is running on "
@@ -31,12 +29,10 @@ public interface TaterCommsPlugin extends Plugin {
                         + TaterAPIProvider.minecraftVersion()
                         + "!");
         PluginEvents.DISABLED.register(event -> pluginStop());
-        TaterComms.start(plugin, logger);
+        TaterComms.start(plugin, pluginServer, pluginLogger, logger);
     }
 
-    /**
-     * Stops the plugin.
-     */
+    /** Stops the plugin. */
     default void pluginStop() {
         TaterComms.stop();
     }

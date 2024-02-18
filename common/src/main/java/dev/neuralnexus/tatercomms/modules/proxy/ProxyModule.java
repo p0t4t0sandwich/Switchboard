@@ -7,27 +7,27 @@ import dev.neuralnexus.tatercomms.api.message.MessageSender;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.event.api.NetworkEvents;
 import dev.neuralnexus.taterlib.event.api.PlayerEvents;
-import dev.neuralnexus.taterlib.event.api.PluginMessageEvents;
-import dev.neuralnexus.taterlib.player.Player;
-import dev.neuralnexus.taterlib.plugin.Module;
+import dev.neuralnexus.taterlib.player.SimplePlayer;
+import dev.neuralnexus.taterlib.plugin.PluginModule;
 
 import java.util.HashMap;
 
 /** Proxy module. */
-public class ProxyModule implements Module {
+public class ProxyModule implements PluginModule {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
 
     @Override
-    public String getName() {
+    public String name() {
         return "Proxy";
     }
 
     @Override
     public void start() {
         if (STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already started!");
+            TaterComms.logger().info("Submodule " + name() + " has already started!");
             return;
         }
         STARTED = true;
@@ -37,8 +37,8 @@ public class ProxyModule implements Module {
             if (TaterAPIProvider.serverType().isProxy()) {
                 PlayerEvents.SERVER_SWITCH.register(
                         event -> {
-                            Player player = event.getPlayer();
-                            String fromServer = event.getFromServer();
+                            SimplePlayer player = event.player();
+                            String fromServer = event.fromServer();
 
                             // Construct and send two messages
                             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
@@ -46,7 +46,7 @@ public class ProxyModule implements Module {
                                             new Message(
                                                     new MessageSender(player, fromServer),
                                                     Message.MessageType.PLAYER_LOGOUT,
-                                                    player.getName(),
+                                                    player.name(),
                                                     TaterCommsAPIProvider.get()
                                                             .getFormatting("logout"),
                                                     new HashMap<>())));
@@ -55,7 +55,7 @@ public class ProxyModule implements Module {
                                             new Message(
                                                     player,
                                                     Message.MessageType.PLAYER_LOGIN,
-                                                    player.getName(),
+                                                    player.name(),
                                                     TaterCommsAPIProvider.get()
                                                             .getFormatting("login"),
                                                     new HashMap<>())));
@@ -63,15 +63,14 @@ public class ProxyModule implements Module {
             }
 
             // Register plugin channels
-            PluginMessageEvents.REGISTER_PLUGIN_MESSAGES.register(
+            NetworkEvents.REGISTER_PLUGIN_MESSAGES.register(
                     event -> event.registerPluginChannels(Message.MessageType.getTypes()));
 
             // Register plugin message listener
-            PluginMessageEvents.SERVER_PLUGIN_MESSAGE.register(
+            NetworkEvents.SERVER_PLUGIN_MESSAGE.register(
                     event ->
                             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
-                                    new ReceiveMessageEvent(
-                                            Message.fromByteArray(event.getData()))));
+                                    new ReceiveMessageEvent(Message.fromByteArray(event.data()))));
 
             // Register TaterComms message listener
             TaterCommsEvents.RECEIVE_MESSAGE.register(
@@ -88,13 +87,13 @@ public class ProxyModule implements Module {
                     });
         }
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been started!");
+        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
     public void stop() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already stopped!");
+            TaterComms.logger().info("Submodule " + name() + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -102,13 +101,13 @@ public class ProxyModule implements Module {
 
         // Remove references to objects
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been stopped!");
+        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
     }
 
     @Override
     public void reload() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has not been started!");
+            TaterComms.logger().info("Submodule " + name() + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -119,6 +118,6 @@ public class ProxyModule implements Module {
         // Start
         start();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been reloaded!");
+        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

@@ -5,8 +5,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.player.Player;
+import dev.neuralnexus.taterlib.player.SimplePlayer;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -110,7 +111,7 @@ public class Message {
      * @param message The message
      */
     public Message(
-            Player sender,
+            SimplePlayer sender,
             String channel,
             String message,
             String placeHolderMessage,
@@ -126,7 +127,7 @@ public class Message {
      * @param message The message
      */
     public Message(
-            Player sender,
+            SimplePlayer sender,
             MessageType channel,
             String message,
             String placeHolderMessage,

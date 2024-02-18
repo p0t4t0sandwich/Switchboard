@@ -5,14 +5,12 @@ import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
 import dev.neuralnexus.taterlib.command.CommandSender;
 
-/**
- * Discord Command.
- */
+/** Discord Command. */
 public class DiscordCommand implements Command {
     private String name = "discord";
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -22,23 +20,23 @@ public class DiscordCommand implements Command {
     }
 
     @Override
-    public String getDescription() {
+    public String description() {
         return "Get the discord invite link";
     }
 
     @Override
-    public String getUsage() {
+    public String usage() {
         return "/discord";
     }
 
     @Override
-    public String getPermission() {
+    public String permission() {
         return "tatercomms.command.discord";
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!sender.hasPermission(getPermission())) {
+        if (!sender.hasPermission(permission())) {
             sender.sendMessage(
                     Utils.substituteSectionSign(
                             "&cYou do not have permission to use this command."));

@@ -33,27 +33,22 @@ public class TaterCommsConfig {
                                             .getResourceAsStream("tatercomms.config.yml")));
             config.reload();
         } catch (IOException | NullPointerException e) {
-            TaterComms.getLogger()
-                    .info(("Failed to load tatercomms.config.yml!\n" + e.getMessage()));
+            TaterComms.logger().info(("Failed to load tatercomms.config.yml!\n" + e.getMessage()));
             e.printStackTrace();
         }
     }
 
-    /**
-     * Unload the config
-     */
+    /** Unload the config */
     public static void unloadConfig() {
         config = null;
     }
 
-    /**
-     * Save the config
-     */
+    /** Save the config */
     public static void saveConfig() {
         try {
             config.save();
         } catch (IOException e) {
-            TaterComms.getLogger().info("Failed to save tatercomms.config.yml!\n" + e.getMessage());
+            TaterComms.logger().info("Failed to save tatercomms.config.yml!\n" + e.getMessage());
         }
     }
 
@@ -116,9 +111,7 @@ public class TaterCommsConfig {
         return formatting;
     }
 
-    /**
-     * Discord config.
-     */
+    /** Discord config. */
     public static class DiscordConfig {
         /**
          * Get whether Discord chat is enabled
@@ -138,9 +131,7 @@ public class TaterCommsConfig {
             return config.getString("modules.discord.token");
         }
 
-        /**
-         * Get the Discord invite link
-         */
+        /** Get the Discord invite link */
         public static String inviteUrl() {
             return config.getString("modules.discord.inviteUrl");
         }
@@ -163,9 +154,7 @@ public class TaterCommsConfig {
         }
     }
 
-    /**
-     * Minecraft config.
-     */
+    /** Minecraft config. */
     public static class MinecraftConfig {
         /**
          * Get whether Minecraft chat is enabled
@@ -177,9 +166,7 @@ public class TaterCommsConfig {
         }
     }
 
-    /**
-     * Proxy config.
-     */
+    /** Proxy config. */
     public static class ProxyConfig {
         /**
          * Get whether proxy chat is enabled
@@ -191,9 +178,7 @@ public class TaterCommsConfig {
         }
     }
 
-    /**
-     * Socket config.
-     */
+    /** Socket config. */
     public static class SocketConfig {
         /**
          * Get whether remote chat is enabled
@@ -239,7 +224,7 @@ public class TaterCommsConfig {
         public static String secret() {
             String secret = config.getString("modules.socket.secret");
             if (secret == null || secret.isEmpty()) {
-                TaterComms.getLogger().info("Generating new remote secret");
+                TaterComms.logger().info("Generating new remote secret");
                 secret = UUID.randomUUID().toString();
                 config.set("modules.socket.secret", secret);
                 saveConfig();

@@ -3,24 +3,22 @@ package dev.neuralnexus.tatercomms.modules.socket;
 import dev.neuralnexus.tatercomms.TaterComms;
 import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
-import dev.neuralnexus.taterlib.plugin.Module;
+import dev.neuralnexus.taterlib.plugin.PluginModule;
 
-/**
- * Socket module.
- */
-public class SocketModule implements Module {
+/** Socket module. */
+public class SocketModule implements PluginModule {
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
 
     @Override
-    public String getName() {
+    public String name() {
         return "Socket";
     }
 
     @Override
     public void start() {
         if (STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already started!");
+            TaterComms.logger().info("Submodule " + name() + " has already started!");
             return;
         }
         STARTED = true;
@@ -34,13 +32,13 @@ public class SocketModule implements Module {
         // Start the socket server
         TaterCommsAPIProvider.get().socketAPI().startSocket();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been started!");
+        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
     public void stop() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has already stopped!");
+            TaterComms.logger().info("Submodule " + name() + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -49,13 +47,13 @@ public class SocketModule implements Module {
         // Remove references to objects
         TaterCommsAPIProvider.get().socketAPI().stopSocket();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been stopped!");
+        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
     }
 
     @Override
     public void reload() {
         if (!STARTED) {
-            TaterComms.getLogger().info("Submodule " + getName() + " has not been started!");
+            TaterComms.logger().info("Submodule " + name() + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -66,6 +64,6 @@ public class SocketModule implements Module {
         // Start
         start();
 
-        TaterComms.getLogger().info("Submodule " + getName() + " has been reloaded!");
+        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

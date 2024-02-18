@@ -21,9 +21,7 @@ public class SocketAPI {
     private Server socketServer = null;
     private Client socketClient = null;
 
-    /**
-     * Start the socket client or server
-     */
+    /** Start the socket client or server */
     public void startSocket() {
         if (TaterCommsConfig.SocketConfig.primary()) {
             socketServer =
@@ -41,9 +39,7 @@ public class SocketAPI {
         }
     }
 
-    /**
-     * Stop the socket client or server
-     */
+    /** Stop the socket client or server */
     public void stopSocket() {
         if (TaterCommsConfig.SocketConfig.primary()) {
             socketServer.stop();
@@ -85,21 +81,20 @@ public class SocketAPI {
         // Relay the message to socket server
         if (socketClient != null
                 && message.getSender()
-                .getServerName()
-                .equals(TaterCommsAPIProvider.get().getServerName())
+                        .server()
+                        .name()
+                        .equals(TaterCommsAPIProvider.get().getServerName())
                 && !(TaterCommsAPIProvider.get().isUsingProxy()
-                && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
-                || message.getChannel()
-                .equals(Message.MessageType.PLAYER_LOGIN.id())
-                || message.getChannel()
-                .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
+                        && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
+                                || message.getChannel()
+                                        .equals(Message.MessageType.PLAYER_LOGIN.id())
+                                || message.getChannel()
+                                        .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
             socketClient.sendMessage(message);
         }
     }
 
-    /**
-     * Server class
-     */
+    /** Server class */
     public static class Server {
         private static final HashMap<String, Socket> clients = new HashMap<>();
         private static ServerSocket server;
@@ -115,7 +110,7 @@ public class SocketAPI {
          * Really basic XOR obfuscation until some form of SSL is implemented
          *
          * @param message The message
-         * @param secret  The secret
+         * @param secret The secret
          * @return The encrypted message
          */
         public static String XORMessage(String message, String secret) {
@@ -131,12 +126,12 @@ public class SocketAPI {
          * Add a client to the client hashmap
          *
          * @param serverName The server name
-         * @param client     The client
+         * @param client The client
          */
         public static void addClient(String serverName, Socket client) {
             if ((TaterAPIProvider.serverType().isProxy()
                     && ((ProxyServer) TaterAPIProvider.get().getServer())
-                    .getServers().stream().anyMatch(s -> s.getName().equals(serverName))
+                            .servers().stream().anyMatch(s -> s.name().equals(serverName))
                     && !TaterCommsAPIProvider.get().getServerName().equals(serverName))) {
                 clients.put(serverName, client);
             }
@@ -169,12 +164,10 @@ public class SocketAPI {
             return clients.containsKey(serverName) && clients.get(serverName).isConnected();
         }
 
-        /**
-         * Start the server
-         */
+        /** Start the server */
         public void start() {
             try {
-                TaterComms.getLogger().info("Starting Socket server on port " + port);
+                TaterComms.logger().info("Starting Socket server on port " + port);
                 server = new ServerSocket(port);
                 server.setReuseAddress(true);
 
@@ -185,7 +178,7 @@ public class SocketAPI {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                TaterComms.getLogger().info("Error running Socket server on port " + port);
+                TaterComms.logger().info("Error running Socket server on port " + port);
             } finally {
                 if (server != null) {
                     try {
@@ -197,9 +190,7 @@ public class SocketAPI {
             }
         }
 
-        /**
-         * Stop the server
-         */
+        /** Stop the server */
         public void stop() {
             try {
                 server.close();
@@ -215,7 +206,7 @@ public class SocketAPI {
          */
         public void sendMessageToAll(Message message) {
             for (String server : clients.keySet()) {
-                if (!message.getSender().getServerName().equals(server)) {
+                if (!message.getSender().server().name().equals(server)) {
                     try {
                         Socket client = clients.get(server);
 
@@ -231,15 +222,13 @@ public class SocketAPI {
                     } catch (IOException e) {
                         e.printStackTrace();
                         removeClient(server);
-                        TaterComms.getLogger().info("Error sending message to " + server);
+                        TaterComms.logger().info("Error sending message to " + server);
                     }
                 }
             }
         }
 
-        /**
-         * ClientHandler class
-         */
+        /** ClientHandler class */
         public static class SocketHandler implements Runnable {
             private final Socket clientSocket;
 
@@ -252,9 +241,7 @@ public class SocketAPI {
                 this.clientSocket = socket;
             }
 
-            /**
-             * Run the client handler and receive messages from the client
-             */
+            /** Run the client handler and receive messages from the client */
             public void run() {
                 while (!clientSocket.isClosed()) {
                     try {
@@ -267,8 +254,8 @@ public class SocketAPI {
                         String decryptedMessage = XORMessage(dataString, secret);
 
                         Message message = Message.fromJSON(decryptedMessage);
-                        if (!isClientConnected(message.getSender().getServerName())) {
-                            addClient(message.getSender().getServerName(), clientSocket);
+                        if (!isClientConnected(message.getSender().server().name())) {
+                            addClient(message.getSender().server().name(), clientSocket);
                         }
                         message.setRemote(true);
 
@@ -287,7 +274,7 @@ public class SocketAPI {
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
-                        TaterComms.getLogger()
+                        TaterComms.logger()
                                 .info(
                                         "Error receiving message from "
                                                 + clientSocket.getInetAddress().getHostAddress());
@@ -297,9 +284,7 @@ public class SocketAPI {
         }
     }
 
-    /**
-     * Client class
-     */
+    /** Client class */
     public static class Client {
         private static boolean STARTED = true;
         private final int port;
@@ -313,9 +298,7 @@ public class SocketAPI {
             this.secret = secret;
         }
 
-        /**
-         * Start the client
-         */
+        /** Start the client */
         public void start() {
             while (STARTED) {
                 try {
@@ -351,7 +334,7 @@ public class SocketAPI {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    TaterComms.getLogger()
+                    TaterComms.logger()
                             .info(
                                     "Error receiving message from "
                                             + socket.getInetAddress().getHostAddress());
@@ -359,9 +342,7 @@ public class SocketAPI {
             }
         }
 
-        /**
-         * Stop the client
-         */
+        /** Stop the client */
         public void stop() {
             STARTED = false;
             try {
@@ -394,7 +375,7 @@ public class SocketAPI {
             } catch (IOException e) {
                 e.printStackTrace();
                 socket = null;
-                TaterComms.getLogger().info("Error sending message to " + host + ":" + port);
+                TaterComms.logger().info("Error sending message to " + host + ":" + port);
             }
         }
     }
