@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /** API for the Discord module. */
@@ -118,9 +119,8 @@ public class DiscordAPI {
                 return;
             }
 
-            // Get the author
-            User author = message.getAuthor();
-            DiscordPlayer discordPlayer = new DiscordPlayer(author);
+            // Create player abstraction
+            DiscordPlayer discordPlayer = new DiscordPlayer(message);
 
             // Send the message
             HashMap<String, String> placeholders = new HashMap<>();
@@ -174,17 +174,18 @@ public class DiscordAPI {
         private final User user;
         private final String name;
         private final String displayName;
+        private final DiscordServer server;
 
         /**
          * Constructor.
          *
-         * @param user The Discord user.
+         * @param message The message
          */
-        public DiscordPlayer(User user) {
-            this.user = user;
-            this.name = user.getName();
-            this.displayName = user.getEffectiveName();
-            //            this.serverName = "discord";
+        public DiscordPlayer(net.dv8tion.jda.api.entities.Message message) {
+            this.user = message.getAuthor();
+            this.name = this.user.getName();
+            this.displayName = this.user.getEffectiveName();
+            this.server = new DiscordServer(message);
         }
 
         /**
@@ -226,7 +227,7 @@ public class DiscordAPI {
 
         @Override
         public SimpleServer server() {
-            return null; // TODO: Create Discord server abstraction
+            return this.server;
         }
 
         /**
@@ -244,5 +245,32 @@ public class DiscordAPI {
 
         @Override
         public void sendPluginMessage(String channel, byte[] message) {}
+    }
+
+    public static class DiscordServer implements SimpleServer {
+        private final String guildId;
+        private final String channelId;
+        private final String name;
+
+        public DiscordServer(net.dv8tion.jda.api.entities.Message message) {
+            this.guildId = message.getGuild().getId();
+            this.channelId = message.getChannel().getId();
+            this.name = message.getGuild().getName();
+        }
+
+        @Override
+        public String name() {
+            return this.name;
+        }
+
+        @Override
+        public String brand() {
+            return "Discord";
+        }
+
+        @Override
+        public Set<SimplePlayer> onlinePlayers() {
+            return null;
+        }
     }
 }

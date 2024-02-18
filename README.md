@@ -63,6 +63,7 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 ## Release Notes
 
-### v1.0.4-R0.1-SNAPSHOT
+### v1.0.4-R0.2-SNAPSHOT
 
 - Fixed bug where the plugin didn't unregister the Discord bot events when reloading the plugin
+- Complete rewrite using nifty additions to TaterLib
