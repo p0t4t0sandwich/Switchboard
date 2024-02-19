@@ -27,8 +27,8 @@ dependencies {
     implementation('net.dv8tion:JDA:5.0.0-beta.19') {
         exclude(module: 'opus-java')
     }
-    implementation('com.google.guava:guava:32.0.0-android')
     compileOnly('com.google.code.gson:gson:2.10.1')
+    compileOnly('com.google.guava:guava:32.0.0-jre')
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.1")
 }
@@ -61,9 +61,6 @@ shadowJar {
         include(dependency('com.fasterxml.jackson.core:jackson-core:2.16.0'))
         include(dependency('com.fasterxml.jackson.core:jackson-databind:2.16.0'))
         include(dependency('com.fasterxml.jackson.core:jackson-annotations:2.16.0'))
-
-        include(dependency('com.google.code.gson:gson:2.10.1'))
-        include(dependency('com.google.guava:guava:32.0.0-android'))
     }
     relocate('dev.dejvokep', "${group_id}.${project_id}.lib.dejvokep")
     relocate('org.intellij', "${group_id}.${project_id}.lib.intellij")
@@ -80,11 +77,10 @@ shadowJar {
     relocate('com.fasterxml.jackson', "${group_id}.${project_id}.lib.jackson")
 
     relocate('com.google.gson', 'dev.neuralnexus.taterlib.lib.gson')
-    relocate('com.google.common', "${group_id}.${project_id}.lib.guava")
-    relocate('com.google.thirdparty', "${group_id}.${project_id}.lib.google.thirdparty")
+    relocate('com.google.common', 'dev.neuralnexus.taterlib.lib.guava')
+    relocate('com.google.thirdparty', 'dev.neuralnexus.taterlib.lib.google.thirdparty')
 
-    destinationDirectory = file('../target')
-    archiveFileName = "${project_name}-common-${version}.jar"
+    archiveClassifier = ''
 }
 
 artifacts {

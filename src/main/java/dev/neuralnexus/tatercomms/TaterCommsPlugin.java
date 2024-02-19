@@ -17,7 +17,6 @@ public interface TaterCommsPlugin extends Plugin {
         return TaterComms.Constants.PROJECT_ID;
     }
 
-    /** Starts the plugin. */
     @Override
     default void pluginStart(
             Object plugin, Object pluginServer, Object pluginLogger, AbstractLogger logger) {
@@ -32,7 +31,7 @@ public interface TaterCommsPlugin extends Plugin {
         TaterComms.start(plugin, pluginServer, pluginLogger, logger);
     }
 
-    /** Stops the plugin. */
+    @Override
     default void pluginStop() {
         TaterComms.stop();
     }
