@@ -9,16 +9,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/common" />
-            <option value="$PROJECT_DIR$/platforms" />
-            <option value="$PROJECT_DIR$/platforms/bukkit" />
-            <option value="$PROJECT_DIR$/platforms/bungee" />
-            <option value="$PROJECT_DIR$/platforms/fabric" />
-            <option value="$PROJECT_DIR$/platforms/forge" />
-            <option value="$PROJECT_DIR$/platforms/neoforge" />
-            <option value="$PROJECT_DIR$/platforms/sponge7" />
-            <option value="$PROJECT_DIR$/platforms/sponge8" />
-            <option value="$PROJECT_DIR$/platforms/velocity" />
           </set>
         </option>
       </GradleProjectSettings>
