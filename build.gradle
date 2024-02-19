@@ -28,7 +28,7 @@ dependencies {
         exclude(module: 'opus-java')
     }
     compileOnly('com.google.code.gson:gson:2.10.1')
-    compileOnly('com.google.guava:guava:32.0.0-jre')
+    compileOnly('com.google.guava:guava:33.0.0-jre')
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.1")
 }
