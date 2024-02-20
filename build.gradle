@@ -1,57 +1,80 @@
 plugins {
     id('java')
+    id('com.github.johnrengelman.shadow') version('8.1.1')
 }
 
-defaultTasks('build')
+sourceCompatibility = targetCompatibility = 1.8
 
-subprojects {
-    apply(plugin: 'java')
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
-    group = 'dev.neuralnexus'
-    version = '1.0.4-R0.1-SNAPSHOT'
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name = 'NeuralNexus'
+        url = 'https://maven.neuralnexus.dev/releases'
     }
-
-    repositories {
-        mavenCentral()
-
-        // Common
-        maven {
-            name = "jitpack"
-            url = "https://jitpack.io"
-        }
-
-        // Bukkit/Bungee
-        maven {
-            name = "spigotmc-repo"
-            url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
-        }
-
-        // Paper/Velocity
-        maven {
-            name = "papermc-repo"
-            url = "https://repo.papermc.io/repository/maven-public/"
-        }
-
-        // NeuralNexus
-        maven {
-            name = "NeuralNexus"
-            url = "https://maven.neuralnexus.dev/releases"
-        }
-
-        // NeuralNexus Snapshots
-        maven {
-            name = "NeuralNexus Snapshots"
-            url = "https://maven.neuralnexus.dev/snapshots"
-        }
+    maven {
+        name = 'NeuralNexusSnapshots'
+        url = 'https://maven.neuralnexus.dev/snapshots'
     }
 }
 
-clean {
-    delete "target"
+dependencies {
+    implementation('net.dv8tion:JDA:5.0.0-beta.19') {
+        exclude(module: 'opus-java')
+    }
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation('org.slf4j:slf4j-simple:1.7.32')
+
+    compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
+    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.4")
+
+    compileOnly('org.spongepowered:configurate-hocon:4.1.2')
+    compileOnly('com.google.code.gson:gson:2.10.1')
+    compileOnly('com.google.guava:guava:33.0.0-jre')
+}
+
+tasks.withType(ProcessResources).configureEach {
+    filesMatching([
+            'plugin.yml',
+            'bungee.yml',
+            'fabric.mod.json',
+            'META-INF/mods.toml', 'mcmod.info', 'pack.mcmeta',
+            'META-INF/sponge_plugins.json',
+            'velocity-plugin.json'
+    ]) {
+        expand project.properties
+    }
+}
+
+shadowJar {
+    relocate('org.intellij', "${group_id}.${project_id}.lib.intellij")
+    relocate('org.jetbrains', "${group_id}.${project_id}.lib.jetbrains")
+    relocate('net.dv8tion', "${group_id}.${project_id}.lib.dv8tion")
+    relocate('org.apache.commons', "${group_id}.${project_id}.lib.commons")
+    relocate('okhttp3', "${group_id}.${project_id}.lib.okhttp3")
+    relocate('okio', "${group_id}.${project_id}.lib.okio")
+    relocate('kotlin', "${group_id}.${project_id}.lib.kotlin")
+    relocate('com.neovisionaries', "${group_id}.${project_id}.lib.neovisionaries")
+    relocate('gnu.trove', "${group_id}.${project_id}.lib.trove")
+    relocate('com.iwebpp', "${group_id}.${project_id}.lib.iwebpp")
+    relocate('com.fasterxml.jackson', "${group_id}.${project_id}.lib.jackson")
+    relocate('org.slf4j', "${group_id}.${project_id}.lib.slf4j")
+
+    // TaterLib bundled dependencies
+    relocate('org.spongepowered.configurate', 'dev.neuralnexus.taterlib.lib.configurate')
+    relocate('com.typesafe.config', 'dev.neuralnexus.taterlib.lib.typesafe.config')
+    relocate('io.leangen.geantyref', 'dev.neuralnexus.taterlib.lib.geantyref')
+    relocate('com.google.gson', 'dev.neuralnexus.taterlib.lib.gson')
+    relocate('com.google.common', 'dev.neuralnexus.taterlib.lib.guava')
+    relocate('com.google.thirdparty', 'dev.neuralnexus.taterlib.lib.google.thirdparty')
+
+    archiveFileName = "${project_id}-${version}.jar"
+}
+
+artifacts {
+    archives(shadowJar)
 }

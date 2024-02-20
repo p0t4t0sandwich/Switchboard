@@ -31,5 +31,6 @@ target
 # Gradle
 .gradle
 
-# IntelliJ IDEA
-.idea
+# IntelliJ project files
+*.iml
+.idea/modules

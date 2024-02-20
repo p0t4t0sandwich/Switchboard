@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/bukkit/TaterComms.platforms.bukkit.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/bukkit/TaterComms.platforms.bukkit.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/bungee/TaterComms.platforms.bungee.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/bungee/TaterComms.platforms.bungee.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/fabric/TaterComms.platforms.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/fabric/TaterComms.platforms.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/fabric/TaterComms.platforms.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/fabric/TaterComms.platforms.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/forge/TaterComms.platforms.forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/forge/TaterComms.platforms.forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/forge/TaterComms.platforms.forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/forge/TaterComms.platforms.forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/neoforge/TaterComms.platforms.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/neoforge/TaterComms.platforms.neoforge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/sponge7/TaterComms.platforms.sponge7.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/sponge7/TaterComms.platforms.sponge7.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/sponge7/TaterComms.platforms.sponge7.test.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/sponge7/TaterComms.platforms.sponge7.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/sponge8/TaterComms.platforms.sponge8.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/sponge8/TaterComms.platforms.sponge8.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/sponge8/TaterComms.platforms.sponge8.test.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/sponge8/TaterComms.platforms.sponge8.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/velocity/TaterComms.platforms.velocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/velocity/TaterComms.platforms.velocity.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tatercomms.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tatercomms.main.iml" />
+    </modules>
+  </component>
+</project>
