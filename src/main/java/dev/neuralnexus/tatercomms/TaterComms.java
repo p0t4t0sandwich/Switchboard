@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.neuralnexus.tatercomms.api.TaterCommsAPI;
 import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.modules.discord.DiscordModule;
 import dev.neuralnexus.tatercomms.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.tatercomms.modules.proxy.ProxyModule;
 import dev.neuralnexus.tatercomms.modules.socket.SocketModule;
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.api.info.ServerType;
 import dev.neuralnexus.taterlib.bstats.MetricsAdapter;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
@@ -126,28 +126,24 @@ public class TaterComms {
         STARTED = true;
 
         // Config
-        TaterCommsConfig.loadConfig(TaterAPIProvider.serverType().dataFolders().configFolder());
+        TaterCommsConfigLoader.load();
 
         // Register API
         TaterCommsAPIProvider.register(new TaterCommsAPI());
-        TaterCommsAPI api = TaterCommsAPIProvider.get();
-        api.setServerName(TaterCommsConfig.name());
-        api.setFormatting(TaterCommsConfig.formattingChat());
-        api.setUsingProxy(TaterCommsConfig.ProxyConfig.enabled());
 
         if (!RELOADED) {
             // Register modules
             moduleLoader = new TaterCommsModuleLoader();
-            if (TaterCommsConfig.isModuleEnabled("minecraft")) {
+            if (TaterCommsConfigLoader.config().checkModule("minecraft")) {
                 moduleLoader.registerModule(new MinecraftModule());
             }
-            if (TaterCommsConfig.isModuleEnabled("discord")) {
+            if (TaterCommsConfigLoader.config().checkModule("discord")) {
                 moduleLoader.registerModule(new DiscordModule());
             }
-            if (TaterCommsConfig.isModuleEnabled("proxy")) {
+            if (TaterCommsConfigLoader.config().checkModule("proxy")) {
                 moduleLoader.registerModule(new ProxyModule());
             }
-            if (TaterCommsConfig.isModuleEnabled("socket")) {
+            if (TaterCommsConfigLoader.config().checkModule("socket")) {
                 moduleLoader.registerModule(new SocketModule());
             }
         }
@@ -176,7 +172,7 @@ public class TaterComms {
         moduleLoader.stopModules();
 
         // Remove references to objects
-        TaterCommsConfig.unloadConfig();
+        TaterCommsConfigLoader.unload();
 
         instance.logger.info(Constants.PROJECT_NAME + " has been stopped!");
     }

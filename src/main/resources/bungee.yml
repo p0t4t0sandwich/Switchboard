@@ -7,8 +7,12 @@ main: '${group_id}.${project_id}.platforms.BungeePlugin'
 depends: [ TaterLib ]
 softdepends: [ ]
 commands:
-  example:
-    description: Example command
-    usage: /example
-    permission: example.command.example
-    aliases: [ ex ]
+  tatercomms:
+    description: TaterComms command
+    aliases: [ tc ]
+    usage: /tatercomms
+    permission: tatercomms.admin
+  discord:
+    description: Get the discord invite link
+    usage: /discord
+    permission: tatercomms.command.discord

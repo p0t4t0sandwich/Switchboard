@@ -8,19 +8,18 @@ import com.google.gson.GsonBuilder;
 
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterlib.player.SimplePlayer;
+import dev.neuralnexus.taterlib.server.SimpleServer;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Message object.
- */
+/** Message object. */
 public class Message {
     static Gson gson = new GsonBuilder().create();
     private final MessageSender sender;
-    private final String channel;
+    private final Message.MessageType channel;
     private final String message;
     private final long timeStamp;
     private String placeHolderMessage = "";
@@ -31,13 +30,13 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender  The sender
+     * @param sender The sender
      * @param channel The channel
      * @param message The message
      */
     public Message(
             MessageSender sender,
-            String channel,
+            Message.MessageType channel,
             String message,
             String placeHolderMessage,
             HashMap<String, String> placeHolders) {
@@ -53,76 +52,23 @@ public class Message {
     /**
      * Constructor for the CommsMessage class
      *
-     * @param sender  The sender
+     * @param server The server name
      * @param channel The channel
      * @param message The message
      */
     public Message(
-            MessageSender sender,
+            SimpleServer server,
             Message.MessageType channel,
             String message,
             String placeHolderMessage,
             HashMap<String, String> placeHolders) {
-        this(sender, channel.id(), message, placeHolderMessage, placeHolders);
+        this(new MessageSender(server), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
      * Constructor for the CommsMessage class
      *
-     * @param serverName The server name
-     * @param channel    The channel
-     * @param message    The message
-     */
-    public Message(
-            String serverName,
-            String channel,
-            String message,
-            String placeHolderMessage,
-            HashMap<String, String> placeHolders) {
-        this(new MessageSender(serverName), channel, message, placeHolderMessage, placeHolders);
-    }
-
-    /**
-     * Constructor for the CommsMessage class
-     *
-     * @param serverName The server name
-     * @param channel    The channel
-     * @param message    The message
-     */
-    public Message(
-            String serverName,
-            Message.MessageType channel,
-            String message,
-            String placeHolderMessage,
-            HashMap<String, String> placeHolders) {
-        this(
-                new MessageSender(serverName),
-                channel.id(),
-                message,
-                placeHolderMessage,
-                placeHolders);
-    }
-
-    /**
-     * Constructor for the CommsMessage class
-     *
-     * @param sender  The sender
-     * @param channel The channel
-     * @param message The message
-     */
-    public Message(
-            SimplePlayer sender,
-            String channel,
-            String message,
-            String placeHolderMessage,
-            HashMap<String, String> placeHolders) {
-        this(new MessageSender(sender), channel, message, placeHolderMessage, placeHolders);
-    }
-
-    /**
-     * Constructor for the CommsMessage class
-     *
-     * @param sender  The sender
+     * @param sender The sender
      * @param channel The channel
      * @param message The message
      */
@@ -132,7 +78,7 @@ public class Message {
             String message,
             String placeHolderMessage,
             HashMap<String, String> placeHolders) {
-        this(new MessageSender(sender), channel.id(), message, placeHolderMessage, placeHolders);
+        this(new MessageSender(sender), channel, message, placeHolderMessage, placeHolders);
     }
 
     /**
@@ -188,7 +134,7 @@ public class Message {
      *
      * @return The channel
      */
-    public String getChannel() {
+    public Message.MessageType channel() {
         return this.channel;
     }
 
@@ -330,9 +276,7 @@ public class Message {
         return gson.toJson(this);
     }
 
-    /**
-     * Enum for the different types of messages that can be sent
-     */
+    /** Enum for the different types of messages that can be sent */
     public enum MessageType {
         PLAYER_ADVANCEMENT_FINISHED("tc:p_adv_fin"),
         PLAYER_DEATH("tc:p_death"),

@@ -1,12 +1,14 @@
 package dev.neuralnexus.tatercomms.modules.discord;
 
 import dev.neuralnexus.tatercomms.TaterComms;
-import dev.neuralnexus.tatercomms.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
+import dev.neuralnexus.tatercomms.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.tatercomms.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.event.api.CommandEvents;
 import dev.neuralnexus.taterlib.plugin.PluginModule;
+import dev.neuralnexus.taterlib.server.SimpleServer;
 
 /** Discord module. */
 public class DiscordModule implements PluginModule {
@@ -28,14 +30,13 @@ public class DiscordModule implements PluginModule {
 
         if (!RELOADED) {
             // Check if the token and channel mappings are set
-            if (TaterCommsConfig.DiscordConfig.token() == null
-                    || TaterCommsConfig.DiscordConfig.token().isEmpty()) {
-                TaterComms.logger().info("No Discord token found in tatercomms.config.yml!");
+            String token = TaterCommsConfigLoader.config().discord().token();
+            if (token == null || token.isEmpty()) {
+                TaterComms.logger().info("No Discord token found in tatercomms.conf!");
                 return;
             }
-            if (TaterCommsConfig.DiscordConfig.channels().isEmpty()) {
-                TaterComms.logger()
-                        .info("No server-channel mappings found in tatercomms.config.yml!");
+            if (TaterCommsConfigLoader.config().discord().mappings().isEmpty()) {
+                TaterComms.logger().info("No server-channel mappings found in tatercomms.conf!");
                 return;
             }
 
@@ -43,7 +44,8 @@ public class DiscordModule implements PluginModule {
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
                         // Prevents discord messages from being passed back to discord
-                        if (!event.getMessage().getSender().server().brand().equals("Discord")) {
+                        if (!(event.getMessage().getSender().server()
+                                instanceof DiscordAPI.DiscordServer)) {
                             TaterCommsAPIProvider.get()
                                     .discordAPI()
                                     .sendMessage(event.getMessage());

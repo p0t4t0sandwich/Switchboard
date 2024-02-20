@@ -1,6 +1,6 @@
 package dev.neuralnexus.tatercomms.modules.discord.command;
 
-import dev.neuralnexus.tatercomms.TaterCommsConfig;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.taterlib.Utils;
 import dev.neuralnexus.taterlib.command.Command;
 import dev.neuralnexus.taterlib.command.CommandSender;
@@ -42,7 +42,8 @@ public class DiscordCommand implements Command {
                             "&cYou do not have permission to use this command."));
         } else {
             sender.sendMessage(
-                    Utils.substituteSectionSign(TaterCommsConfig.DiscordConfig.inviteUrl()));
+                    Utils.substituteSectionSign(
+                            TaterCommsConfigLoader.config().discord().inviteUrl()));
         }
         return true;
     }

@@ -1,9 +1,9 @@
 package dev.neuralnexus.tatercomms.modules.proxy;
 
 import dev.neuralnexus.tatercomms.TaterComms;
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
 import dev.neuralnexus.tatercomms.api.message.MessageSender;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
@@ -38,17 +38,17 @@ public class ProxyModule implements PluginModule {
                 PlayerEvents.SERVER_SWITCH.register(
                         event -> {
                             SimplePlayer player = event.player();
-                            String fromServer = event.fromServer();
 
                             // Construct and send two messages
                             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                                     new ReceiveMessageEvent(
                                             new Message(
-                                                    new MessageSender(player, fromServer),
+                                                    new MessageSender(player, event.fromServer()),
                                                     Message.MessageType.PLAYER_LOGOUT,
                                                     player.name(),
-                                                    TaterCommsAPIProvider.get()
-                                                            .getFormatting("logout"),
+                                                    TaterCommsConfigLoader.config()
+                                                            .formatting()
+                                                            .logout(),
                                                     new HashMap<>())));
                             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                                     new ReceiveMessageEvent(
@@ -56,8 +56,9 @@ public class ProxyModule implements PluginModule {
                                                     player,
                                                     Message.MessageType.PLAYER_LOGIN,
                                                     player.name(),
-                                                    TaterCommsAPIProvider.get()
-                                                            .getFormatting("login"),
+                                                    TaterCommsConfigLoader.config()
+                                                            .formatting()
+                                                            .login(),
                                                     new HashMap<>())));
                         });
             }
@@ -80,8 +81,8 @@ public class ProxyModule implements PluginModule {
                         // Send the message using proxy channels
                         if (!TaterAPIProvider.serverType().isProxy()
                                 && !event.getMessage()
-                                        .getChannel()
-                                        .equals(Message.MessageType.PLAYER_MESSAGE.id())) {
+                                        .channel()
+                                        .equals(Message.MessageType.PLAYER_MESSAGE)) {
                             message.getSender().sendPluginMessage(message);
                         }
                     });

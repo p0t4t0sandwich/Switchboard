@@ -1,9 +1,8 @@
 package dev.neuralnexus.tatercomms.modules.socket.api;
 
 import dev.neuralnexus.tatercomms.TaterComms;
-import dev.neuralnexus.tatercomms.TaterCommsConfig;
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.Utils;
@@ -23,25 +22,25 @@ public class SocketAPI {
 
     /** Start the socket client or server */
     public void startSocket() {
-        if (TaterCommsConfig.SocketConfig.primary()) {
+        if (TaterCommsConfigLoader.config().socket().primary()) {
             socketServer =
                     new Server(
-                            TaterCommsConfig.SocketConfig.port(),
-                            TaterCommsConfig.SocketConfig.secret());
+                            TaterCommsConfigLoader.config().socket().port(),
+                            TaterCommsConfigLoader.config().socket().secret());
             Utils.runTaskAsync(socketServer::start);
         } else {
             socketClient =
                     new Client(
-                            TaterCommsConfig.SocketConfig.host(),
-                            TaterCommsConfig.SocketConfig.port(),
-                            TaterCommsConfig.SocketConfig.secret());
+                            TaterCommsConfigLoader.config().socket().host(),
+                            TaterCommsConfigLoader.config().socket().port(),
+                            TaterCommsConfigLoader.config().socket().secret());
             Utils.runTaskAsync(socketClient::start);
         }
     }
 
     /** Stop the socket client or server */
     public void stopSocket() {
-        if (TaterCommsConfig.SocketConfig.primary()) {
+        if (TaterCommsConfigLoader.config().socket().primary()) {
             socketServer.stop();
             socketServer = null;
         } else {
@@ -56,7 +55,7 @@ public class SocketAPI {
      * @param message The message
      */
     public void sendMessage(Message message) {
-        if (TaterCommsConfig.SocketConfig.primary()) {
+        if (TaterCommsConfigLoader.config().socket().primary()) {
             socketServer.sendMessageToAll(message);
         } else {
             socketClient.sendMessage(message);
@@ -73,8 +72,8 @@ public class SocketAPI {
 
         // Relay player messages to socket clients
         if (socketServer != null
-                && TaterCommsConfig.SocketConfig.primary()
-                && message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())) {
+                && TaterCommsConfigLoader.config().socket().primary()
+                && message.channel().equals(Message.MessageType.PLAYER_MESSAGE)) {
             socketServer.sendMessageToAll(message);
         }
 
@@ -83,13 +82,11 @@ public class SocketAPI {
                 && message.getSender()
                         .server()
                         .name()
-                        .equals(TaterCommsAPIProvider.get().getServerName())
-                && !(TaterCommsAPIProvider.get().isUsingProxy()
-                        && (message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())
-                                || message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGIN.id())
-                                || message.getChannel()
-                                        .equals(Message.MessageType.PLAYER_LOGOUT.id())))) {
+                        .equals(TaterAPIProvider.get().getServer().name())
+                && !(TaterCommsConfigLoader.config().checkModule("proxy")
+                        && (message.channel().equals(Message.MessageType.PLAYER_MESSAGE)
+                                || message.channel().equals(Message.MessageType.PLAYER_LOGIN)
+                                || message.channel().equals(Message.MessageType.PLAYER_LOGOUT)))) {
             socketClient.sendMessage(message);
         }
     }
@@ -132,7 +129,7 @@ public class SocketAPI {
             if ((TaterAPIProvider.serverType().isProxy()
                     && ((ProxyServer) TaterAPIProvider.get().getServer())
                             .servers().stream().anyMatch(s -> s.name().equals(serverName))
-                    && !TaterCommsAPIProvider.get().getServerName().equals(serverName))) {
+                    && !TaterAPIProvider.get().getServer().name().equals(serverName))) {
                 clients.put(serverName, client);
             }
         }

@@ -4,7 +4,6 @@ import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.player.SimplePlayer;
 import dev.neuralnexus.taterlib.server.SimpleServer;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class MessageSender implements SimplePlayer {
@@ -13,17 +12,17 @@ public class MessageSender implements SimplePlayer {
     private final String suffix;
     private final String displayName;
     private final UUID uuid;
-    private final String serverName;
+    private final SimpleServer server;
 
     /**
      * Constructor for the CommsSender class.
      *
-     * @param name        The name
-     * @param prefix      The prefix
-     * @param suffix      The suffix
+     * @param name The name
+     * @param prefix The prefix
+     * @param suffix The suffix
      * @param displayName The display name
-     * @param uuid        The UUID
-     * @param serverName  The server name
+     * @param uuid The UUID
+     * @param server The server name
      */
     public MessageSender(
             String name,
@@ -31,29 +30,29 @@ public class MessageSender implements SimplePlayer {
             String suffix,
             String displayName,
             UUID uuid,
-            String serverName) {
+            SimpleServer server) {
         this.name = name;
         this.prefix = prefix;
         this.suffix = suffix;
         this.displayName = displayName;
         this.uuid = uuid;
-        this.serverName = serverName;
+        this.server = server;
     }
 
     /**
      * Constructor for the CommsSender class.
      *
-     * @param player     The player
-     * @param serverName The server name
+     * @param player The player
+     * @param server The server name
      */
-    public MessageSender(SimplePlayer player, String serverName) {
+    public MessageSender(SimplePlayer player, SimpleServer server) {
         this(
                 player.name(),
                 player.prefix(),
                 player.suffix(),
                 player.displayName(),
                 player.uuid(),
-                serverName);
+                server);
     }
 
     /**
@@ -68,21 +67,21 @@ public class MessageSender implements SimplePlayer {
                 player.suffix(),
                 player.displayName(),
                 player.uuid(),
-                player.server().name());
+                player.server());
     }
 
     /**
      * Constructor for the CommsSender class.
      *
-     * @param serverName The server name
+     * @param server The server name
      */
-    public MessageSender(String serverName) {
+    public MessageSender(SimpleServer server) {
         this.name = "";
         this.prefix = "";
         this.suffix = "";
         this.displayName = "";
         this.uuid = UUID.randomUUID();
-        this.serverName = serverName;
+        this.server = server;
     }
 
     @Override
@@ -97,7 +96,7 @@ public class MessageSender implements SimplePlayer {
 
     @Override
     public SimpleServer server() {
-        return TaterAPIProvider.get().getServer();
+        return this.server;
     }
 
     @Override
@@ -122,12 +121,10 @@ public class MessageSender implements SimplePlayer {
 
     @Override
     public void sendMessage(String message) {
-        Optional<SimplePlayer> player =
-                TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                        .filter(p -> p.uuid().equals(this.uuid))
-                        .findFirst();
-        if (!player.isPresent()) return;
-        player.get().sendMessage(message);
+        TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                .filter(p -> p.uuid().equals(this.uuid))
+                .findFirst()
+                .ifPresent(p -> p.sendMessage(message));
     }
 
     @Override
@@ -141,30 +138,17 @@ public class MessageSender implements SimplePlayer {
     }
 
     @Override
-    public void kick(String message) {
-    }
+    public void kick(String message) {}
 
     @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
-        Optional<SimplePlayer> player =
-                TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                        .filter(p -> p.uuid().equals(this.uuid))
-                        .findFirst();
-        if (!player.isPresent()) return;
-        player.get().sendPluginMessage(channel, bytes);
+        TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                .filter(p -> p.uuid().equals(this.uuid))
+                .findFirst()
+                .ifPresent(p -> p.sendPluginMessage(channel, bytes));
     }
 
-    /**
-     * Sends a plugin message on behalf of the player.
-     *
-     * @param message The message
-     */
     public void sendPluginMessage(Message message) {
-        Optional<SimplePlayer> player =
-                TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                        .filter(p -> p.uuid().equals(this.uuid))
-                        .findFirst();
-        if (!player.isPresent()) return;
-        player.get().sendPluginMessage(message.getChannel(), message.toByteArray());
+        this.sendPluginMessage(message.channel().id(), message.toByteArray());
     }
 }

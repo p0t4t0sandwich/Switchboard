@@ -1,13 +1,12 @@
 package dev.neuralnexus.tatercomms.modules.discord.api;
 
 import dev.neuralnexus.tatercomms.TaterComms;
-import dev.neuralnexus.tatercomms.TaterCommsConfig;
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
+import dev.neuralnexus.tatercomms.config.sections.discord.ChannelMapping;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.player.Player;
 import dev.neuralnexus.taterlib.player.SimplePlayer;
 import dev.neuralnexus.taterlib.server.SimpleServer;
 
@@ -22,6 +21,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -62,7 +62,7 @@ public class DiscordAPI {
             try {
                 // Create the JDA instance
                 api =
-                        JDABuilder.createDefault(TaterCommsConfig.DiscordConfig.token())
+                        JDABuilder.createDefault(TaterCommsConfigLoader.config().discord().token())
                                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                                 .build();
 
@@ -101,18 +101,10 @@ public class DiscordAPI {
             String guildID = message.getGuild().getId();
             String channelID = message.getChannel().getId();
 
-            String server = null;
-            for (String key : TaterCommsConfig.DiscordConfig.channels().keySet()) {
-                if (TaterCommsConfig.DiscordConfig.channels()
-                        .get(key)
-                        .equals(guildID + "/" + channelID)) {
-                    server = key;
-                    break;
-                }
-            }
-
             // Check if the channel is a server channel
-            if (server == null) {
+            Optional<String> server =
+                    TaterCommsConfigLoader.config().discord().findServer(guildID, channelID);
+            if (!server.isPresent()) {
                 return;
             }
 
@@ -128,7 +120,7 @@ public class DiscordAPI {
                                     discordPlayer,
                                     Message.MessageType.PLAYER_MESSAGE,
                                     content,
-                                    TaterCommsAPIProvider.get().getFormatting("discord"),
+                                    TaterCommsConfigLoader.config().formatting().discord(),
                                     placeholders)));
         }
 
@@ -142,31 +134,40 @@ public class DiscordAPI {
             String server = message.getSender().server().name();
 
             // Get the channel
-            String channelGuildId = TaterCommsConfig.DiscordConfig.channels().get(server);
-            if (channelGuildId == null) {
+            Optional<ChannelMapping> mappings =
+                    TaterCommsConfigLoader.config().discord().getMappings(server);
+            if (!mappings.isPresent()) {
                 return;
             }
 
-            // Get the guild and channel
-            Guild guild = api.getGuildById(channelGuildId.split("/")[0]);
-            if (guild == null) {
-                System.err.println(
-                        "Guild not found for server " + server + ", please check the config!");
-                return;
-            }
-            TextChannel channel = guild.getTextChannelById(channelGuildId.split("/")[1]);
-            if (channel == null) {
-                System.err.println(
-                        "Channel not found for server " + server + ", please check the config!");
-                return;
-            }
+            for (ChannelMapping.DiscordChannel channel : mappings.get().channels()) {
+                // Get the guild and channel
+                Guild guild = api.getGuildById(channel.guildId());
+                if (guild == null) {
+                    TaterComms.logger()
+                            .error(
+                                    "Guild not found for server "
+                                            + server
+                                            + ", please check the config!");
+                    return;
+                }
+                TextChannel textChannel = guild.getTextChannelById(channel.channelId());
+                if (textChannel == null) {
+                    TaterComms.logger()
+                            .error(
+                                    "Channel not found for server "
+                                            + server
+                                            + ", please check the config!");
+                    return;
+                }
 
-            // Send the message
-            channel.sendMessage(messageContent).queue();
+                // Send the message
+                textChannel.sendMessage(messageContent).queue();
+            }
         }
     }
 
-    /** Discord implementation of {@link Player}. */
+    /** Discord implementation of {@link SimplePlayer}. */
     public static class DiscordPlayer implements SimplePlayer {
         private final User user;
         private final String name;

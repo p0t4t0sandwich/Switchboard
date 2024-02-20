@@ -10,7 +10,6 @@ import java.util.Set;
 public class TaterCommsModuleLoader implements ModuleLoader {
     private static final Set<PluginModule> modules = new HashSet<>();
 
-    /** {@inheritDoc} */
     @Override
     public Set<PluginModule> modules() {
         return modules;

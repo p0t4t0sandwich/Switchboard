@@ -1,7 +1,7 @@
 package dev.neuralnexus.tatercomms.modules.minecraft.listeners.server;
 
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.event.server.ServerStartedEvent;
@@ -16,14 +16,13 @@ public interface TaterCommsServerListener {
      * @param event The event
      */
     static void onServerStarted(ServerStartedEvent event) {
-        String serverName = event.server().name();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
-                                serverName,
+                                event.server(),
                                 Message.MessageType.SERVER_STARTED,
                                 "**Server has started**",
-                                TaterCommsAPIProvider.get().getFormatting("serverStarted"),
+                                TaterCommsConfigLoader.config().formatting().serverStarted(),
                                 new HashMap<>())));
     }
 
@@ -33,14 +32,13 @@ public interface TaterCommsServerListener {
      * @param event The event
      */
     static void onServerStopped(ServerStoppingEvent event) {
-        String serverName = event.server().name();
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
-                                serverName,
+                                event.server(),
                                 Message.MessageType.SERVER_STOPPED,
                                 "**Server has stopped**",
-                                TaterCommsAPIProvider.get().getFormatting("serverStopped"),
+                                TaterCommsConfigLoader.config().formatting().serverStopped(),
                                 new HashMap<>())));
     }
 }

@@ -1,20 +1,18 @@
 package dev.neuralnexus.tatercomms.event;
 
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.taterlib.event.Event;
 
-/**
- * Receive message event.
- */
+/** Receive message event. */
 public class ReceiveMessageEvent implements Event {
     private final Message message;
 
     public ReceiveMessageEvent(Message message) {
         if (message.isRemote()) {
-            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting("remote"));
+            message.setPlaceHolderMessage(TaterCommsConfigLoader.config().formatting().remote());
         } else if (message.isGlobal()) {
-            message.setPlaceHolderMessage(TaterCommsAPIProvider.get().getFormatting("global"));
+            message.setPlaceHolderMessage(TaterCommsConfigLoader.config().formatting().global());
         }
         this.message = message;
     }

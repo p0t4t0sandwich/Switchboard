@@ -1,9 +1,8 @@
 package dev.neuralnexus.tatercomms.modules.minecraft;
 
 import dev.neuralnexus.tatercomms.TaterComms;
-import dev.neuralnexus.tatercomms.TaterCommsConfig;
-import dev.neuralnexus.tatercomms.api.TaterCommsAPIProvider;
 import dev.neuralnexus.tatercomms.api.message.Message;
+import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.tatercomms.modules.minecraft.command.TaterCommsCommand;
 import dev.neuralnexus.tatercomms.modules.minecraft.listeners.player.TaterCommsPlayerListener;
@@ -67,16 +66,16 @@ public class MinecraftModule implements PluginModule {
                         Message message = event.getMessage();
 
                         // Prevents re-sending the message on the originating server
-                        if (!TaterCommsConfig.formattingEnabled()
+                        if (!TaterCommsConfigLoader.config().checkModule("formatting")
                                 && message.getSender()
                                         .server()
                                         .name()
-                                        .equals(TaterCommsAPIProvider.get().getServerName())) {
+                                        .equals(TaterAPIProvider.get().getServer().name())) {
                             return;
                         }
 
                         // Return if the message is not a player message
-                        if (!message.getChannel().equals(Message.MessageType.PLAYER_MESSAGE.id())) {
+                        if (!message.channel().equals(Message.MessageType.PLAYER_MESSAGE)) {
                             return;
                         }
 
