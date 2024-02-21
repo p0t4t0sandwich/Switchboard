@@ -51,6 +51,15 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 shadowJar {
+    dependencies {
+        exclude('META-INF/maven/**')
+        exclude('META-INF/proguard/**')
+        exclude('META-INF/services/**')
+        exclude('META-INF/versions/**')
+        exclude('META-INF/*LICENSE*')
+        exclude('META-INF/*NOTICE*')
+        exclude('META-INF/*kotlin_module')
+    }
     relocate('org.intellij', "${group_id}.${project_id}.lib.intellij")
     relocate('org.jetbrains', "${group_id}.${project_id}.lib.jetbrains")
     relocate('net.dv8tion', "${group_id}.${project_id}.lib.dv8tion")
@@ -73,6 +82,19 @@ shadowJar {
     relocate('com.google.thirdparty', 'dev.neuralnexus.taterlib.lib.google.thirdparty')
 
     archiveFileName = "${project_id}-${version}.jar"
+
+    manifest {
+        attributes 'Specification-Title': "${project_name}",
+                'Specification-Version': version,
+                'Specification-Vendor': 'NeuralNexus',
+                'Implementation-Version': version,
+                'Implementation-Vendor': 'NeuralNexus',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+    }
+
+    from(["README.md", "LICENSE", "LICENSE-API"]) {
+        into("META-INF")
+    }
 }
 
 artifacts {
