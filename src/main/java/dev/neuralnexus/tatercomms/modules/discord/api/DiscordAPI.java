@@ -20,10 +20,7 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /** API for the Discord module. */
 public class DiscordAPI {
@@ -255,8 +252,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public Set<SimplePlayer> onlinePlayers() {
-            return null;
+        public List<SimplePlayer> onlinePlayers() {
+            return Collections.emptyList();
         }
     }
 }

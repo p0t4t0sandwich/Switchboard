@@ -3,15 +3,15 @@ package dev.neuralnexus.tatercomms;
 import dev.neuralnexus.taterlib.plugin.ModuleLoader;
 import dev.neuralnexus.taterlib.plugin.PluginModule;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /** TaterComms module loader. */
 public class TaterCommsModuleLoader implements ModuleLoader {
-    private static final Set<PluginModule> modules = new HashSet<>();
+    private static final List<PluginModule> modules = new ArrayList<>();
 
     @Override
-    public Set<PluginModule> modules() {
+    public List<PluginModule> modules() {
         return modules;
     }
 }
