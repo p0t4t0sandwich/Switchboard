@@ -151,7 +151,7 @@ public class TaterComms {
         // Start modules
         moduleLoader.startModules();
 
-        logger.info(Constants.PROJECT_NAME + " has been started!");
+        logger().info(Constants.PROJECT_NAME + " has been started!");
     }
 
     /** Start */
@@ -162,7 +162,7 @@ public class TaterComms {
     /** Stop */
     public static void stop() {
         if (!STARTED) {
-            instance.logger.info(Constants.PROJECT_NAME + " has already stopped!");
+            logger().info(Constants.PROJECT_NAME + " has already stopped!");
             return;
         }
         STARTED = false;
@@ -174,13 +174,13 @@ public class TaterComms {
         // Remove references to objects
         TaterCommsConfigLoader.unload();
 
-        instance.logger.info(Constants.PROJECT_NAME + " has been stopped!");
+        logger().info(Constants.PROJECT_NAME + " has been stopped!");
     }
 
     /** Reload */
     public static void reload() {
         if (!STARTED) {
-            instance.logger.info(Constants.PROJECT_NAME + " has not been started!");
+            logger().info(Constants.PROJECT_NAME + " has not been started!");
             return;
         }
         RELOADED = true;
@@ -194,7 +194,7 @@ public class TaterComms {
         // Start
         start();
 
-        instance.logger.info(Constants.PROJECT_NAME + " has been reloaded!");
+        logger().info(Constants.PROJECT_NAME + " has been reloaded!");
     }
 
     /** Constants used throughout the plugin. */

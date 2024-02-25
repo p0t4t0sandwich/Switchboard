@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Set;
 
-/** A class for loading TaterLib configuration. */
+/** A class for loading TaterComms configuration. */
 public class TaterCommsConfigLoader {
     private static final Path configPath =
             Paths.get(
@@ -149,7 +149,7 @@ public class TaterCommsConfigLoader {
                 config = new TaterCommsConfig_V1(version, modules, discord, formatting, socket);
                 break;
             default:
-                System.err.println("Unknown configuration version: " + version);
+                TaterComms.logger().error("Unknown configuration version: " + version);
         }
     }
 
