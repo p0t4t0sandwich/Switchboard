@@ -75,12 +75,13 @@ public class ProxyModule implements PluginModule {
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     event -> {
                         Message message = event.getMessage();
+                        Message.MessageType channel = message.channel();
 
                         // Send the message using proxy channels
                         if (!TaterAPIProvider.serverType().isProxy()
-                                && !event.getMessage()
-                                        .channel()
-                                        .equals(Message.MessageType.PLAYER_MESSAGE)) {
+                                && !channel.equals(Message.MessageType.PLAYER_MESSAGE)
+                                && !channel.equals(Message.MessageType.SERVER_STARTED)
+                                && !channel.equals(Message.MessageType.SERVER_STOPPED)) {
                             message.getSender().sendPluginMessage(message);
                         }
                     });

@@ -5,7 +5,7 @@ import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.event.server.ServerStartedEvent;
-import dev.neuralnexus.taterlib.event.server.ServerStoppingEvent;
+import dev.neuralnexus.taterlib.event.server.ServerStoppedEvent;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public interface TaterCommsServerListener {
      *
      * @param event The event
      */
-    static void onServerStopped(ServerStoppingEvent event) {
+    static void onServerStopped(ServerStoppedEvent event) {
         TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(

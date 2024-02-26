@@ -48,9 +48,7 @@ public class MinecraftModule implements PluginModule {
 
             // Register server listeners
             ServerEvents.STARTED.register(TaterCommsServerListener::onServerStarted);
-            // TODO: Find the null pointer here
-            //            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
-            ServerEvents.STOPPING.register(TaterCommsServerListener::onServerStopped);
+            ServerEvents.STOPPED.register(TaterCommsServerListener::onServerStopped);
 
             // TODO: Might be useful
             // if (commsMessage.isGlobal() || commsMessage.isRemote()) {
@@ -67,6 +65,8 @@ public class MinecraftModule implements PluginModule {
 
                         // Prevents re-sending the message on the originating server
                         if (!TaterCommsConfigLoader.config().checkModule("formatting")
+                                // Null check for proxies without any accessible servers
+                                && message.getSender().server() != null
                                 && message.getSender()
                                         .server()
                                         .name()

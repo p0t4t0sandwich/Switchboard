@@ -12,7 +12,7 @@ public class MessageSender implements SimplePlayer {
     private final String suffix;
     private final String displayName;
     private final UUID uuid;
-    private final SimpleServer server;
+    private final MessageServer server;
 
     /**
      * Constructor for the CommsSender class.
@@ -36,7 +36,7 @@ public class MessageSender implements SimplePlayer {
         this.suffix = suffix;
         this.displayName = displayName;
         this.uuid = uuid;
-        this.server = server;
+        this.server = new MessageServer(server);
     }
 
     /**
@@ -52,7 +52,7 @@ public class MessageSender implements SimplePlayer {
                 player.suffix(),
                 player.displayName(),
                 player.uuid(),
-                server);
+                new MessageServer(server));
     }
 
     /**
@@ -81,7 +81,7 @@ public class MessageSender implements SimplePlayer {
         this.suffix = "";
         this.displayName = "";
         this.uuid = UUID.randomUUID();
-        this.server = server;
+        this.server = new MessageServer(server);
     }
 
     @Override
