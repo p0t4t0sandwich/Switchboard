@@ -8,7 +8,6 @@ import dev.neuralnexus.taterlib.plugin.PluginModule;
 /** Socket module. */
 public class SocketModule implements PluginModule {
     private static boolean STARTED = false;
-    private static boolean RELOADED = false;
 
     @Override
     public String name() {
@@ -23,7 +22,7 @@ public class SocketModule implements PluginModule {
         }
         STARTED = true;
 
-        if (!RELOADED) {
+        if (!TaterComms.hasReloaded()) {
             // Register events
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     (event) -> TaterCommsAPIProvider.get().socketAPI().onReceiveMessage(event));
@@ -31,8 +30,6 @@ public class SocketModule implements PluginModule {
 
         // Start the socket server
         TaterCommsAPIProvider.get().socketAPI().startSocket();
-
-        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
@@ -42,28 +39,8 @@ public class SocketModule implements PluginModule {
             return;
         }
         STARTED = false;
-        RELOADED = true;
 
         // Remove references to objects
         TaterCommsAPIProvider.get().socketAPI().stopSocket();
-
-        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
-    }
-
-    @Override
-    public void reload() {
-        if (!STARTED) {
-            TaterComms.logger().info("Submodule " + name() + " has not been started!");
-            return;
-        }
-        RELOADED = true;
-
-        // Stop
-        stop();
-
-        // Start
-        start();
-
-        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

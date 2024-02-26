@@ -16,7 +16,6 @@ import dev.neuralnexus.taterlib.plugin.PluginModule;
 /** Minecraft module. */
 public class MinecraftModule implements PluginModule {
     private static boolean STARTED = false;
-    private static boolean RELOADED = false;
 
     @Override
     public String name() {
@@ -31,7 +30,7 @@ public class MinecraftModule implements PluginModule {
         }
         STARTED = true;
 
-        if (!RELOADED) {
+        if (!TaterComms.hasReloaded()) {
             // Register commands
             CommandEvents.REGISTER_COMMAND.register(
                     event ->
@@ -100,8 +99,6 @@ public class MinecraftModule implements PluginModule {
                         }
                     });
         }
-
-        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
@@ -111,27 +108,5 @@ public class MinecraftModule implements PluginModule {
             return;
         }
         STARTED = false;
-        RELOADED = true;
-
-        // Remove references to objects
-
-        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
-    }
-
-    @Override
-    public void reload() {
-        if (!STARTED) {
-            TaterComms.logger().info("Submodule " + name() + " has not been started!");
-            return;
-        }
-        RELOADED = true;
-
-        // Stop
-        stop();
-
-        // Start
-        start();
-
-        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }

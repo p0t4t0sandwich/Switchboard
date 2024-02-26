@@ -26,6 +26,15 @@ public class TaterComms {
     private AbstractLogger logger;
 
     /**
+     * Get if the plugin has reloaded
+     *
+     * @return If the plugin has reloaded
+     */
+    public static boolean hasReloaded() {
+        return RELOADED;
+    }
+
+    /**
      * Getter for the singleton instance of the class.
      *
      * @return The singleton instance
@@ -149,6 +158,7 @@ public class TaterComms {
         }
 
         // Start modules
+        logger().info("Starting modules: " + moduleLoader.moduleNames());
         moduleLoader.startModules();
 
         logger().info(Constants.PROJECT_NAME + " has been started!");
@@ -169,6 +179,7 @@ public class TaterComms {
         RELOADED = true;
 
         // Stop modules
+        logger().info("Stopping modules: " + moduleLoader.moduleNames());
         moduleLoader.stopModules();
 
         // Remove references to objects

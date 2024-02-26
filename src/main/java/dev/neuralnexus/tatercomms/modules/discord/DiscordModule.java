@@ -12,7 +12,6 @@ import dev.neuralnexus.taterlib.plugin.PluginModule;
 /** Discord module. */
 public class DiscordModule implements PluginModule {
     private static boolean STARTED = false;
-    private static boolean RELOADED = false;
 
     @Override
     public String name() {
@@ -27,7 +26,7 @@ public class DiscordModule implements PluginModule {
         }
         STARTED = true;
 
-        if (!RELOADED) {
+        if (!TaterComms.hasReloaded()) {
             // Check if the token and channel mappings are set
             String token = TaterCommsConfigLoader.config().discord().token();
             if (token == null || token.isEmpty()) {
@@ -58,8 +57,6 @@ public class DiscordModule implements PluginModule {
 
         // Start the bot
         TaterCommsAPIProvider.get().discordAPI().startBot();
-
-        TaterComms.logger().info("Submodule " + name() + " has been started!");
     }
 
     @Override
@@ -69,28 +66,8 @@ public class DiscordModule implements PluginModule {
             return;
         }
         STARTED = false;
-        RELOADED = true;
 
         // Remove references to objects
         TaterCommsAPIProvider.get().discordAPI().removeBot();
-
-        TaterComms.logger().info("Submodule " + name() + " has been stopped!");
-    }
-
-    @Override
-    public void reload() {
-        if (!STARTED) {
-            TaterComms.logger().info("Submodule " + name() + " has not been started!");
-            return;
-        }
-        RELOADED = true;
-
-        // Stop
-        stop();
-
-        // Start
-        start();
-
-        TaterComms.logger().info("Submodule " + name() + " has been reloaded!");
     }
 }
