@@ -26,8 +26,8 @@ dependencies {
     implementation('net.dv8tion:JDA:5.0.0-beta.19') {
         exclude(module: 'opus-java')
     }
-    implementation("org.slf4j:slf4j-api:1.7.32")
-    implementation('org.slf4j:slf4j-simple:1.7.32')
+    implementation('org.slf4j:slf4j-api:1.7.32')
+    compileOnly('org.slf4j:slf4j-simple:1.7.32')
 
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.4")
@@ -71,7 +71,11 @@ shadowJar {
     relocate('gnu.trove', "${group_id}.${project_id}.lib.trove")
     relocate('com.iwebpp', "${group_id}.${project_id}.lib.iwebpp")
     relocate('com.fasterxml.jackson', "${group_id}.${project_id}.lib.jackson")
-    relocate('org.slf4j', "${group_id}.${project_id}.lib.slf4j")
+
+    exclude('org/slf4j/Logger')
+    relocate('org.slf4j', "${group_id}.${project_id}.lib.slf4j") {
+        exclude('org.slf4j.Logger')
+    }
 
     // TaterLib bundled dependencies
     relocate('org.spongepowered.configurate', 'dev.neuralnexus.taterlib.lib.configurate')
@@ -80,6 +84,11 @@ shadowJar {
     relocate('com.google.gson', 'dev.neuralnexus.taterlib.lib.gson')
     relocate('com.google.common', 'dev.neuralnexus.taterlib.lib.guava')
     relocate('com.google.thirdparty', 'dev.neuralnexus.taterlib.lib.google.thirdparty')
+
+    // TODO: Minimize the shadowJar
+    minimize() {
+        exclude(dependency("${group_id}:${project_id}:${version}"))
+    }
 
     archiveFileName = "${project_id}-${version}.jar"
 

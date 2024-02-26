@@ -128,6 +128,9 @@ public class DiscordAPI {
          */
         public void sendMessage(Message message) {
             String messageContent = PlaceholderParser.stripSectionSign(message.applyPlaceHolders());
+            if (message.getSender().server() == null) {
+                return;
+            }
             String server = message.getSender().server().name();
 
             // Get the channel

@@ -66,8 +66,6 @@ public class ProxyModule implements PluginModule {
             // Register plugin channels
             NetworkEvents.REGISTER_PLUGIN_MESSAGES.register(
                     event -> event.registerPluginChannels(Message.MessageType.getTypes()));
-
-            // Register plugin message listener
             NetworkEvents.SERVER_PLUGIN_MESSAGE.register(
                     event ->
                             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
