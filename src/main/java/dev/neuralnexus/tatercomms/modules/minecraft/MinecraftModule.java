@@ -39,9 +39,11 @@ public class MinecraftModule implements PluginModule {
                                     TaterComms.plugin(), new TaterCommsCommand(), "tc"));
 
             // Register player listeners
-            PlayerEvents.ADVANCEMENT_FINISHED.register(
-                    TaterCommsPlayerListener::onPlayerAdvancementFinished);
-            PlayerEvents.DEATH.register(TaterCommsPlayerListener::onPlayerDeath);
+            if (!TaterAPIProvider.serverType().isProxy()) {
+                PlayerEvents.ADVANCEMENT_FINISHED.register(
+                        TaterCommsPlayerListener::onPlayerAdvancementFinished);
+                PlayerEvents.DEATH.register(TaterCommsPlayerListener::onPlayerDeath);
+            }
             PlayerEvents.LOGIN.register(TaterCommsPlayerListener::onPlayerLogin);
             PlayerEvents.LOGOUT.register(TaterCommsPlayerListener::onPlayerLogout);
             PlayerEvents.MESSAGE.register(TaterCommsPlayerListener::onPlayerMessage);
@@ -79,10 +81,23 @@ public class MinecraftModule implements PluginModule {
                             return;
                         }
 
-                        TaterAPIProvider.get()
-                                .getServer()
-                                .onlinePlayers()
-                                .forEach(player -> player.sendMessage(message.applyPlaceHolders()));
+                        // If the message formatting is enabled, send the message to all online
+                        // players on the message's originating server
+                        if (TaterCommsConfigLoader.config().checkModule("formatting")) {
+                            TaterAPIProvider.get().getServer().onlinePlayers().stream()
+                                    .filter(
+                                            player ->
+                                                    player.server()
+                                                            .name()
+                                                            .equals(
+                                                                    message.getSender()
+                                                                            .server()
+                                                                            .name()))
+                                    .forEach(
+                                            player ->
+                                                    player.sendMessage(
+                                                            message.applyPlaceHolders()));
+                        }
                     });
         }
 

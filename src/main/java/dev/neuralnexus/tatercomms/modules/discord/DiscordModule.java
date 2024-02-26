@@ -8,7 +8,6 @@ import dev.neuralnexus.tatercomms.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.tatercomms.modules.discord.command.DiscordCommand;
 import dev.neuralnexus.taterlib.event.api.CommandEvents;
 import dev.neuralnexus.taterlib.plugin.PluginModule;
-import dev.neuralnexus.taterlib.server.SimpleServer;
 
 /** Discord module. */
 public class DiscordModule implements PluginModule {
