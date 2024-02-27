@@ -97,7 +97,7 @@ public class Message {
                 return gson.fromJson(new String(data), Message.class);
             }
         } catch (Exception e) {
-            // TODO: Make this less jank
+            // TODO: Remove this when all implementations use vanilla networking under the hood
             try {
                 // Fabric Support
                 return gson.fromJson(

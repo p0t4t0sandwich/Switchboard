@@ -85,7 +85,6 @@ shadowJar {
     relocate('com.google.common', 'dev.neuralnexus.taterlib.lib.guava')
     relocate('com.google.thirdparty', 'dev.neuralnexus.taterlib.lib.google.thirdparty')
 
-    // TODO: Minimize the shadowJar
     minimize() {
         exclude(dependency("${group_id}:${project_id}:${version}"))
     }
