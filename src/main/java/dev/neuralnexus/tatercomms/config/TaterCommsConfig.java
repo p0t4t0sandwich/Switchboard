@@ -3,6 +3,7 @@ package dev.neuralnexus.tatercomms.config;
 import dev.neuralnexus.tatercomms.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.tatercomms.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.tatercomms.config.sections.socket.SocketConfig;
+import dev.neuralnexus.tatercomms.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
 import java.util.Set;
@@ -29,6 +30,13 @@ public interface TaterCommsConfig {
      * @return The Discord configuration.
      */
     DiscordConfig discord();
+
+    /**
+     * Get the Telegram configuration.
+     *
+     * @return The Telegram configuration.
+     */
+    TelegramConfig telegram();
 
     /**
      * Get the TCP Socket configuration.

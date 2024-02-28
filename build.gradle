@@ -27,7 +27,9 @@ dependencies {
         exclude(module: 'opus-java')
     }
     implementation('org.slf4j:slf4j-api:1.7.32')
-    compileOnly('org.slf4j:slf4j-simple:1.7.32')
+    implementation('org.slf4j:slf4j-simple:1.7.32')
+
+    implementation('com.github.pengrad:java-telegram-bot-api:7.1.0')
 
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.4")
@@ -59,6 +61,8 @@ shadowJar {
         exclude('META-INF/*LICENSE*')
         exclude('META-INF/*NOTICE*')
         exclude('META-INF/*kotlin_module')
+
+        exclude(dependency('com.google.code.gson:gson:2.10.1'))
     }
     relocate('org.intellij', "${group_id}.${project_id}.lib.intellij")
     relocate('org.jetbrains', "${group_id}.${project_id}.lib.jetbrains")
@@ -71,11 +75,11 @@ shadowJar {
     relocate('gnu.trove', "${group_id}.${project_id}.lib.trove")
     relocate('com.iwebpp', "${group_id}.${project_id}.lib.iwebpp")
     relocate('com.fasterxml.jackson', "${group_id}.${project_id}.lib.jackson")
-
-    exclude('org/slf4j/Logger')
     relocate('org.slf4j', "${group_id}.${project_id}.lib.slf4j") {
         exclude('org.slf4j.Logger')
     }
+
+    relocate('com.pengrad.telegrambot', "${group_id}.${project_id}.lib.telegrambot")
 
     // TaterLib bundled dependencies
     relocate('org.spongepowered.configurate', 'dev.neuralnexus.taterlib.lib.configurate')

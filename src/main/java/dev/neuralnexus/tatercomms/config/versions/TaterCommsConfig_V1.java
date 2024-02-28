@@ -4,6 +4,7 @@ import dev.neuralnexus.tatercomms.config.TaterCommsConfig;
 import dev.neuralnexus.tatercomms.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.tatercomms.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.tatercomms.config.sections.socket.SocketConfig;
+import dev.neuralnexus.tatercomms.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
 import java.util.Set;
@@ -13,6 +14,7 @@ public class TaterCommsConfig_V1 implements TaterCommsConfig {
     private final int version;
     private final Set<ModuleConfig> modules;
     private final DiscordConfig discord;
+    private final TelegramConfig telegram;
     private final SocketConfig socket;
     private final FormattingConfig formatting;
 
@@ -20,11 +22,13 @@ public class TaterCommsConfig_V1 implements TaterCommsConfig {
             int version,
             Set<ModuleConfig> modules,
             DiscordConfig discord,
+            TelegramConfig telegram,
             FormattingConfig formatting,
             SocketConfig socket) {
         this.version = version;
         this.modules = modules;
         this.discord = discord;
+        this.telegram = telegram;
         this.formatting = formatting;
         this.socket = socket;
     }
@@ -42,6 +46,11 @@ public class TaterCommsConfig_V1 implements TaterCommsConfig {
     @Override
     public DiscordConfig discord() {
         return discord;
+    }
+
+    @Override
+    public TelegramConfig telegram() {
+        return telegram;
     }
 
     @Override

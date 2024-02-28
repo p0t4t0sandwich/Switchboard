@@ -7,13 +7,10 @@ import dev.neuralnexus.tatercomms.config.sections.discord.ChannelMapping;
 import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
 import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.player.SimplePlayer;
-import dev.neuralnexus.taterlib.server.SimpleServer;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -24,7 +21,7 @@ import java.util.*;
 
 /** API for the Discord module. */
 public class DiscordAPI {
-    private static Bot bot = null;
+    private Bot bot = null;
 
     /** Start the bot. */
     public void startBot() {
@@ -164,99 +161,6 @@ public class DiscordAPI {
                 // Send the message
                 textChannel.sendMessage(messageContent).queue();
             }
-        }
-    }
-
-    /** Discord implementation of {@link SimplePlayer}. */
-    public static class DiscordPlayer implements SimplePlayer {
-        private final User user;
-        private final String name;
-        private final String displayName;
-        private final DiscordServer server;
-
-        /**
-         * Constructor.
-         *
-         * @param message The message
-         */
-        public DiscordPlayer(net.dv8tion.jda.api.entities.Message message) {
-            this.user = message.getAuthor();
-            this.name = this.user.getName();
-            this.displayName = this.user.getEffectiveName();
-            this.server = new DiscordServer(message);
-        }
-
-        @Override
-        public String name() {
-            return this.name;
-        }
-
-        @Override
-        public String displayName() {
-            return this.displayName;
-        }
-
-        @Override
-        public String ipAddress() {
-            return "";
-        }
-
-        @Override
-        public int ping() {
-            return 0;
-        }
-
-        @Override
-        public void kick(String message) {}
-
-        @Override
-        public UUID uuid() {
-            return UUID.fromString("00000000-0000-0000-0000-000000000000");
-        }
-
-        @Override
-        public SimpleServer server() {
-            return this.server;
-        }
-
-        @Override
-        public void sendMessage(String message) {
-            user.openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
-        }
-
-        @Override
-        public boolean hasPermission(int permissionLevel) {
-            return false;
-        }
-
-        @Override
-        public void sendPluginMessage(String channel, byte[] message) {}
-    }
-
-    public static class DiscordServer implements SimpleServer {
-        private final String guildId;
-        private final String channelId;
-        private final String name;
-
-        public DiscordServer(net.dv8tion.jda.api.entities.Message message) {
-            this.guildId = message.getGuild().getId();
-            this.channelId = message.getChannel().getId();
-            this.name = message.getGuild().getName();
-        }
-
-        @Override
-        public String name() {
-            return this.name;
-        }
-
-        @Override
-        public String brand() {
-            return "Discord";
-        }
-
-        @Override
-        public List<SimplePlayer> onlinePlayers() {
-            return Collections.emptyList();
         }
     }
 }
