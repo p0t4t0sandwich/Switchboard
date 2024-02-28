@@ -1,6 +1,6 @@
 # TaterComms
 
-[![License](https://img.shields.io/github/license/p0t4t0sandwich/TaterComms?color=blue)](https://img.shields.io/github/downloads/p0t4t0sandwich/TaterComms/LICENSE)
+[![License](https://img.shields.io/github/license/p0t4t0sandwich/TaterComms?color=blue)](https://github.com/p0t4t0sandwich/TaterComms/blob/main/LICENSE)
 [![Github](https://img.shields.io/github/stars/p0t4t0sandwich/TaterComms)](https://github.com/p0t4t0sandwich/TaterComms)
 [![Github Issues](https://img.shields.io/github/issues/p0t4t0sandwich/TaterComms?label=Issues)](https://github.com/p0t4t0sandwich/TaterComms/issues)
 [![Discord](https://img.shields.io/discord/1067482396246683708?color=7289da&logo=discord&logoColor=white)](https://discord.neuralnexus.dev)
@@ -14,27 +14,22 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 ## Download
 
 [![Github Releases](https://img.shields.io/github/downloads/p0t4t0sandwich/TaterComms/total?label=Github&logo=github&color=181717)](https://github.com/p0t4t0sandwich/TaterComms/releases)
+
+[![Maven Repo](https://img.shields.io/maven-metadata/v?label=Release&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Freleases%2Fdev%2Fneuralnexus%2FTaterComms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/releases/dev/neuralnexus/TaterComms)
+[![Maven Repo](https://img.shields.io/maven-metadata/v?label=Snapshot&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Fsnapshots%2Fdev%2Fneuralnexus%2FTaterComms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/snapshots/dev/neuralnexus/TaterComms)
+
 [![Spigot](https://img.shields.io/spiget/downloads/110592?label=Spigot&logo=spigotmc&color=ED8106)](https://www.spigotmc.org/resources/tatercomms.110592/)
 [![Hangar](https://img.shields.io/badge/Hangar-download-blue)](https://hangar.papermc.io/p0t4t0sandwich/TaterComms)
+
+[//]: # ([![Bukkit]&#40;https://img.shields.io/curseforge/dt/980381?label=Bukkit&logo=https%3A%2F%2Fbukkit.org%2favicon.ico&color=1E6AB7&#41;]&#40;https://www.curseforge.com/minecraft/bukkit-plugins/taterlib&#41;)
+
 [![Modrinth](https://img.shields.io/modrinth/dt/tatercomms?label=Modrinth&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/tatercomms)
 [![CurseForge](https://img.shields.io/curseforge/dt/877133?label=CurseForge&logo=curseforge&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/tatercomms)
 [![Sponge](https://img.shields.io/ore/dt/tatercomms?label=Sponge&logo=https%3A%2F%2Fspongepowered.org%2Ffavicon.ico&color=F7CF0D)](https://ore.spongepowered.org/p0t4t0sandwich/TaterComms)
 
-Jenkins:
+[![Maven Snapshots Repo](https://img.shields.io/maven-metadata/v?label=Snapshot&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Fsnapshots%2Fdev%2Fneuralnexus%2Ftatercomms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/snapshots/dev/neuralnexus/tatercomms)[![Jenkins Dev Build](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.neuralnexus.dev%2Fjob%2FTaterCommsDev%2F)](https://jenkins.neuralnexus.dev/job/TaterCommsDev/)
 
-- Release
-  [![Jenkins Build](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.neuralnexus.dev%2Fjob%2FTaterComms%2F)](https://jenkins.neuralnexus.dev/job/TaterComms/)
-
-- Snapshot
-  [![Jenkins Dev Builds](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.neuralnexus.dev%2Fjob%2FTaterCommsDev%2F)](https://jenkins.neuralnexus.dev/job/TaterCommsDev/)
-
-Maven:
-
-- Release
-  [![Maven Repo](https://img.shields.io/maven-metadata/v?label=Release&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Freleases%2Fdev%2Fneuralnexus%2FTaterComms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/releases/dev/neuralnexus/TaterComms)
-
-- Snapshot
-  [![Maven Snapshots Repo](https://img.shields.io/maven-metadata/v?label=Snapshot&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Fsnapshots%2Fdev%2Fneuralnexus%2FTaterComms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/snapshots/dev/neuralnexus/TaterComms)
+[![Maven Repo](https://img.shields.io/maven-metadata/v?label=Release&metadataUrl=https%3A%2F%2Fmaven.neuralnexus.dev%2Freleases%2Fdev%2Fneuralnexus%2Ftatercomms%2Fmaven-metadata.xml)](https://maven.neuralnexus.dev/#/releases/dev/neuralnexus/tatercomms)[![Jenkins Builds](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.neuralnexus.dev%2Fjob%2FTaterComms%2F)](https://jenkins.neuralnexus.dev/job/TaterComms/)
 
 ## Usage
 
@@ -50,6 +45,7 @@ Maven:
 - Global chat still needs some tweaking and a proper, per-user toggle
 - Sponge death messages are a tad off with how the component serializes (eg: `playerName Skeleton was shot by` instead
   of `playerName was shot by Skeleton`)
+- Still need to tweak the pass-through system and get that working properly
 
 ## Dependencies
 
