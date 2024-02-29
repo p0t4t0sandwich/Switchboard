@@ -11,7 +11,7 @@ public class ChatMapping {
     @Setting("serverName")
     private String serverName;
 
-    @Setting private Set<String> channels;
+    @Setting private Set<ChatChannel> channels;
 
     /**
      * Get the server name.
@@ -27,7 +27,7 @@ public class ChatMapping {
      *
      * @return The channels
      */
-    public Set<String> channels() {
+    public Set<ChatChannel> channels() {
         return channels;
     }
 }

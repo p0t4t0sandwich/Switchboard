@@ -2,13 +2,19 @@ package dev.neuralnexus.tatercomms.modules.telegram.api;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 
 import dev.neuralnexus.tatercomms.TaterComms;
 import dev.neuralnexus.tatercomms.api.message.Message;
 import dev.neuralnexus.tatercomms.config.TaterCommsConfigLoader;
+import dev.neuralnexus.tatercomms.config.sections.telegram.ChatChannel;
 import dev.neuralnexus.tatercomms.config.sections.telegram.ChatMapping;
+import dev.neuralnexus.tatercomms.event.ReceiveMessageEvent;
+import dev.neuralnexus.tatercomms.event.api.TaterCommsEvents;
 import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
 
+import java.util.List;
 import java.util.Optional;
 
 /** API for the Telegram module. */
@@ -49,24 +55,8 @@ public class TelegramAPI {
 
             // Register for updates
             bot.setUpdatesListener(
-                    updates -> {
-                        // ... process updates
-                        // return id of last processed update or confirm them all
-
-                        updates.forEach(
-                                update -> {
-                                    if (update.message() != null) {
-                                        String message = update.message().text();
-                                        if (message != null) {
-                                            System.out.println(update.message().chat().title());
-                                            System.out.println(message);
-                                        }
-                                    }
-                                });
-
-                        return UpdatesListener.CONFIRMED_UPDATES_ALL;
-                        // Create Exception Handler
-                    },
+                    this::onMessageReceived,
+                    // Create Exception Handler
                     e -> {
                         if (e.response() != null) {
                             // got bad response from telegram
@@ -85,12 +75,59 @@ public class TelegramAPI {
             bot.removeGetUpdatesListener();
         }
 
+        public int onMessageReceived(List<Update> updates) {
+            updates.forEach(
+                    update -> {
+                        if (update.message().from().isBot()) {
+                            return;
+                        }
+                        if (update.message() == null) {
+                            return;
+                        }
+
+                        // Get the message
+                        com.pengrad.telegrambot.model.Message message = update.message();
+                        String content = message.text();
+
+                        if (content == null) {
+                            return;
+                        }
+
+                        // Get the channelId and Title
+                        long channelId = update.message().chat().id();
+                        String title = update.message().chat().title();
+
+                        // Check if the channel is a server channel
+                        Optional<String> server =
+                                TaterCommsConfigLoader.config()
+                                        .telegram()
+                                        .getServerName(channelId, title);
+                        if (!server.isPresent()) {
+                            return;
+                        }
+
+                        // Send the message
+                        TaterCommsEvents.RECEIVE_MESSAGE.invoke(
+                                new ReceiveMessageEvent(
+                                        new Message(
+                                                new TelegramPlayer(update.message()),
+                                                Message.MessageType.PLAYER_MESSAGE,
+                                                content,
+                                                TaterCommsConfigLoader.config()
+                                                        .formatting()
+                                                        .telegram())));
+                    });
+
+            TaterCommsConfigLoader.save();
+            return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        }
+
         public void sendMessage(Message message) {
             String messageContent = PlaceholderParser.stripSectionSign(message.applyPlaceHolders());
-            if (message.getSender().server() == null) {
+            if (message.sender().server() == null) {
                 return;
             }
-            String server = message.getSender().server().name();
+            String server = message.sender().server().name();
 
             // Get the channel
             Optional<ChatMapping> mappings =
@@ -99,30 +136,9 @@ public class TelegramAPI {
                 return;
             }
 
-            for (String channel : mappings.get().channels()) {
-                //            // Get the guild and channel
-                //            Guild guild = api.getGuildById(channel.guildId());
-                //            if (guild == null) {
-                //                TaterComms.logger()
-                //                        .error(
-                //                                "Guild not found for server "
-                //                                        + server
-                //                                        + ", please check the config!");
-                //                return;
-                //            }
-                //            TextChannel textChannel =
-                // guild.getTextChannelById(channel.channelId());
-                //            if (textChannel == null) {
-                //                TaterComms.logger()
-                //                        .error(
-                //                                "Channel not found for server "
-                //                                        + server
-                //                                        + ", please check the config!");
-                //                return;
-                //            }
-                //
-                //            // Send the message
-                //            textChannel.sendMessage(messageContent).queue();
+            // Send the message
+            for (ChatChannel channel : mappings.get().channels()) {
+                bot.execute(new SendMessage(channel.chatId(), messageContent));
             }
         }
     }

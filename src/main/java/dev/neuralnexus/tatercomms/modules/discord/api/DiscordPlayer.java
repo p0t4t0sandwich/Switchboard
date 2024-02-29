@@ -71,4 +71,14 @@ public class DiscordPlayer implements SimplePlayer {
 
     @Override
     public void sendPluginMessage(String channel, byte[] message) {}
+
+    @Override
+    public String prefix() {
+        return "";
+    }
+
+    @Override
+    public String suffix() {
+        return "";
+    }
 }

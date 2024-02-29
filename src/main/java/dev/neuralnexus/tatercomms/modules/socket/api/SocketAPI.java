@@ -79,7 +79,7 @@ public class SocketAPI {
 
         // Relay the message to socket server
         if (socketClient != null
-                && message.getSender()
+                && message.sender()
                         .server()
                         .name()
                         .equals(TaterAPIProvider.get().getServer().name())
@@ -203,7 +203,7 @@ public class SocketAPI {
          */
         public void sendMessageToAll(Message message) {
             for (String server : clients.keySet()) {
-                if (!message.getSender().server().name().equals(server)) {
+                if (!message.sender().server().name().equals(server)) {
                     try {
                         Socket client = clients.get(server);
 
@@ -251,8 +251,8 @@ public class SocketAPI {
                         String decryptedMessage = XORMessage(dataString, secret);
 
                         Message message = Message.fromJSON(decryptedMessage);
-                        if (!isClientConnected(message.getSender().server().name())) {
-                            addClient(message.getSender().server().name(), clientSocket);
+                        if (!isClientConnected(message.sender().server().name())) {
+                            addClient(message.sender().server().name(), clientSocket);
                         }
                         message.setRemote(true);
 

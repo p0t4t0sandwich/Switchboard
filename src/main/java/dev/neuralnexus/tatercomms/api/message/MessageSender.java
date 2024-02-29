@@ -31,10 +31,25 @@ public class MessageSender implements SimplePlayer {
             String displayName,
             UUID uuid,
             SimpleServer server) {
+        if (name == null) {
+            name = "";
+        }
         this.name = name;
+        if (prefix == null) {
+            prefix = "";
+        }
         this.prefix = prefix;
+        if (suffix == null) {
+            suffix = "";
+        }
         this.suffix = suffix;
+        if (displayName == null) {
+            displayName = "";
+        }
         this.displayName = displayName;
+        if (uuid == null) {
+            uuid = UUID.randomUUID();
+        }
         this.uuid = uuid;
         this.server = new MessageServer(server);
     }

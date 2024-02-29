@@ -1,5 +1,6 @@
 package dev.neuralnexus.tatercomms.config.sections.telegram;
 
+
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
@@ -49,12 +50,16 @@ public class TelegramConfig {
      * Find a server name by chatId.
      *
      * @param chatId The chat id
+     * @param chatTitle The chat id
      * @return The server name
      */
-    public Optional<String> getServerName(String chatId) {
+    public Optional<String> getServerName(long chatId, String chatTitle) {
         for (ChatMapping mapping : mappings) {
-            if (mapping.channels().contains(chatId)) {
-                return Optional.of(mapping.server());
+            for (ChatChannel channel : mapping.channels()) {
+                if (channel.chatTitle().equals(chatTitle)) {
+                    channel.setChatId(chatId);
+                    return Optional.of(mapping.server());
+                }
             }
         }
         return Optional.empty();

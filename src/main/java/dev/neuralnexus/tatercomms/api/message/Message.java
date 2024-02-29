@@ -82,6 +82,18 @@ public class Message {
     }
 
     /**
+     * Constructor for the CommsMessage class
+     *
+     * @param sender The sender
+     * @param channel The channel
+     * @param message The message
+     */
+    public Message(
+            SimplePlayer sender, MessageType channel, String message, String placeHolderMessage) {
+        this(new MessageSender(sender), channel, message, placeHolderMessage, new HashMap<>());
+    }
+
+    /**
      * Creates a CommsMessage from a byte array
      *
      * @param data The byte array
@@ -125,7 +137,7 @@ public class Message {
      *
      * @return The sender
      */
-    public MessageSender getSender() {
+    public MessageSender sender() {
         return this.sender;
     }
 
@@ -141,7 +153,7 @@ public class Message {
     /**
      * @inheritDoc
      */
-    public String getMessage() {
+    public String message() {
         return this.message;
     }
 

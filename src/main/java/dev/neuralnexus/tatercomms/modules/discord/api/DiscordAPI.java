@@ -102,20 +102,14 @@ public class DiscordAPI {
                 return;
             }
 
-            // Create player abstraction
-            DiscordPlayer discordPlayer = new DiscordPlayer(message);
-
             // Send the message
-            HashMap<String, String> placeholders = new HashMap<>();
-            placeholders.put("message", content);
             TaterCommsEvents.RECEIVE_MESSAGE.invoke(
                     new ReceiveMessageEvent(
                             new Message(
-                                    discordPlayer,
+                                    new DiscordPlayer(message),
                                     Message.MessageType.PLAYER_MESSAGE,
                                     content,
-                                    TaterCommsConfigLoader.config().formatting().discord(),
-                                    placeholders)));
+                                    TaterCommsConfigLoader.config().formatting().discord())));
         }
 
         /**
@@ -125,10 +119,10 @@ public class DiscordAPI {
          */
         public void sendMessage(Message message) {
             String messageContent = PlaceholderParser.stripSectionSign(message.applyPlaceHolders());
-            if (message.getSender().server() == null) {
+            if (message.sender().server() == null) {
                 return;
             }
-            String server = message.getSender().server().name();
+            String server = message.sender().server().name();
 
             // Get the channel
             Optional<ChannelMapping> mappings =

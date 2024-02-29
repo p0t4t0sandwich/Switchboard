@@ -42,7 +42,7 @@ public class DiscordModule implements PluginModule {
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
                         // Prevents discord messages from being passed back to discord
-                        if (!(event.getMessage().getSender().server() instanceof DiscordServer)) {
+                        if (!(event.getMessage().sender().server() instanceof DiscordServer)) {
                             TaterCommsAPIProvider.get()
                                     .discordAPI()
                                     .sendMessage(event.getMessage());

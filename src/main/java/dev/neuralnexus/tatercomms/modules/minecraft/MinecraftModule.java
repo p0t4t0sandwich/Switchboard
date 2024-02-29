@@ -67,8 +67,8 @@ public class MinecraftModule implements PluginModule {
                         // Prevents re-sending the message on the originating server
                         if (!TaterCommsConfigLoader.config().checkModule("formatting")
                                 // Null check for proxies without any accessible servers
-                                && message.getSender().server() != null
-                                && message.getSender()
+                                && message.sender().server() != null
+                                && message.sender()
                                         .server()
                                         .name()
                                         .equals(TaterAPIProvider.get().getServer().name())) {
@@ -89,13 +89,18 @@ public class MinecraftModule implements PluginModule {
                                                     player.server()
                                                             .name()
                                                             .equals(
-                                                                    message.getSender()
+                                                                    message.sender()
                                                                             .server()
                                                                             .name()))
                                     .forEach(
                                             player ->
                                                     player.sendMessage(
                                                             message.applyPlaceHolders()));
+                        } else {
+                            // Send the message to the player
+                            TaterAPIProvider.get()
+                                    .getServer()
+                                    .broadcastMessage(message.applyPlaceHolders());
                         }
                     });
         }

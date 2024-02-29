@@ -81,7 +81,7 @@ public class ProxyModule implements PluginModule {
                                 && !channel.equals(Message.MessageType.PLAYER_MESSAGE)
                                 && !channel.equals(Message.MessageType.SERVER_STARTED)
                                 && !channel.equals(Message.MessageType.SERVER_STOPPED)) {
-                            message.getSender().sendPluginMessage(message);
+                            message.sender().sendPluginMessage(message);
                         }
                     });
         }

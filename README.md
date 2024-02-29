@@ -99,3 +99,4 @@ dependencies {
 
 - Fixed bug where the plugin didn't unregister the Discord bot events when reloading the plugin
 - Complete rewrite using nifty additions to TaterLib
+- Added Telegram support

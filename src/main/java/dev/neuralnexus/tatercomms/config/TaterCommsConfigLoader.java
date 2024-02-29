@@ -38,6 +38,14 @@ public class TaterCommsConfigLoader {
                             + ".conf");
     private static final String defaultConfigPath =
             "source." + TaterComms.Constants.PROJECT_ID + ".conf";
+    private static final TypeToken<Set<ModuleConfig>> moduleType =
+            new TypeToken<Set<ModuleConfig>>() {};
+    private static final TypeToken<DiscordConfig> discordType = new TypeToken<DiscordConfig>() {};
+    private static final TypeToken<TelegramConfig> telegramType =
+            new TypeToken<TelegramConfig>() {};
+    private static final TypeToken<FormattingConfig> formattingType =
+            new TypeToken<FormattingConfig>() {};
+    private static final TypeToken<SocketConfig> socketType = new TypeToken<SocketConfig>() {};
     private static TaterCommsConfig config;
 
     /** Copy the default configuration to the config folder. */
@@ -87,7 +95,7 @@ public class TaterCommsConfigLoader {
 
         Set<ModuleConfig> modules = null;
         try {
-            modules = root.node("modules").get(new TypeToken<Set<ModuleConfig>>() {});
+            modules = root.node("modules").get(moduleType);
         } catch (SerializationException e) {
             TaterComms.logger()
                     .error(
@@ -100,7 +108,7 @@ public class TaterCommsConfigLoader {
 
         DiscordConfig discord = null;
         try {
-            discord = root.node("discord").get(new TypeToken<DiscordConfig>() {});
+            discord = root.node("discord").get(discordType);
         } catch (SerializationException e) {
             TaterComms.logger()
                     .error(
@@ -113,7 +121,7 @@ public class TaterCommsConfigLoader {
 
         TelegramConfig telegram = null;
         try {
-            telegram = root.node("telegram").get(new TypeToken<TelegramConfig>() {});
+            telegram = root.node("telegram").get(telegramType);
         } catch (SerializationException e) {
             TaterComms.logger()
                     .error(
@@ -126,7 +134,7 @@ public class TaterCommsConfigLoader {
 
         FormattingConfig formatting = null;
         try {
-            formatting = root.node("formatting").get(new TypeToken<FormattingConfig>() {});
+            formatting = root.node("formatting").get(formattingType);
         } catch (SerializationException e) {
             TaterComms.logger()
                     .error(
@@ -139,7 +147,7 @@ public class TaterCommsConfigLoader {
 
         SocketConfig socket = null;
         try {
-            socket = root.node("socket").get(new TypeToken<SocketConfig>() {});
+            socket = root.node("socket").get(socketType);
         } catch (SerializationException e) {
             TaterComms.logger()
                     .error(
@@ -196,7 +204,7 @@ public class TaterCommsConfigLoader {
         }
 
         try {
-            root.node("modules").set(config.modules());
+            root.node("modules").set(moduleType, config.modules());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());
@@ -206,7 +214,7 @@ public class TaterCommsConfigLoader {
         }
 
         try {
-            root.node("discord").set(config.discord());
+            root.node("discord").set(discordType, config.discord());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());
@@ -216,7 +224,7 @@ public class TaterCommsConfigLoader {
         }
 
         try {
-            root.node("telegram").set(config.telegram());
+            root.node("telegram").set(telegramType, config.telegram());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());
@@ -226,7 +234,7 @@ public class TaterCommsConfigLoader {
         }
 
         try {
-            root.node("formatting").set(config.formatting());
+            root.node("formatting").set(formattingType, config.formatting());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());
@@ -236,7 +244,7 @@ public class TaterCommsConfigLoader {
         }
 
         try {
-            root.node("socket").set(config.socket());
+            root.node("socket").set(socketType, config.socket());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());

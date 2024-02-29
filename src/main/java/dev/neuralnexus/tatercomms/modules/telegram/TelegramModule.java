@@ -40,7 +40,7 @@ public class TelegramModule implements PluginModule {
             TaterCommsEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
                         // Prevents telegram messages from being passed back to telegram
-                        if (!(event.getMessage().getSender().server() instanceof TelegramServer)) {
+                        if (!(event.getMessage().sender().server() instanceof TelegramServer)) {
                             TaterCommsAPIProvider.get()
                                     .telegramAPI()
                                     .sendMessage(event.getMessage());

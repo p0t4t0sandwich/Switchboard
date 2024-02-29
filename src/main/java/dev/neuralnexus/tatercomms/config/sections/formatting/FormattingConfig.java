@@ -18,6 +18,7 @@ public class FormattingConfig {
     private String serverStopped;
 
     @Setting private String discord;
+    @Setting private String telegram;
     @Setting private String global;
     @Setting private String local;
     @Setting private String remote;
@@ -48,6 +49,10 @@ public class FormattingConfig {
 
     public String discord() {
         return discord;
+    }
+
+    public String telegram() {
+        return telegram;
     }
 
     public String global() {
