@@ -1,5 +1,5 @@
 {
-  "homepage": "https://github.com/p0t4t0sandwich/TaterComms/releases",
+  "homepage": "https://github.com/p0t4t0sandwich/Switchboard/releases",
   "1.20": {
     "1.0.0": "Initial release",
     "1.0.1": "- Created a Fabric mixin for the player Death events\n- Updated the Fabric 1.17 Message listener to ignore commands (whoops)\n- Translated all Fabric events to mixins\n- Added /discord command for players to grab the invite link\n- Fixed build error for the Fabric mixin refmap\n- No longer depends on the Fabric API",

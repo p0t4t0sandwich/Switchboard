@@ -7,12 +7,12 @@ main: '${group_id}.${project_id}.platforms.BungeePlugin'
 depends: [ TaterLib ]
 softdepends: [ ]
 commands:
-  tatercomms:
-    description: TaterComms command
+  switchboard:
+    description: Switchboard command
     aliases: [ tc ]
-    usage: /tatercomms
-    permission: tatercomms.admin
+    usage: /switchboard
+    permission: switchboard.admin
   discord:
     description: Get the discord invite link
     usage: /discord
-    permission: tatercomms.command.discord
+    permission: switchboard.command.discord
