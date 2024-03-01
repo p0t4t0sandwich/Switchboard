@@ -4,31 +4,30 @@
  * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.config.sections.socket;
+package dev.neuralnexus.switchboard.config.sections.websocket;
 
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
+import dev.neuralnexus.switchboard.modules.websocket.api.EncryptionHandler;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
-import java.util.UUID;
-
-/** A class for TCP socket configuration. */
+/** A class for WebSocket configuration. */
 @ConfigSerializable
-public class SocketConfig {
-    @Setting private boolean primary;
+public class WebSocketConfig {
+    @Setting private String mode;
     @Setting private String host;
     @Setting private int port;
     @Setting private String secret;
 
     /**
-     * Get whether the server is the primary server.
+     * Get the mode.
      *
-     * @return Whether the server is the primary server
+     * @return The mode
      */
-    public boolean primary() {
-        return primary;
+    public String mode() {
+        return mode;
     }
 
     /**
@@ -57,7 +56,7 @@ public class SocketConfig {
     public String secret() {
         if (secret == null || secret.isEmpty()) {
             Switchboard.logger().info("Generating new remote secret");
-            secret = UUID.randomUUID().toString();
+            secret = EncryptionHandler.generateKey();
             SwitchboardConfigLoader.save();
         }
         return secret;

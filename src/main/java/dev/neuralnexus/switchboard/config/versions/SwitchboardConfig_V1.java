@@ -9,8 +9,8 @@ package dev.neuralnexus.switchboard.config.versions;
 import dev.neuralnexus.switchboard.config.SwitchboardConfig;
 import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
-import dev.neuralnexus.switchboard.config.sections.socket.SocketConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
+import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
 import java.util.Set;
@@ -21,7 +21,7 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
     private final Set<ModuleConfig> modules;
     private final DiscordConfig discord;
     private final TelegramConfig telegram;
-    private final SocketConfig socket;
+    private final WebSocketConfig webSocket;
     private final FormattingConfig formatting;
 
     public SwitchboardConfig_V1(
@@ -30,13 +30,13 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
             DiscordConfig discord,
             TelegramConfig telegram,
             FormattingConfig formatting,
-            SocketConfig socket) {
+            WebSocketConfig webSocket) {
         this.version = version;
         this.modules = modules;
         this.discord = discord;
         this.telegram = telegram;
         this.formatting = formatting;
-        this.socket = socket;
+        this.webSocket = webSocket;
     }
 
     @Override
@@ -60,8 +60,8 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
     }
 
     @Override
-    public SocketConfig socket() {
-        return socket;
+    public WebSocketConfig webSocket() {
+        return webSocket;
     }
 
     @Override

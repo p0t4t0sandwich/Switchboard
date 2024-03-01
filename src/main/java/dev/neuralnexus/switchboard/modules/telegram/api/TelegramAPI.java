@@ -58,27 +58,22 @@ public class TelegramAPI {
 
         public Bot() {
             bot = new TelegramBot(SwitchboardConfigLoader.config().telegram().token());
-
-            // Register for updates
             bot.setUpdatesListener(
                     this::onMessageReceived,
-                    // Create Exception Handler
                     e -> {
                         if (e.response() != null) {
-                            // got bad response from telegram
                             e.response().errorCode();
                             e.response().description();
                         } else {
-                            // probably network error
                             e.printStackTrace();
                         }
                     });
-
             Switchboard.logger().info("Telegram bot is ready!");
         }
 
         public void removeListeners() {
             bot.removeGetUpdatesListener();
+            bot.shutdown();
         }
 
         public int onMessageReceived(List<Update> updates) {

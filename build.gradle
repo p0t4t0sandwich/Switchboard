@@ -24,13 +24,19 @@ repositories {
 }
 
 dependencies {
+    // Discord
     implementation('net.dv8tion:JDA:5.0.0-beta.19') {
         exclude(module: 'opus-java')
     }
     implementation('org.slf4j:slf4j-api:1.7.32')
     implementation('org.slf4j:slf4j-simple:1.7.32')
 
+    // Telegram
     implementation('com.github.pengrad:java-telegram-bot-api:7.1.0')
+
+    // API/WebSocket server
+    implementation('io.javalin:javalin:6.1.2')
+    implementation('com.neovisionaries:nv-websocket-client:2.14')
 
     compileOnly("dev.neuralnexus:taterlib-api:${taterlib_version}")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.4")
@@ -105,6 +111,8 @@ shadowJar {
     }
 
     relocate('com.pengrad.telegrambot', "${group_id}.${project_id}.lib.telegrambot")
+
+    relocate('io.javalin', "${group_id}.${project_id}.lib.javalin")
 
     // TaterLib bundled dependencies
     relocate('org.spongepowered.configurate', 'dev.neuralnexus.taterlib.lib.configurate')

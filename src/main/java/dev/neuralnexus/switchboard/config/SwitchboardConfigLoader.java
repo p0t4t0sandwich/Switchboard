@@ -9,8 +9,8 @@ package dev.neuralnexus.switchboard.config;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
-import dev.neuralnexus.switchboard.config.sections.socket.SocketConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
+import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
 import dev.neuralnexus.taterlib.TaterLib;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
@@ -51,7 +51,8 @@ public class SwitchboardConfigLoader {
             new TypeToken<TelegramConfig>() {};
     private static final TypeToken<FormattingConfig> formattingType =
             new TypeToken<FormattingConfig>() {};
-    private static final TypeToken<SocketConfig> socketType = new TypeToken<SocketConfig>() {};
+    private static final TypeToken<WebSocketConfig> webSocketType =
+            new TypeToken<WebSocketConfig>() {};
     private static SwitchboardConfig config;
 
     /** Copy the default configuration to the config folder. */
@@ -151,9 +152,9 @@ public class SwitchboardConfigLoader {
             }
         }
 
-        SocketConfig socket = null;
+        WebSocketConfig webSocket = null;
         try {
-            socket = root.node("socket").get(socketType);
+            webSocket = root.node("websocket").get(webSocketType);
         } catch (SerializationException e) {
             Switchboard.logger()
                     .error(
@@ -168,7 +169,7 @@ public class SwitchboardConfigLoader {
             case 1:
                 config =
                         new SwitchboardConfig_V1(
-                                version, modules, discord, telegram, formatting, socket);
+                                version, modules, discord, telegram, formatting, webSocket);
                 break;
             default:
                 Switchboard.logger().error("Unknown configuration version: " + version);
@@ -250,7 +251,7 @@ public class SwitchboardConfigLoader {
         }
 
         try {
-            root.node("socket").set(socketType, config.socket());
+            root.node("websocket").set(webSocketType, config.webSocket());
         } catch (SerializationException e) {
             TaterLib.logger()
                     .error("An error occurred while saving this configuration: " + e.getMessage());

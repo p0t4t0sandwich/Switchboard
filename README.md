@@ -4,10 +4,10 @@
 [![Github](https://img.shields.io/github/stars/p0t4t0sandwich/Switchboard)](https://github.com/p0t4t0sandwich/Switchboard)
 [![Github Issues](https://img.shields.io/github/issues/p0t4t0sandwich/Switchboard?label=Issues)](https://github.com/p0t4t0sandwich/Switchboard/issues)
 [![Discord](https://img.shields.io/discord/1067482396246683708?color=7289da&logo=discord&logoColor=white)](https://discord.neuralnexus.dev)
-[![wakatime](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b.svg)](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/c722f2dd-f37e-4e20-9b32-e00d4d8ec34b)
+[![wakatime](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/018df45f-c194-4f37-bc12-1a1be8459c93.svg)](https://wakatime.com/badge/user/fc67ce74-ca69-40a4-912f-61b26dbe3068/project/018df45f-c194-4f37-bc12-1a1be8459c93)
 
 A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels
-and TCP sockets.
+and WebSockets.
 
 Link to our support: [Discord](https://discord.neuralnexus.dev)
 
@@ -98,3 +98,4 @@ dependencies {
 - Fixed bug where the plugin didn't unregister the Discord bot events when reloading the plugin
 - Complete rewrite using nifty additions to TaterLib
 - Added Telegram support
+- Replaced TCP sockets with WebSockets and added proper AES encryption

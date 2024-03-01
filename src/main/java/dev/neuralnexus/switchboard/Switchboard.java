@@ -14,8 +14,8 @@ import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.modules.discord.DiscordModule;
 import dev.neuralnexus.switchboard.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
-import dev.neuralnexus.switchboard.modules.socket.SocketModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
+import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
 import dev.neuralnexus.taterlib.api.info.ServerType;
 import dev.neuralnexus.taterlib.bstats.MetricsAdapter;
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
@@ -162,8 +162,8 @@ public class Switchboard {
             if (SwitchboardConfigLoader.config().checkModule("telegram")) {
                 moduleLoader.registerModule(new TelegramModule());
             }
-            if (SwitchboardConfigLoader.config().checkModule("socket")) {
-                moduleLoader.registerModule(new SocketModule());
+            if (SwitchboardConfigLoader.config().checkModule("websocket")) {
+                moduleLoader.registerModule(new WebSocketModule());
             }
         }
 

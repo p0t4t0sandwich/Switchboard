@@ -8,14 +8,14 @@ package dev.neuralnexus.switchboard.api;
 
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.modules.discord.api.DiscordAPI;
-import dev.neuralnexus.switchboard.modules.socket.api.SocketAPI;
 import dev.neuralnexus.switchboard.modules.telegram.api.TelegramAPI;
+import dev.neuralnexus.switchboard.modules.websocket.api.WebSocketAPI;
 
 /** API wrapper class */
 public class SwitchboardAPI {
     private DiscordAPI discordAPI;
     private TelegramAPI telegramAPI;
-    private SocketAPI socketAPI;
+    private WebSocketAPI webSocketAPI;
 
     public SwitchboardAPI() {
         if (SwitchboardConfigLoader.config().checkModule("discord")) {
@@ -24,8 +24,8 @@ public class SwitchboardAPI {
         if (SwitchboardConfigLoader.config().checkModule("telegram")) {
             this.telegramAPI = new TelegramAPI();
         }
-        if (SwitchboardConfigLoader.config().checkModule("socket")) {
-            this.socketAPI = new SocketAPI();
+        if (SwitchboardConfigLoader.config().checkModule("websocket")) {
+            this.webSocketAPI = new WebSocketAPI();
         }
     }
 
@@ -48,11 +48,11 @@ public class SwitchboardAPI {
     }
 
     /**
-     * Get the Socket API.
+     * Get the WebSocket API.
      *
-     * @return The Socket API.
+     * @return The WebSocket API.
      */
-    public SocketAPI socketAPI() {
-        return socketAPI;
+    public WebSocketAPI webSocketAPI() {
+        return webSocketAPI;
     }
 }

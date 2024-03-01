@@ -8,8 +8,8 @@ package dev.neuralnexus.switchboard.config;
 
 import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
-import dev.neuralnexus.switchboard.config.sections.socket.SocketConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
+import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
 import java.util.Set;
@@ -45,11 +45,11 @@ public interface SwitchboardConfig {
     TelegramConfig telegram();
 
     /**
-     * Get the TCP Socket configuration.
+     * Get the WebSocket configuration.
      *
-     * @return The TCP Socket configuration.
+     * @return The WebSocket configuration.
      */
-    SocketConfig socket();
+    WebSocketConfig webSocket();
 
     /**
      * Get the message formatting configuration.
