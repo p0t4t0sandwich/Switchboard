@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
+ * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ */
+
 package dev.neuralnexus.switchboard.modules.discord.api;
 
 import dev.neuralnexus.switchboard.Switchboard;
@@ -17,7 +23,7 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import java.util.*;
+import java.util.Optional;
 
 /** API for the Discord module. */
 public class DiscordAPI {
