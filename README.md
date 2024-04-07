@@ -19,7 +19,7 @@ Link to our support: [Discord](https://discord.neuralnexus.dev)
 
 [![Spigot](https://img.shields.io/spiget/downloads/110592?label=Spigot&logo=spigotmc&color=ED8106)](https://www.spigotmc.org/resources/tatercomms.110592/)
 [![Hangar](https://img.shields.io/badge/Hangar-download-blue)](https://hangar.papermc.io/p0t4t0sandwich/TaterComms)
-[![Modrinth](https://img.shields.io/modrinth/dt/tatercomms?label=Modrinth&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/tatercomms)
+[![Modrinth](https://img.shields.io/modrinth/dt/tatercomms?label=Modrinth&logo=modrinth&color=00AF5C)](https://modrinth.com/plugin/switchboard)
 [![CurseForge](https://img.shields.io/curseforge/dt/877133?label=CurseForge&logo=curseforge&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/tatercomms)
 [![Sponge](https://img.shields.io/ore/dt/tatercomms?label=Sponge&logo=https%3A%2F%2Fspongepowered.org%2Ffavicon.ico&color=F7CF0D)](https://ore.spongepowered.org/p0t4t0sandwich/TaterComms)
 
