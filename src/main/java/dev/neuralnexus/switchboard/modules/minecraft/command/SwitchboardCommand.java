@@ -55,10 +55,10 @@ public class SwitchboardCommand implements Command {
                     return true;
                 }
                 try {
-                    Switchboard.reload();
+                    Switchboard.instance().reload();
                     sender.sendMessage(
                             Utils.substituteSectionSign(
-                                    "&aReloaded " + Switchboard.Constants.PROJECT_NAME + "!"));
+                                    "&aReloaded " + Switchboard.PROJECT_NAME + "!"));
                 } catch (Exception e) {
                     sender.sendMessage(
                             Utils.substituteSectionSign(
@@ -75,7 +75,7 @@ public class SwitchboardCommand implements Command {
                 }
                 sender.sendMessage(
                         Utils.substituteSectionSign(
-                                "&aSwitchboard version: " + Switchboard.Constants.PROJECT_VERSION));
+                                "&aSwitchboard version: " + Switchboard.PROJECT_VERSION));
                 break;
             default:
                 sender.sendMessage(Utils.substituteSectionSign(usage()));

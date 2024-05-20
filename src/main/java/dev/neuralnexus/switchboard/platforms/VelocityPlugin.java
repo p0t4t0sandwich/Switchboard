@@ -13,27 +13,27 @@ import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 import org.slf4j.Logger;
 
 /** Velocity entry point. */
 @Plugin(
-        id = Switchboard.Constants.PROJECT_ID,
-        name = Switchboard.Constants.PROJECT_NAME,
-        version = Switchboard.Constants.PROJECT_VERSION,
-        authors = Switchboard.Constants.PROJECT_AUTHORS,
-        description = Switchboard.Constants.PROJECT_DESCRIPTION,
-        url = Switchboard.Constants.PROJECT_URL,
+        id = Switchboard.PROJECT_ID,
+        name = Switchboard.PROJECT_NAME,
+        version = Switchboard.PROJECT_VERSION,
+        authors = Switchboard.PROJECT_AUTHORS,
+        description = Switchboard.PROJECT_DESCRIPTION,
+        url = Switchboard.PROJECT_URL,
         dependencies = {@Dependency(id = "taterlib")})
-public class VelocityPlugin implements SwitchboardPlugin {
+public class VelocityPlugin {
     @Inject
     public VelocityPlugin(PluginContainer plugin, ProxyServer server, Logger logger) {
-        pluginStart(
-                plugin,
-                server,
-                logger,
-                new LoggerAdapter(Switchboard.Constants.PROJECT_NAME, logger));
+        Switchboard.instance()
+                .pluginStart(
+                        plugin,
+                        server,
+                        logger,
+                        new LoggerAdapter(Switchboard.PROJECT_NAME, logger));
     }
 }

@@ -38,12 +38,11 @@ public class SwitchboardConfigLoader {
             Paths.get(
                     TaterAPIProvider.serverType().dataFolders().configFolder()
                             + File.separator
-                            + Switchboard.Constants.PROJECT_NAME
+                            + Switchboard.PROJECT_NAME
                             + File.separator
-                            + Switchboard.Constants.PROJECT_ID
+                            + Switchboard.PROJECT_ID
                             + ".conf");
-    private static final String defaultConfigPath =
-            "source." + Switchboard.Constants.PROJECT_ID + ".conf";
+    private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
     private static final TypeToken<Set<ModuleConfig>> moduleType =
             new TypeToken<Set<ModuleConfig>>() {};
     private static final TypeToken<DiscordConfig> discordType = new TypeToken<DiscordConfig>() {};

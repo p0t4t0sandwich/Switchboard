@@ -32,7 +32,7 @@ public class SwitchboardAPIProvider {
     public static void register(SwitchboardAPI instance) {
         if (SwitchboardAPIProvider.instance != null) {
             throw new IllegalStateException(
-                    Switchboard.Constants.PROJECT_NAME + "API has already been registered!");
+                    Switchboard.PROJECT_NAME + "API has already been registered!");
         }
         SwitchboardAPIProvider.instance = instance;
     }
@@ -48,7 +48,7 @@ public class SwitchboardAPIProvider {
     private static final class NotLoadedException extends IllegalStateException {
         private static final String MESSAGE =
                 "The API hasn't loaded yet, or you don't have the "
-                        + Switchboard.Constants.PROJECT_NAME
+                        + Switchboard.PROJECT_NAME
                         + " plugin installed.";
 
         NotLoadedException() {

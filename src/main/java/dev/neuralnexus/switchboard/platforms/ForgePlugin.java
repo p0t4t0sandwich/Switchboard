@@ -7,20 +7,20 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 import net.minecraftforge.fml.common.Mod;
 
 /** Forge entry point. */
 @Mod(
-        value = Switchboard.Constants.PROJECT_ID,
-        modid = Switchboard.Constants.PROJECT_ID,
+        value = Switchboard.PROJECT_ID,
+        modid = Switchboard.PROJECT_ID,
         useMetadata = true,
         serverSideOnly = true,
         acceptableRemoteVersions = "*")
-public class ForgePlugin implements SwitchboardPlugin {
+public class ForgePlugin {
     public ForgePlugin() {
-        pluginStart(this, null, null, new LoggerAdapter(Switchboard.Constants.PROJECT_NAME));
+        Switchboard.instance()
+                .pluginStart(this, null, null, new LoggerAdapter(Switchboard.PROJECT_NAME));
     }
 }

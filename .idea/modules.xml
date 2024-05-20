@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PluginModDev.Switchboard.switchboard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/PluginModDev.Switchboard.switchboard.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Switchboard.switchboard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Switchboard.switchboard.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/bukkit/TaterComms.platforms.bukkit.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/bukkit/TaterComms.platforms.bukkit.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/platforms/bungee/TaterComms.platforms.bungee.main.iml" filepath="$PROJECT_DIR$/.idea/modules/platforms/bungee/TaterComms.platforms.bungee.main.iml" />
