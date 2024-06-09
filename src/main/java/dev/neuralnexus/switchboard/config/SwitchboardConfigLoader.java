@@ -15,8 +15,8 @@ import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
 import dev.neuralnexus.taterlib.TaterLib;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
-
 import dev.neuralnexus.taterlib.logger.AbstractLogger;
+
 import io.leangen.geantyref.TypeToken;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
