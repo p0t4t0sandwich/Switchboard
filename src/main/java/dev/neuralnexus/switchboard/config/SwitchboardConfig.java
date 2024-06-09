@@ -12,7 +12,7 @@ import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
-import java.util.Set;
+import java.util.List;
 
 /** A class for Switchboard configuration. */
 public interface SwitchboardConfig {
@@ -28,7 +28,7 @@ public interface SwitchboardConfig {
      *
      * @return The modules in the configuration.
      */
-    Set<ModuleConfig> modules();
+    List<ModuleConfig> modules();
 
     /**
      * Get the Discord configuration.

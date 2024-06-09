@@ -16,6 +16,7 @@ import dev.neuralnexus.taterlib.TaterLib;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
+import dev.neuralnexus.taterlib.logger.AbstractLogger;
 import io.leangen.geantyref.TypeToken;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -29,8 +30,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
@@ -43,8 +44,9 @@ public class SwitchboardConfigLoader {
                             + Switchboard.PROJECT_ID
                             + ".conf");
     private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
-    private static final TypeToken<Set<ModuleConfig>> moduleType =
-            new TypeToken<Set<ModuleConfig>>() {};
+    private static final TypeToken<Integer> versionType = new TypeToken<Integer>() {};
+    private static final TypeToken<List<ModuleConfig>> moduleType =
+            new TypeToken<List<ModuleConfig>>() {};
     private static final TypeToken<DiscordConfig> discordType = new TypeToken<DiscordConfig>() {};
     private static final TypeToken<TelegramConfig> telegramType =
             new TypeToken<TelegramConfig>() {};
@@ -54,8 +56,59 @@ public class SwitchboardConfigLoader {
             new TypeToken<WebSocketConfig>() {};
     private static SwitchboardConfig config;
 
-    /** Copy the default configuration to the config folder. */
-    public static void copyDefaults() {
+    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
+    public static CommentedConfigurationNode getRoot(HoconConfigurationLoader loader) {
+        try {
+            return loader.load();
+        } catch (ConfigurateException e) {
+            TaterLib.logger()
+                    .error("An error occurred while loading this configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                e.getCause().printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
+    public static <T> T get(
+            CommentedConfigurationNode root,
+            TypeToken<T> typeToken,
+            String path,
+            AbstractLogger logger) {
+        try {
+            return root.node(path).get(typeToken);
+        } catch (SerializationException e) {
+            logger.error(
+                    "An error occurred while loading the modules configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                e.getCause().printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
+    public static <T> void set(
+            CommentedConfigurationNode root,
+            TypeToken<T> typeToken,
+            String path,
+            T value,
+            AbstractLogger logger) {
+        try {
+            root.node(path).set(typeToken, value);
+        } catch (SerializationException e) {
+            logger.error(
+                    "An error occurred while saving the modules configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                e.getCause().printStackTrace();
+            }
+        }
+    }
+
+    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
+    public static <T> void copyDefaults(
+            Class<T> clazz, Path configPath, String defaultConfigPath, AbstractLogger logger) {
         if (configPath.toFile().exists()) {
             return;
         }
@@ -63,15 +116,11 @@ public class SwitchboardConfigLoader {
             Files.createDirectories(configPath.getParent());
             Files.copy(
                     Objects.requireNonNull(
-                            SwitchboardConfigLoader.class
-                                    .getClassLoader()
-                                    .getResourceAsStream(defaultConfigPath)),
+                            clazz.getClassLoader().getResourceAsStream(defaultConfigPath)),
                     configPath);
         } catch (IOException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while copying the default configuration: "
-                                    + e.getMessage());
+            logger.error(
+                    "An error occurred while copying the default configuration: " + e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
@@ -80,89 +129,23 @@ public class SwitchboardConfigLoader {
 
     /** Load the configuration from the file. */
     public static void load() {
-        copyDefaults();
+        copyDefaults(Switchboard.class, configPath, defaultConfigPath, Switchboard.logger());
 
         final HoconConfigurationLoader loader =
                 HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root;
-        try {
-            root = loader.load();
-        } catch (ConfigurateException e) {
-            Switchboard.logger()
-                    .error("An error occurred while loading this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
+        CommentedConfigurationNode root = getRoot(loader);
+        if (root == null) {
             return;
         }
 
         ConfigurationNode versionNode = root.node("version");
         int version = versionNode.getInt(1);
 
-        Set<ModuleConfig> modules = null;
-        try {
-            modules = root.node("modules").get(moduleType);
-        } catch (SerializationException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while loading the modules configuration: "
-                                    + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        DiscordConfig discord = null;
-        try {
-            discord = root.node("discord").get(discordType);
-        } catch (SerializationException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while loading the discord configuration: "
-                                    + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        TelegramConfig telegram = null;
-        try {
-            telegram = root.node("telegram").get(telegramType);
-        } catch (SerializationException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while loading the telegram configuration: "
-                                    + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        FormattingConfig formatting = null;
-        try {
-            formatting = root.node("formatting").get(formattingType);
-        } catch (SerializationException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while loading the formatting configuration: "
-                                    + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        WebSocketConfig webSocket = null;
-        try {
-            webSocket = root.node("websocket").get(webSocketType);
-        } catch (SerializationException e) {
-            Switchboard.logger()
-                    .error(
-                            "An error occurred while loading the socket configuration: "
-                                    + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
+        List<ModuleConfig> modules = get(root, moduleType, "modules", Switchboard.logger());
+        DiscordConfig discord = get(root, discordType, "discord", Switchboard.logger());
+        TelegramConfig telegram = get(root, telegramType, "telegram", Switchboard.logger());
+        FormattingConfig formatting = get(root, formattingType, "formatting", Switchboard.logger());
+        WebSocketConfig webSocket = get(root, webSocketType, "websocket", Switchboard.logger());
 
         switch (version) {
             case 1:
@@ -187,77 +170,17 @@ public class SwitchboardConfigLoader {
         }
         final HoconConfigurationLoader loader =
                 HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root;
-        try {
-            root = loader.load();
-        } catch (ConfigurateException e) {
-            TaterLib.logger()
-                    .error("An error occurred while loading this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
+        CommentedConfigurationNode root = getRoot(loader);
+        if (root == null) {
             return;
         }
 
-        try {
-            root.node("version").set(config.version());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        try {
-            root.node("modules").set(moduleType, config.modules());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        try {
-            root.node("discord").set(discordType, config.discord());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        try {
-            root.node("telegram").set(telegramType, config.telegram());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        try {
-            root.node("formatting").set(formattingType, config.formatting());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-
-        try {
-            root.node("websocket").set(webSocketType, config.webSocket());
-        } catch (SerializationException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
+        set(root, versionType, "version", config.version(), Switchboard.logger());
+        set(root, moduleType, "modules", config.modules(), Switchboard.logger());
+        set(root, discordType, "discord", config.discord(), Switchboard.logger());
+        set(root, telegramType, "telegram", config.telegram(), Switchboard.logger());
+        set(root, formattingType, "formatting", config.formatting(), Switchboard.logger());
+        set(root, webSocketType, "websocket", config.webSocket(), Switchboard.logger());
 
         try {
             loader.save(root);

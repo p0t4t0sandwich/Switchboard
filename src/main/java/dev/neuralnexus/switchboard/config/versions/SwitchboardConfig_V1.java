@@ -13,12 +13,12 @@ import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
-import java.util.Set;
+import java.util.List;
 
 /** A class for Switchboard configuration. */
 public class SwitchboardConfig_V1 implements SwitchboardConfig {
     private final int version;
-    private final Set<ModuleConfig> modules;
+    private final List<ModuleConfig> modules;
     private final DiscordConfig discord;
     private final TelegramConfig telegram;
     private final WebSocketConfig webSocket;
@@ -26,7 +26,7 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
 
     public SwitchboardConfig_V1(
             int version,
-            Set<ModuleConfig> modules,
+            List<ModuleConfig> modules,
             DiscordConfig discord,
             TelegramConfig telegram,
             FormattingConfig formatting,
@@ -45,7 +45,7 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
     }
 
     @Override
-    public Set<ModuleConfig> modules() {
+    public List<ModuleConfig> modules() {
         return modules;
     }
 
