@@ -9,7 +9,6 @@ package dev.neuralnexus.switchboard.platforms;
 import cpw.mods.fml.common.Mod;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 /** Legacy Forge entry point. */
 @Mod(
@@ -20,7 +19,6 @@ import dev.neuralnexus.taterlib.logger.LoggerAdapter;
         bukkitPlugin = Switchboard.PROJECT_NAME)
 public class LegacyForgePlugin {
     public LegacyForgePlugin() {
-        Switchboard.instance()
-                .pluginStart(this, null, null, new LoggerAdapter(Switchboard.PROJECT_ID));
+        Switchboard.instance().onEnable();
     }
 }

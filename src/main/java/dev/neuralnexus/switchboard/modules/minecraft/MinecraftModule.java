@@ -24,14 +24,14 @@ public class MinecraftModule implements PluginModule {
     private static boolean STARTED = false;
 
     @Override
-    public String name() {
+    public String id() {
         return "Minecraft";
     }
 
     @Override
-    public void start() {
+    public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already started!");
+            Switchboard.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
@@ -39,12 +39,10 @@ public class MinecraftModule implements PluginModule {
         if (!Switchboard.hasReloaded()) {
             // Register commands
             CommandEvents.REGISTER_COMMAND.register(
-                    event ->
-                            event.registerCommand(
-                                    Switchboard.plugin(), new SwitchboardCommand(), "tc"));
+                    event -> event.registerCommand(new SwitchboardCommand(), "tc"));
 
             // Register player listeners
-            if (!TaterAPIProvider.serverType().isProxy()) {
+            if (!TaterAPIProvider.platform().isProxy()) {
                 PlayerEvents.ADVANCEMENT_FINISHED.register(
                         SwitchboardPlayerListener::onPlayerAdvancementFinished);
                 PlayerEvents.DEATH.register(SwitchboardPlayerListener::onPlayerDeath);
@@ -77,7 +75,7 @@ public class MinecraftModule implements PluginModule {
                                 && message.sender()
                                         .server()
                                         .name()
-                                        .equals(TaterAPIProvider.get().getServer().name())) {
+                                        .equals(TaterAPIProvider.api().get().server().name())) {
                             return;
                         }
 
@@ -89,33 +87,40 @@ public class MinecraftModule implements PluginModule {
                         // If the message formatting is enabled, send the message to all online
                         // players on the message's originating server
                         if (SwitchboardConfigLoader.config().checkModule("formatting")) {
-                            TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                                    .filter(
-                                            player ->
-                                                    player.server()
-                                                            .name()
-                                                            .equals(
-                                                                    message.sender()
-                                                                            .server()
-                                                                            .name()))
-                                    .forEach(
-                                            player ->
-                                                    player.sendMessage(
-                                                            message.applyPlaceHolders()));
+                            TaterAPIProvider.api()
+                                    .ifPresent(
+                                            api ->
+                                                    api.server().onlinePlayers().stream()
+                                                            .filter(
+                                                                    player ->
+                                                                            player.server()
+                                                                                    .name()
+                                                                                    .equals(
+                                                                                            message.sender()
+                                                                                                    .server()
+                                                                                                    .name()))
+                                                            .forEach(
+                                                                    player ->
+                                                                            player.sendMessage(
+                                                                                    message
+                                                                                            .applyPlaceHolders())));
                         } else {
                             // Send the message to the player
-                            TaterAPIProvider.get()
-                                    .getServer()
-                                    .broadcastMessage(message.applyPlaceHolders());
+                            TaterAPIProvider.api()
+                                    .ifPresent(
+                                            api ->
+                                                    api.server()
+                                                            .broadcastMessage(
+                                                                    message.applyPlaceHolders()));
                         }
                     });
         }
     }
 
     @Override
-    public void stop() {
+    public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already stopped!");
+            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

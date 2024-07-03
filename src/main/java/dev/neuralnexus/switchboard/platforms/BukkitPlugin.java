@@ -7,20 +7,13 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /** Bukkit entry point. */
 public class BukkitPlugin extends JavaPlugin {
     public BukkitPlugin() {
-        Switchboard.instance()
-                .pluginStart(
-                        this,
-                        Bukkit.getServer(),
-                        Bukkit.getLogger(),
-                        new LoggerAdapter(Switchboard.PROJECT_NAME, Bukkit.getLogger()));
+        Switchboard.instance().onEnable();
     }
 
     @Override

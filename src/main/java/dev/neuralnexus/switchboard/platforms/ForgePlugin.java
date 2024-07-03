@@ -7,7 +7,6 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 import net.minecraftforge.fml.common.Mod;
 
@@ -20,7 +19,6 @@ import net.minecraftforge.fml.common.Mod;
         acceptableRemoteVersions = "*")
 public class ForgePlugin {
     public ForgePlugin() {
-        Switchboard.instance()
-                .pluginStart(this, null, null, new LoggerAdapter(Switchboard.PROJECT_NAME));
+        Switchboard.instance().onEnable();
     }
 }

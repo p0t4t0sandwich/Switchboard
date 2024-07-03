@@ -93,7 +93,7 @@ dependencies {
 
 ## Release Notes
 
-### v1.0.4-R0.2-SNAPSHOT
+### v1.0.4-SNAPSHOT
 
 - Fixed bug where the plugin didn't unregister the Discord bot events when reloading the plugin
 - Complete rewrite using nifty additions to TaterLib

@@ -142,9 +142,12 @@ public class MessageSender implements SimplePlayer {
 
     @Override
     public void sendMessage(String message) {
-        TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                .filter(p -> p.uuid().equals(this.uuid))
-                .findFirst()
+        TaterAPIProvider.api()
+                .flatMap(
+                        api ->
+                                api.server().onlinePlayers().stream()
+                                        .filter(p -> p.uuid().equals(this.uuid))
+                                        .findFirst())
                 .ifPresent(p -> p.sendMessage(message));
     }
 
@@ -163,9 +166,12 @@ public class MessageSender implements SimplePlayer {
 
     @Override
     public void sendPluginMessage(String channel, byte[] bytes) {
-        TaterAPIProvider.get().getServer().onlinePlayers().stream()
-                .filter(p -> p.uuid().equals(this.uuid))
-                .findFirst()
+        TaterAPIProvider.api()
+                .flatMap(
+                        api ->
+                                api.server().onlinePlayers().stream()
+                                        .filter(p -> p.uuid().equals(this.uuid))
+                                        .findFirst())
                 .ifPresent(p -> p.sendPluginMessage(channel, bytes));
     }
 

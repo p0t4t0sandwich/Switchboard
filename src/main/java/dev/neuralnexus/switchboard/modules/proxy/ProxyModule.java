@@ -25,21 +25,21 @@ public class ProxyModule implements PluginModule {
     private static boolean STARTED = false;
 
     @Override
-    public String name() {
+    public String id() {
         return "Proxy";
     }
 
     @Override
-    public void start() {
+    public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already started!");
+            Switchboard.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
 
         if (!Switchboard.hasReloaded()) {
             // Register player listeners
-            if (TaterAPIProvider.serverType().isProxy()) {
+            if (TaterAPIProvider.platform().isProxy()) {
                 PlayerEvents.SERVER_SWITCH.register(
                         event -> {
                             SimplePlayer player = event.player();
@@ -83,7 +83,7 @@ public class ProxyModule implements PluginModule {
                         Message.MessageType channel = message.channel();
 
                         // Send the message using proxy channels
-                        if (!TaterAPIProvider.serverType().isProxy()
+                        if (!TaterAPIProvider.platform().isProxy()
                                 && !channel.equals(Message.MessageType.PLAYER_MESSAGE)
                                 && !channel.equals(Message.MessageType.SERVER_STARTED)
                                 && !channel.equals(Message.MessageType.SERVER_STOPPED)) {
@@ -92,19 +92,19 @@ public class ProxyModule implements PluginModule {
                     });
         }
 
-        Switchboard.logger().info("Submodule " + name() + " has been started!");
+        Switchboard.logger().info("Submodule " + id() + " has been started!");
     }
 
     @Override
-    public void stop() {
+    public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already stopped!");
+            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;
 
         // Remove references to objects
 
-        Switchboard.logger().info("Submodule " + name() + " has been stopped!");
+        Switchboard.logger().info("Submodule " + id() + " has been stopped!");
     }
 }

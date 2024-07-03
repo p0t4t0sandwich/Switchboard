@@ -7,15 +7,13 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 import net.fabricmc.api.ModInitializer;
 
 /** Fabric entry point. */
 public class FabricPlugin implements ModInitializer {
     public FabricPlugin() {
-        Switchboard.instance()
-                .pluginStart(this, null, null, new LoggerAdapter(Switchboard.PROJECT_NAME));
+        Switchboard.instance().onEnable();
     }
 
     @Override

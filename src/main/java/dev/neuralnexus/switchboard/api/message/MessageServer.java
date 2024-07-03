@@ -22,8 +22,8 @@ public class MessageServer implements SimpleServer {
     public MessageServer(SimpleServer server) {
         this.name = server.name();
         String brand;
-        if (TaterAPIProvider.serverType().isVelocityBased()
-                || TaterAPIProvider.serverType().isBungeeCordBased()) {
+        if (TaterAPIProvider.platform().isVelocityBased()
+                || TaterAPIProvider.platform().isBungeeCordBased()) {
             brand = "Unknown";
         } else {
             brand = server.brand();

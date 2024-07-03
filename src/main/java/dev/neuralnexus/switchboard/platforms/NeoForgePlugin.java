@@ -6,23 +6,14 @@
 
 package dev.neuralnexus.switchboard.platforms;
 
-import com.mojang.logging.LogUtils;
-
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 /** NeoForge entry point. */
 @Mod(Switchboard.PROJECT_ID)
 public class NeoForgePlugin {
     public NeoForgePlugin() {
-        Switchboard.instance()
-                .pluginStart(
-                        this,
-                        ServerLifecycleHooks.getCurrentServer(),
-                        LogUtils.getLogger(),
-                        new LoggerAdapter(Switchboard.PROJECT_NAME, LogUtils.getLogger()));
+        Switchboard.instance().onEnable();
     }
 }

@@ -19,14 +19,14 @@ public class WebSocketModule implements PluginModule {
     private static boolean STARTED = false;
 
     @Override
-    public String name() {
+    public String id() {
         return "WebSocket";
     }
 
     @Override
-    public void start() {
+    public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already started!");
+            Switchboard.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
@@ -58,13 +58,13 @@ public class WebSocketModule implements PluginModule {
                         config.port(),
                         config.secret(),
                         config.mode(),
-                        TaterAPIProvider.get().getServer().name());
+                        TaterAPIProvider.api().get().server().name());
     }
 
     @Override
-    public void stop() {
+    public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + name() + " has already stopped!");
+            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

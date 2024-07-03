@@ -6,8 +6,6 @@
 
 package dev.neuralnexus.switchboard;
 
-import com.google.common.collect.ImmutableMap;
-
 import dev.neuralnexus.switchboard.api.SwitchboardAPI;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
@@ -16,19 +14,23 @@ import dev.neuralnexus.switchboard.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
+import dev.neuralnexus.taterlib.api.Platform;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.api.info.ServerType;
-import dev.neuralnexus.taterlib.bstats.MetricsAdapter;
+import dev.neuralnexus.taterlib.api.impl.metadata.PlatformDataImpl;
 import dev.neuralnexus.taterlib.event.api.PluginEvents;
-import dev.neuralnexus.taterlib.logger.AbstractLogger;
+import dev.neuralnexus.taterlib.loader.Loader;
+import dev.neuralnexus.taterlib.logger.Logger;
+import dev.neuralnexus.taterlib.metrics.bstats.MetricsAdapter;
 import dev.neuralnexus.taterlib.plugin.ModuleLoader;
 import dev.neuralnexus.taterlib.plugin.Plugin;
+
+import java.util.HashMap;
 
 /** Main class for the plugin. */
 public class Switchboard implements Plugin {
     public static final String PROJECT_NAME = "Switchboard";
     public static final String PROJECT_ID = "switchboard";
-    public static final String PROJECT_VERSION = "1.0.4-R0.2-SNAPSHOT";
+    public static final String PROJECT_VERSION = "1.0.4-SNAPSHOT";
     public static final String PROJECT_AUTHORS = "p0t4t0sandwich";
     public static final String PROJECT_DESCRIPTION =
             "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.";
@@ -37,11 +39,11 @@ public class Switchboard implements Plugin {
     private static final Switchboard instance = new Switchboard();
     private static boolean STARTED = false;
     private static boolean RELOADED = false;
-    private static ModuleLoader moduleLoader;
-    private Object plugin;
-    private Object pluginServer;
-    private Object pluginLogger;
-    private AbstractLogger logger;
+    private static final Logger logger = new PlatformDataImpl().logger(PROJECT_ID);
+
+    public static Logger logger() {
+        return logger;
+    }
 
     @Override
     public String name() {
@@ -54,37 +56,26 @@ public class Switchboard implements Plugin {
     }
 
     @Override
-    public void pluginStart(
-            Object plugin, Object pluginServer, Object pluginLogger, AbstractLogger logger) {
+    public void onEnable() {
         logger.info(
                 Switchboard.PROJECT_NAME
                         + " is running on "
-                        + TaterAPIProvider.serverType()
+                        + TaterAPIProvider.platform()
                         + " "
                         + TaterAPIProvider.minecraftVersion()
                         + "!");
-        PluginEvents.DISABLED.register(event -> pluginStop());
+        PluginEvents.DISABLED.register(event -> onDisable());
 
-        if (pluginServer != null) {
-            setPluginServer(pluginServer);
-        }
-        if (pluginLogger != null) {
-            setPluginLogger(pluginLogger);
-        }
-        setPlugin(plugin);
-        setLogger(logger);
+        Loader loader = Loader.instance();
 
         // Set up bStats
+        HashMap<Platform, Integer> statsMap = new HashMap<>();
+        statsMap.put(Platform.BUKKIT, 21170);
+        statsMap.put(Platform.BUNGEECORD, 21171);
+        statsMap.put(Platform.SPONGE, 21172);
+        statsMap.put(Platform.VELOCITY, 21173);
         MetricsAdapter.setupMetrics(
-                plugin,
-                pluginServer,
-                pluginLogger,
-                ImmutableMap.<ServerType, Integer>builder()
-                        .put(ServerType.BUKKIT, 21170)
-                        .put(ServerType.BUNGEECORD, 21171)
-                        .put(ServerType.SPONGE, 21172)
-                        .put(ServerType.VELOCITY, 21172)
-                        .build());
+                loader.plugin(), loader.server(), logger().getLogger(), statsMap);
 
         if (STARTED) {
             logger.info(PROJECT_NAME + " has already started!");
@@ -100,43 +91,34 @@ public class Switchboard implements Plugin {
 
         if (!RELOADED) {
             // Register modules
-            moduleLoader = new SwitchboardModuleLoader();
             if (SwitchboardConfigLoader.config().checkModule("minecraft")) {
-                moduleLoader.registerModule(new MinecraftModule());
+                loader.registerPluginModule(this, new MinecraftModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("discord")) {
-                moduleLoader.registerModule(new DiscordModule());
+                loader.registerPluginModule(this, new DiscordModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("proxy")) {
-                moduleLoader.registerModule(new ProxyModule());
+                loader.registerPluginModule(this, new ProxyModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("telegram")) {
-                moduleLoader.registerModule(new TelegramModule());
+                loader.registerPluginModule(this, new TelegramModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("websocket")) {
-                moduleLoader.registerModule(new WebSocketModule());
+                loader.registerPluginModule(this, new WebSocketModule());
             }
         }
-
-        // Start modules
-        logger().info("Starting modules: " + moduleLoader.moduleNames());
-        moduleLoader.startModules();
 
         logger().info(PROJECT_NAME + " has been started!");
     }
 
     @Override
-    public void pluginStop() {
+    public void onDisable() {
         if (!STARTED) {
             logger().info(PROJECT_NAME + " has already stopped!");
             return;
         }
         STARTED = false;
         RELOADED = true;
-
-        // Stop modules
-        logger().info("Stopping modules: " + moduleLoader.moduleNames());
-        moduleLoader.stopModules();
 
         // Remove references to objects
         SwitchboardConfigLoader.unload();
@@ -165,60 +147,6 @@ public class Switchboard implements Plugin {
         return instance;
     }
 
-    /**
-     * Get the plugin
-     *
-     * @return The plugin
-     */
-    public static Object plugin() {
-        return instance.plugin;
-    }
-
-    /**
-     * Set the plugin
-     *
-     * @param plugin The plugin
-     */
-    private static void setPlugin(Object plugin) {
-        instance.plugin = plugin;
-    }
-
-    /**
-     * Set the plugin server
-     *
-     * @param pluginServer The plugin server
-     */
-    private static void setPluginServer(Object pluginServer) {
-        instance.pluginServer = pluginServer;
-    }
-
-    /**
-     * Set the plugin logger
-     *
-     * @param pluginLogger The plugin logger
-     */
-    private static void setPluginLogger(Object pluginLogger) {
-        instance.pluginLogger = pluginLogger;
-    }
-
-    /**
-     * Get the logger
-     *
-     * @return The logger
-     */
-    public static AbstractLogger logger() {
-        return instance.logger;
-    }
-
-    /**
-     * Set the logger
-     *
-     * @param logger The logger
-     */
-    private static void setLogger(AbstractLogger logger) {
-        instance.logger = logger;
-    }
-
     /** Reload */
     public void reload() {
         if (!STARTED) {
@@ -228,10 +156,12 @@ public class Switchboard implements Plugin {
         RELOADED = true;
 
         // Stop
-        pluginStop();
+        onDisable();
+        Loader.instance().pluginModuleLoader(PROJECT_ID).ifPresent(ModuleLoader::onDisable);
 
         // Start
-        pluginStart(instance.plugin, instance.pluginServer, instance.pluginLogger, instance.logger);
+        onEnable();
+        Loader.instance().pluginModuleLoader(PROJECT_ID).ifPresent(ModuleLoader::onEnable);
 
         logger().info(PROJECT_NAME + " has been reloaded!");
     }

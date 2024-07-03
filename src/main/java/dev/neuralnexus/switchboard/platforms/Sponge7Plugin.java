@@ -9,11 +9,8 @@ package dev.neuralnexus.switchboard.platforms;
 import com.google.inject.Inject;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.logger.LoggerAdapter;
 
-import org.slf4j.Logger;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 
 /** Sponge entry point. */
 @Plugin(
@@ -23,12 +20,7 @@ import org.spongepowered.api.plugin.PluginContainer;
         description = Switchboard.PROJECT_DESCRIPTION)
 public class Sponge7Plugin {
     @Inject
-    public Sponge7Plugin(PluginContainer container, Logger logger) {
-        Switchboard.instance()
-                .pluginStart(
-                        container,
-                        null,
-                        logger,
-                        new LoggerAdapter(Switchboard.PROJECT_NAME, logger));
+    public Sponge7Plugin() {
+        Switchboard.instance().onEnable();
     }
 }

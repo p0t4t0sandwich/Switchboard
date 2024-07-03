@@ -14,8 +14,10 @@ import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
 import dev.neuralnexus.taterlib.TaterLib;
 import dev.neuralnexus.taterlib.api.TaterAPIProvider;
+import dev.neuralnexus.taterlib.config.ConfigUtil;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
-import dev.neuralnexus.taterlib.logger.AbstractLogger;
+import dev.neuralnexus.taterlib.loader.Loader;
+import dev.neuralnexus.taterlib.logger.Logger;
 
 import io.leangen.geantyref.TypeToken;
 
@@ -23,23 +25,21 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
+    private static final Logger logger =
+            Loader.instance().logger(Switchboard.PROJECT_ID + "-configloader");
     private static final Path configPath =
             Paths.get(
-                    TaterAPIProvider.serverType().dataFolders().configFolder()
+                    TaterAPIProvider.platformData().configFolder()
                             + File.separator
-                            + Switchboard.PROJECT_NAME
+                            + Switchboard.PROJECT_ID
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + ".conf");
@@ -56,84 +56,13 @@ public class SwitchboardConfigLoader {
             new TypeToken<WebSocketConfig>() {};
     private static SwitchboardConfig config;
 
-    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
-    public static CommentedConfigurationNode getRoot(HoconConfigurationLoader loader) {
-        try {
-            return loader.load();
-        } catch (ConfigurateException e) {
-            TaterLib.logger()
-                    .error("An error occurred while loading this configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
-    public static <T> T get(
-            CommentedConfigurationNode root,
-            TypeToken<T> typeToken,
-            String path,
-            AbstractLogger logger) {
-        try {
-            return root.node(path).get(typeToken);
-        } catch (SerializationException e) {
-            logger.error(
-                    "An error occurred while loading the modules configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
-    public static <T> void set(
-            CommentedConfigurationNode root,
-            TypeToken<T> typeToken,
-            String path,
-            T value,
-            AbstractLogger logger) {
-        try {
-            root.node(path).set(typeToken, value);
-        } catch (SerializationException e) {
-            logger.error(
-                    "An error occurred while saving the modules configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-    }
-
-    // TODO: REMOVE WHEN TATERLIB VERSION IS BUMPED
-    public static <T> void copyDefaults(
-            Class<T> clazz, Path configPath, String defaultConfigPath, AbstractLogger logger) {
-        if (configPath.toFile().exists()) {
-            return;
-        }
-        try {
-            Files.createDirectories(configPath.getParent());
-            Files.copy(
-                    Objects.requireNonNull(
-                            clazz.getClassLoader().getResourceAsStream(defaultConfigPath)),
-                    configPath);
-        } catch (IOException e) {
-            logger.error(
-                    "An error occurred while copying the default configuration: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-        }
-    }
-
     /** Load the configuration from the file. */
     public static void load() {
-        copyDefaults(Switchboard.class, configPath, defaultConfigPath, Switchboard.logger());
+        ConfigUtil.copyDefaults(Switchboard.class, configPath, defaultConfigPath, logger);
 
         final HoconConfigurationLoader loader =
                 HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root = getRoot(loader);
+        CommentedConfigurationNode root = ConfigUtil.getRoot(loader, logger);
         if (root == null) {
             return;
         }
@@ -141,11 +70,11 @@ public class SwitchboardConfigLoader {
         ConfigurationNode versionNode = root.node("version");
         int version = versionNode.getInt(1);
 
-        List<ModuleConfig> modules = get(root, moduleType, "modules", Switchboard.logger());
-        DiscordConfig discord = get(root, discordType, "discord", Switchboard.logger());
-        TelegramConfig telegram = get(root, telegramType, "telegram", Switchboard.logger());
-        FormattingConfig formatting = get(root, formattingType, "formatting", Switchboard.logger());
-        WebSocketConfig webSocket = get(root, webSocketType, "websocket", Switchboard.logger());
+        List<ModuleConfig> modules = ConfigUtil.get(root, moduleType, "modules", logger);
+        DiscordConfig discord = ConfigUtil.get(root, discordType, "discord", logger);
+        TelegramConfig telegram = ConfigUtil.get(root, telegramType, "telegram", logger);
+        FormattingConfig formatting = ConfigUtil.get(root, formattingType, "formatting", logger);
+        WebSocketConfig webSocket = ConfigUtil.get(root, webSocketType, "websocket", logger);
 
         switch (version) {
             case 1:
@@ -154,7 +83,7 @@ public class SwitchboardConfigLoader {
                                 version, modules, discord, telegram, formatting, webSocket);
                 break;
             default:
-                Switchboard.logger().error("Unknown configuration version: " + version);
+                logger.error("Unknown configuration version: " + version);
         }
     }
 
@@ -170,17 +99,17 @@ public class SwitchboardConfigLoader {
         }
         final HoconConfigurationLoader loader =
                 HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root = getRoot(loader);
+        CommentedConfigurationNode root = ConfigUtil.getRoot(loader, logger);
         if (root == null) {
             return;
         }
 
-        set(root, versionType, "version", config.version(), Switchboard.logger());
-        set(root, moduleType, "modules", config.modules(), Switchboard.logger());
-        set(root, discordType, "discord", config.discord(), Switchboard.logger());
-        set(root, telegramType, "telegram", config.telegram(), Switchboard.logger());
-        set(root, formattingType, "formatting", config.formatting(), Switchboard.logger());
-        set(root, webSocketType, "websocket", config.webSocket(), Switchboard.logger());
+        ConfigUtil.set(root, versionType, "version", config.version(), logger);
+        ConfigUtil.set(root, moduleType, "modules", config.modules(), logger);
+        ConfigUtil.set(root, discordType, "discord", config.discord(), logger);
+        ConfigUtil.set(root, telegramType, "telegram", config.telegram(), logger);
+        ConfigUtil.set(root, formattingType, "formatting", config.formatting(), logger);
+        ConfigUtil.set(root, webSocketType, "websocket", config.webSocket(), logger);
 
         try {
             loader.save(root);
