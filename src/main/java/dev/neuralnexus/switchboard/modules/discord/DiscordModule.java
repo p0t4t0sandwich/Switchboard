@@ -12,8 +12,8 @@ import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.switchboard.modules.discord.api.DiscordServer;
 import dev.neuralnexus.switchboard.modules.discord.command.DiscordCommand;
-import dev.neuralnexus.taterlib.event.api.CommandEvents;
-import dev.neuralnexus.taterlib.plugin.PluginModule;
+import dev.neuralnexus.taterapi.event.api.CommandEvents;
+import dev.neuralnexus.taterloader.plugin.PluginModule;
 
 /** Discord module. */
 public class DiscordModule implements PluginModule {

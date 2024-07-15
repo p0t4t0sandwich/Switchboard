@@ -14,15 +14,15 @@ import dev.neuralnexus.switchboard.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
-import dev.neuralnexus.taterlib.api.Platform;
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.api.impl.metadata.PlatformDataImpl;
-import dev.neuralnexus.taterlib.event.api.PluginEvents;
-import dev.neuralnexus.taterlib.loader.Loader;
-import dev.neuralnexus.taterlib.logger.Logger;
-import dev.neuralnexus.taterlib.metrics.bstats.MetricsAdapter;
-import dev.neuralnexus.taterlib.plugin.ModuleLoader;
-import dev.neuralnexus.taterlib.plugin.Plugin;
+import dev.neuralnexus.taterapi.Platform;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterapi.event.api.PluginEvents;
+import dev.neuralnexus.taterloader.Loader;
+import dev.neuralnexus.taterapi.logger.Logger;
+import dev.neuralnexus.taterapi.metrics.bstats.MetricsAdapter;
+import dev.neuralnexus.taterloader.plugin.ModuleLoader;
+import dev.neuralnexus.taterloader.plugin.Plugin;
+import dev.neuralnexus.taterloader.plugin.impl.ModuleLoaderImpl;
 
 import java.util.HashMap;
 
@@ -37,12 +37,30 @@ public class Switchboard implements Plugin {
     public static final String PROJECT_URL = "https://github.com/p0t4t0sandwich/Switchboard";
 
     private static final Switchboard instance = new Switchboard();
-    private static boolean STARTED = false;
+    private static final Logger logger = Logger.create(PROJECT_ID);
+    private static final ModuleLoader moduleLoader = new ModuleLoaderImpl();
     private static boolean RELOADED = false;
-    private static final Logger logger = new PlatformDataImpl().logger(PROJECT_ID);
 
     public static Logger logger() {
         return logger;
+    }
+
+    /**
+     * Get if the plugin has reloaded
+     *
+     * @return If the plugin has reloaded
+     */
+    public static boolean hasReloaded() {
+        return RELOADED;
+    }
+
+    /**
+     * Getter for the singleton instance of the class.
+     *
+     * @return The singleton instance
+     */
+    public static Switchboard instance() {
+        return instance;
     }
 
     @Override
@@ -77,12 +95,6 @@ public class Switchboard implements Plugin {
         MetricsAdapter.setupMetrics(
                 loader.plugin(), loader.server(), logger().getLogger(), statsMap);
 
-        if (STARTED) {
-            logger.info(PROJECT_NAME + " has already started!");
-            return;
-        }
-        STARTED = true;
-
         // Config
         SwitchboardConfigLoader.load();
 
@@ -92,19 +104,19 @@ public class Switchboard implements Plugin {
         if (!RELOADED) {
             // Register modules
             if (SwitchboardConfigLoader.config().checkModule("minecraft")) {
-                loader.registerPluginModule(this, new MinecraftModule());
+                moduleLoader.registerModule(new MinecraftModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("discord")) {
-                loader.registerPluginModule(this, new DiscordModule());
+                moduleLoader.registerModule(new DiscordModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("proxy")) {
-                loader.registerPluginModule(this, new ProxyModule());
+                moduleLoader.registerModule(new ProxyModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("telegram")) {
-                loader.registerPluginModule(this, new TelegramModule());
+                moduleLoader.registerModule(new TelegramModule());
             }
             if (SwitchboardConfigLoader.config().checkModule("websocket")) {
-                loader.registerPluginModule(this, new WebSocketModule());
+                moduleLoader.registerModule(new WebSocketModule());
             }
         }
 
@@ -113,13 +125,6 @@ public class Switchboard implements Plugin {
 
     @Override
     public void onDisable() {
-        if (!STARTED) {
-            logger().info(PROJECT_NAME + " has already stopped!");
-            return;
-        }
-        STARTED = false;
-        RELOADED = true;
-
         // Remove references to objects
         SwitchboardConfigLoader.unload();
 
@@ -129,30 +134,8 @@ public class Switchboard implements Plugin {
         logger().info(PROJECT_NAME + " has been stopped!");
     }
 
-    /**
-     * Get if the plugin has reloaded
-     *
-     * @return If the plugin has reloaded
-     */
-    public static boolean hasReloaded() {
-        return RELOADED;
-    }
-
-    /**
-     * Getter for the singleton instance of the class.
-     *
-     * @return The singleton instance
-     */
-    public static Switchboard instance() {
-        return instance;
-    }
-
     /** Reload */
     public void reload() {
-        if (!STARTED) {
-            logger().info(PROJECT_NAME + " has not been started!");
-            return;
-        }
         RELOADED = true;
 
         // Stop

@@ -18,7 +18,7 @@ import dev.neuralnexus.switchboard.config.sections.telegram.ChatChannel;
 import dev.neuralnexus.switchboard.config.sections.telegram.ChatMapping;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 
 import java.util.List;
 import java.util.Optional;

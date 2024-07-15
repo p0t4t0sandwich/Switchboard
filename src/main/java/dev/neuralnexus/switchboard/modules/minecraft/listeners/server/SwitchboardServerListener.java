@@ -10,8 +10,8 @@ import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.event.server.ServerStartedEvent;
-import dev.neuralnexus.taterlib.event.server.ServerStoppedEvent;
+import dev.neuralnexus.taterapi.event.server.ServerStartedEvent;
+import dev.neuralnexus.taterapi.event.server.ServerStoppedEvent;
 
 import java.util.HashMap;
 

@@ -11,8 +11,8 @@ import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.plugin.PluginModule;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterloader.plugin.PluginModule;
 
 /** A module for WebSocket. */
 public class WebSocketModule implements PluginModule {

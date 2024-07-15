@@ -10,7 +10,7 @@ import dev.neuralnexus.switchboard.api.rework.origin.MCOrigin;
 import dev.neuralnexus.switchboard.api.rework.origin.Origin;
 import dev.neuralnexus.switchboard.api.rework.sender.MCSender;
 import dev.neuralnexus.switchboard.api.rework.sender.Sender;
-import dev.neuralnexus.taterlib.event.player.PlayerMessageEvent;
+import dev.neuralnexus.taterapi.event.player.PlayerMessageEvent;
 
 import java.util.UUID;
 

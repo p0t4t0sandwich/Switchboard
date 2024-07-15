@@ -12,11 +12,11 @@ import dev.neuralnexus.switchboard.api.message.MessageSender;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.event.api.NetworkEvents;
-import dev.neuralnexus.taterlib.event.api.PlayerEvents;
-import dev.neuralnexus.taterlib.player.SimplePlayer;
-import dev.neuralnexus.taterlib.plugin.PluginModule;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterapi.event.api.NetworkEvents;
+import dev.neuralnexus.taterapi.event.api.PlayerEvents;
+import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterloader.plugin.PluginModule;
 
 import java.util.HashMap;
 

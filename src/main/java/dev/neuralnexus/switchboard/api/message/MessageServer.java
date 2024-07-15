@@ -6,9 +6,9 @@
 
 package dev.neuralnexus.switchboard.api.message;
 
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.player.SimplePlayer;
-import dev.neuralnexus.taterlib.server.SimpleServer;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Collections;
 import java.util.List;

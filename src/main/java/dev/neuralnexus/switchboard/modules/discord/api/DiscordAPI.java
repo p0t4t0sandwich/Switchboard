@@ -12,7 +12,7 @@ import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.discord.ChannelMapping;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

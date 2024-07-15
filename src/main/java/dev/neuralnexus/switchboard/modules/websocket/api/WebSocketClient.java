@@ -12,12 +12,13 @@ import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterlib.Utils;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
+
+import static dev.neuralnexus.taterapi.util.ScheduleUtil.runTaskLaterAsync;
 
 /** A class for handling WebSocket API requests. */
 public class WebSocketClient {
@@ -47,7 +48,7 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        Utils.runTaskLaterAsync(
+        runTaskLaterAsync(
                 () -> {
                     try {
                         Switchboard.logger()
@@ -71,7 +72,7 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        Utils.runTaskLaterAsync(
+        runTaskLaterAsync(
                 () -> {
                     try {
                         Switchboard.logger()

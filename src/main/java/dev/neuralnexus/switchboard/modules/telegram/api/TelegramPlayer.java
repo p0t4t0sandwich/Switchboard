@@ -9,8 +9,8 @@ package dev.neuralnexus.switchboard.modules.telegram.api;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 
-import dev.neuralnexus.taterlib.player.SimplePlayer;
-import dev.neuralnexus.taterlib.server.SimpleServer;
+import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.UUID;
 

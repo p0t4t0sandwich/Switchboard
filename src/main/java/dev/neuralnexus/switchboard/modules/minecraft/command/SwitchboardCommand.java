@@ -7,9 +7,10 @@
 package dev.neuralnexus.switchboard.modules.minecraft.command;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterlib.Utils;
-import dev.neuralnexus.taterlib.command.Command;
-import dev.neuralnexus.taterlib.command.CommandSender;
+import dev.neuralnexus.taterapi.command.Command;
+import dev.neuralnexus.taterapi.command.CommandSender;
+
+import static dev.neuralnexus.taterapi.placeholder.PlaceholderParser.substituteSectionSign;
 
 /** Switchboard Command. */
 public class SwitchboardCommand implements Command {
@@ -43,25 +44,25 @@ public class SwitchboardCommand implements Command {
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Utils.substituteSectionSign(usage()));
+            sender.sendMessage(substituteSectionSign(usage()));
             return true;
         }
         switch (args[0].toLowerCase()) {
             case "reload":
                 if (!sender.hasPermission(permission() + ".reload")) {
                     sender.sendMessage(
-                            Utils.substituteSectionSign(
+                            substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
                     return true;
                 }
                 try {
                     Switchboard.instance().reload();
                     sender.sendMessage(
-                            Utils.substituteSectionSign(
+                            substituteSectionSign(
                                     "&aReloaded " + Switchboard.PROJECT_NAME + "!"));
                 } catch (Exception e) {
                     sender.sendMessage(
-                            Utils.substituteSectionSign(
+                            substituteSectionSign(
                                     "&cAn error occurred while reloading the plugin."));
                     e.printStackTrace();
                 }
@@ -69,16 +70,16 @@ public class SwitchboardCommand implements Command {
             case "version":
                 if (!sender.hasPermission(permission() + ".version")) {
                     sender.sendMessage(
-                            Utils.substituteSectionSign(
+                            substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
                     return true;
                 }
                 sender.sendMessage(
-                        Utils.substituteSectionSign(
+                        substituteSectionSign(
                                 "&aSwitchboard version: " + Switchboard.PROJECT_VERSION));
                 break;
             default:
-                sender.sendMessage(Utils.substituteSectionSign(usage()));
+                sender.sendMessage(substituteSectionSign(usage()));
                 break;
         }
         return true;

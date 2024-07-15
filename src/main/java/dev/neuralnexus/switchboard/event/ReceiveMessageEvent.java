@@ -8,7 +8,7 @@ package dev.neuralnexus.switchboard.event;
 
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
-import dev.neuralnexus.taterlib.event.Event;
+import dev.neuralnexus.taterapi.event.Event;
 
 /** Receive message event. */
 public class ReceiveMessageEvent implements Event {

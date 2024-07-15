@@ -13,11 +13,11 @@ import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.switchboard.modules.minecraft.command.SwitchboardCommand;
 import dev.neuralnexus.switchboard.modules.minecraft.listeners.player.SwitchboardPlayerListener;
 import dev.neuralnexus.switchboard.modules.minecraft.listeners.server.SwitchboardServerListener;
-import dev.neuralnexus.taterlib.api.TaterAPIProvider;
-import dev.neuralnexus.taterlib.event.api.CommandEvents;
-import dev.neuralnexus.taterlib.event.api.PlayerEvents;
-import dev.neuralnexus.taterlib.event.api.ServerEvents;
-import dev.neuralnexus.taterlib.plugin.PluginModule;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterapi.event.api.CommandEvents;
+import dev.neuralnexus.taterapi.event.api.PlayerEvents;
+import dev.neuralnexus.taterapi.event.api.ServerEvents;
+import dev.neuralnexus.taterloader.plugin.PluginModule;
 
 /** Minecraft module. */
 public class MinecraftModule implements PluginModule {

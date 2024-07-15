@@ -6,7 +6,7 @@
 
 package dev.neuralnexus.switchboard.api.rework.origin;
 
-import dev.neuralnexus.taterlib.server.SimpleServer;
+import dev.neuralnexus.taterapi.server.SimpleServer;
 
 public class MCOrigin implements Origin {
     private final SimpleServer server;

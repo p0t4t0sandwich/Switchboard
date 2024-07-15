@@ -12,9 +12,9 @@ import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dev.neuralnexus.taterlib.placeholder.PlaceholderParser;
-import dev.neuralnexus.taterlib.player.SimplePlayer;
-import dev.neuralnexus.taterlib.server.SimpleServer;
+import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
+import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Arrays;
 import java.util.HashMap;
