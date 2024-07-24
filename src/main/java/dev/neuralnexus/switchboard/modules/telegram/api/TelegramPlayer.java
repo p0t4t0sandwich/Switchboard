@@ -64,22 +64,6 @@ public class TelegramPlayer implements SimplePlayer {
     }
 
     @Override
-    public String ipAddress() {
-        return "";
-    }
-
-    @Override
-    public int ping() {
-        return 0;
-    }
-
-    @Override
-    public void kick(String s) {}
-
-    @Override
-    public void sendPluginMessage(String s, byte[] bytes) {}
-
-    @Override
     public String prefix() {
         return "";
     }

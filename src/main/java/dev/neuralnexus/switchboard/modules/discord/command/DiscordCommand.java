@@ -6,11 +6,11 @@
 
 package dev.neuralnexus.switchboard.modules.discord.command;
 
+import static dev.neuralnexus.taterapi.util.TextUtil.substituteSectionSign;
+
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
-
-import static dev.neuralnexus.taterapi.util.TextUtil.substituteSectionSign;
 
 /** Discord Command. */
 public class DiscordCommand implements Command {
@@ -45,12 +45,10 @@ public class DiscordCommand implements Command {
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (!sender.hasPermission(permission())) {
             sender.sendMessage(
-                    substituteSectionSign(
-                            "&cYou do not have permission to use this command."));
+                    substituteSectionSign("&cYou do not have permission to use this command."));
         } else {
             sender.sendMessage(
-                    substituteSectionSign(
-                            SwitchboardConfigLoader.config().discord().inviteUrl()));
+                    substituteSectionSign(SwitchboardConfigLoader.config().discord().inviteUrl()));
         }
         return true;
     }

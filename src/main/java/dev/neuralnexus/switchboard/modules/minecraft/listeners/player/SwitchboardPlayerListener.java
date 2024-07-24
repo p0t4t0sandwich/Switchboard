@@ -10,8 +10,8 @@ import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterapi.event.player.*;
 import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.event.player.*;
 
 import java.util.HashMap;
 

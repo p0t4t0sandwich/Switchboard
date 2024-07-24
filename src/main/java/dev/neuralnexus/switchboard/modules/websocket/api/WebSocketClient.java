@@ -6,6 +6,8 @@
 
 package dev.neuralnexus.switchboard.modules.websocket.api;
 
+import static dev.neuralnexus.taterapi.util.ScheduleUtil.runTaskLaterAsync;
+
 import com.neovisionaries.ws.client.*;
 
 import dev.neuralnexus.switchboard.Switchboard;
@@ -17,8 +19,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
-
-import static dev.neuralnexus.taterapi.util.ScheduleUtil.runTaskLaterAsync;
 
 /** A class for handling WebSocket API requests. */
 public class WebSocketClient {

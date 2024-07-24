@@ -7,12 +7,14 @@
 package dev.neuralnexus.switchboard.api.message;
 
 import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.taterapi.entity.player.Connection;
 import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.resource.ResourceKey;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.UUID;
 
-public class MessageSender implements SimplePlayer {
+public class MessageSender implements SimplePlayer, Connection {
     private final String name;
     private final String prefix;
     private final String suffix;
@@ -165,17 +167,18 @@ public class MessageSender implements SimplePlayer {
     public void kick(String message) {}
 
     @Override
-    public void sendPluginMessage(String channel, byte[] bytes) {
+    public void sendPluginMessage(ResourceKey channel, byte[] bytes) {
         TaterAPIProvider.api()
                 .flatMap(
                         api ->
                                 api.server().onlinePlayers().stream()
                                         .filter(p -> p.uuid().equals(this.uuid))
                                         .findFirst())
+                .map(Connection.class::cast)
                 .ifPresent(p -> p.sendPluginMessage(channel, bytes));
     }
 
     public void sendPluginMessage(Message message) {
-        this.sendPluginMessage(message.channel().id(), message.toByteArray());
+        this.sendPluginMessage(ResourceKey.of(message.channel().id()), message.toByteArray());
     }
 }

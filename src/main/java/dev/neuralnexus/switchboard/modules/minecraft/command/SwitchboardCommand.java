@@ -6,11 +6,11 @@
 
 package dev.neuralnexus.switchboard.modules.minecraft.command;
 
+import static dev.neuralnexus.taterapi.placeholder.PlaceholderParser.substituteSectionSign;
+
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
-
-import static dev.neuralnexus.taterapi.placeholder.PlaceholderParser.substituteSectionSign;
 
 /** Switchboard Command. */
 public class SwitchboardCommand implements Command {
@@ -58,8 +58,7 @@ public class SwitchboardCommand implements Command {
                 try {
                     Switchboard.instance().reload();
                     sender.sendMessage(
-                            substituteSectionSign(
-                                    "&aReloaded " + Switchboard.PROJECT_NAME + "!"));
+                            substituteSectionSign("&aReloaded " + Switchboard.PROJECT_NAME + "!"));
                 } catch (Exception e) {
                     sender.sendMessage(
                             substituteSectionSign(
