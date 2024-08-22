@@ -12,6 +12,8 @@ import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /** Server for MessageSenders. */
 public class MessageServer implements SimpleServer {
@@ -44,5 +46,15 @@ public class MessageServer implements SimpleServer {
     @Override
     public List<SimplePlayer> onlinePlayers() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public Map<String, UUID> playercache() {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Map<String, UUID> whitelist() {
+        return Collections.emptyMap();
     }
 }

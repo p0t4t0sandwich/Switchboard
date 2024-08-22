@@ -7,6 +7,7 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 import net.neoforged.fml.common.Mod;
 
@@ -14,6 +15,6 @@ import net.neoforged.fml.common.Mod;
 @Mod(Switchboard.PROJECT_ID)
 public class NeoForgePlugin {
     public NeoForgePlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

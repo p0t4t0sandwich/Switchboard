@@ -16,10 +16,12 @@ import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
 import dev.neuralnexus.taterapi.Platform;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterapi.event.api.PluginEvents;
+import dev.neuralnexus.taterapi.event.api.ServerEvents;
 import dev.neuralnexus.taterapi.logger.Logger;
+import dev.neuralnexus.taterapi.metrics.bstats.BStatsMetrics;
 import dev.neuralnexus.taterapi.metrics.bstats.MetricsAdapter;
 import dev.neuralnexus.taterloader.Loader;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 import dev.neuralnexus.taterloader.plugin.ModuleLoader;
 import dev.neuralnexus.taterloader.plugin.Plugin;
 import dev.neuralnexus.taterloader.plugin.impl.ModuleLoaderImpl;
@@ -39,6 +41,7 @@ public class Switchboard implements Plugin {
     private static final Switchboard instance = new Switchboard();
     private static final Logger logger = Logger.create(PROJECT_ID);
     private static final ModuleLoader moduleLoader = new ModuleLoaderImpl();
+    private static BStatsMetrics metrics;
     private static boolean RELOADED = false;
 
     public static Logger logger() {
@@ -92,8 +95,9 @@ public class Switchboard implements Plugin {
         statsMap.put(Platform.BUNGEECORD, 21171);
         statsMap.put(Platform.SPONGE, 21172);
         statsMap.put(Platform.VELOCITY, 21173);
-        MetricsAdapter.setupMetrics(
-                loader.plugin(), loader.server(), logger().getLogger(), statsMap);
+        metrics =
+                MetricsAdapter.setupMetrics(
+                        loader.plugin(), loader.server(), logger().getLogger(), statsMap);
 
         // Config
         SwitchboardConfigLoader.load();
@@ -102,6 +106,10 @@ public class Switchboard implements Plugin {
         SwitchboardAPIProvider.register(new SwitchboardAPI());
 
         if (!RELOADED) {
+            if (metrics != null) {
+                ServerEvents.STOPPED.register(event -> metrics.shutdown());
+            }
+
             // Register modules
             if (SwitchboardConfigLoader.config().checkModule("minecraft")) {
                 moduleLoader.registerModule(new MinecraftModule());

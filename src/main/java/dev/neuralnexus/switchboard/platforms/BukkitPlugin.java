@@ -7,13 +7,14 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 /** Bukkit entry point. */
 public class BukkitPlugin extends JavaPlugin {
     public BukkitPlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 
     @Override

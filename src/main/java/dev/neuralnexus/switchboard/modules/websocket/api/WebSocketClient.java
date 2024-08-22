@@ -6,14 +6,13 @@
 
 package dev.neuralnexus.switchboard.modules.websocket.api;
 
-import static dev.neuralnexus.taterapi.util.ScheduleUtil.runTaskLaterAsync;
-
 import com.neovisionaries.ws.client.*;
 
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -48,22 +47,23 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        runTaskLaterAsync(
-                () -> {
-                    try {
-                        Switchboard.logger()
-                                .info(
-                                        "Reconnecting to WebSocket server... Attempt "
-                                                + reconnectAttempts
-                                                + " of "
-                                                + maxReconnectAttempts);
-                        ws.recreate();
-                        Switchboard.logger().info("Reconnected to WebSocket server");
-                    } catch (IOException e) {
-                        this.reconnect();
-                    }
-                },
-                600L);
+        TaterAPIProvider.scheduler()
+                .runLaterAsync(
+                        () -> {
+                            try {
+                                Switchboard.logger()
+                                        .info(
+                                                "Reconnecting to WebSocket server... Attempt "
+                                                        + reconnectAttempts
+                                                        + " of "
+                                                        + maxReconnectAttempts);
+                                ws.recreate();
+                                Switchboard.logger().info("Reconnected to WebSocket server");
+                            } catch (IOException e) {
+                                this.reconnect();
+                            }
+                        },
+                        600L);
     }
 
     /** Attempts to reconnect to the WebSocket server. */
@@ -72,32 +72,33 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        runTaskLaterAsync(
-                () -> {
-                    try {
-                        Switchboard.logger()
-                                .info(
-                                        "Retrying WebSocket server connection... Attempt "
-                                                + reconnectAttempts
-                                                + " of "
-                                                + maxReconnectAttempts);
-                        ws =
-                                new WebSocketFactory()
-                                        .createSocket(
-                                                "ws://"
-                                                        + host
-                                                        + ":"
-                                                        + port
-                                                        + "/websocket/"
-                                                        + identifier);
-                        ws.connect();
-                        this.addListener();
-                        Switchboard.logger().info("Connected to WebSocket server");
-                    } catch (IOException | WebSocketException e) {
-                        this.retryConnect();
-                    }
-                },
-                600L);
+        TaterAPIProvider.scheduler()
+                .runLaterAsync(
+                        () -> {
+                            try {
+                                Switchboard.logger()
+                                        .info(
+                                                "Retrying WebSocket server connection... Attempt "
+                                                        + reconnectAttempts
+                                                        + " of "
+                                                        + maxReconnectAttempts);
+                                ws =
+                                        new WebSocketFactory()
+                                                .createSocket(
+                                                        "ws://"
+                                                                + host
+                                                                + ":"
+                                                                + port
+                                                                + "/websocket/"
+                                                                + identifier);
+                                ws.connect();
+                                this.addListener();
+                                Switchboard.logger().info("Connected to WebSocket server");
+                            } catch (IOException | WebSocketException e) {
+                                this.retryConnect();
+                            }
+                        },
+                        600L);
     }
 
     /** Starts the WebSocket client. */

@@ -167,7 +167,7 @@ public class MessageSender implements SimplePlayer, Connection {
     public void kick(String message) {}
 
     @Override
-    public void sendPluginMessage(ResourceKey channel, byte[] bytes) {
+    public void sendPacket(ResourceKey channel, byte[] bytes) {
         TaterAPIProvider.api()
                 .flatMap(
                         api ->
@@ -175,10 +175,10 @@ public class MessageSender implements SimplePlayer, Connection {
                                         .filter(p -> p.uuid().equals(this.uuid))
                                         .findFirst())
                 .map(Connection.class::cast)
-                .ifPresent(p -> p.sendPluginMessage(channel, bytes));
+                .ifPresent(p -> p.sendPacket(channel, bytes));
     }
 
-    public void sendPluginMessage(Message message) {
-        this.sendPluginMessage(ResourceKey.of(message.channel().id()), message.toByteArray());
+    public void sendPacket(Message message) {
+        this.sendPacket(ResourceKey.of(message.channel().id()), message.toByteArray());
     }
 }

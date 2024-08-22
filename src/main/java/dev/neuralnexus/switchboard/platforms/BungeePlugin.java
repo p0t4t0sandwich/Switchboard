@@ -7,12 +7,13 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 import net.md_5.bungee.api.plugin.Plugin;
 
 /** Bungee entry point. */
 public class BungeePlugin extends Plugin {
     public BungeePlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

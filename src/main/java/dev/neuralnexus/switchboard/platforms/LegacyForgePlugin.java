@@ -9,6 +9,7 @@ package dev.neuralnexus.switchboard.platforms;
 import cpw.mods.fml.common.Mod;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 /** Legacy Forge entry point. */
 @Mod(
@@ -19,6 +20,6 @@ import dev.neuralnexus.switchboard.Switchboard;
         bukkitPlugin = Switchboard.PROJECT_NAME)
 public class LegacyForgePlugin {
     public LegacyForgePlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

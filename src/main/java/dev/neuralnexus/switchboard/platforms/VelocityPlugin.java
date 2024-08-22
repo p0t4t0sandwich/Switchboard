@@ -11,6 +11,7 @@ import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 /** Velocity entry point. */
 @Plugin(
@@ -24,6 +25,6 @@ import dev.neuralnexus.switchboard.Switchboard;
 public class VelocityPlugin {
     @Inject
     public VelocityPlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

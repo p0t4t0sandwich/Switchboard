@@ -9,6 +9,7 @@ package dev.neuralnexus.switchboard.platforms;
 import com.google.inject.Inject;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 import org.spongepowered.api.plugin.Plugin;
 
@@ -21,6 +22,6 @@ import org.spongepowered.api.plugin.Plugin;
 public class Sponge7Plugin {
     @Inject
     public Sponge7Plugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

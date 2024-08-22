@@ -7,6 +7,7 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterloader.event.api.PluginEvents;
 
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,6 +20,6 @@ import net.minecraftforge.fml.common.Mod;
         acceptableRemoteVersions = "*")
 public class ForgePlugin {
     public ForgePlugin() {
-        Switchboard.instance().onEnable();
+        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
     }
 }

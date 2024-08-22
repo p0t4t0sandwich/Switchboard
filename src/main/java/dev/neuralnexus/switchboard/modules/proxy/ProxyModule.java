@@ -69,9 +69,9 @@ public class ProxyModule implements PluginModule {
             }
 
             // Register plugin channels
-            NetworkEvents.REGISTER_PLUGIN_MESSAGES.register(
-                    event -> event.registerPluginChannels(Message.MessageType.getTypes()));
-            NetworkEvents.SERVER_PLUGIN_MESSAGE.register(
+            NetworkEvents.REGISTER_CHANNELS.register(
+                    event -> event.register(Message.MessageType.getTypes()));
+            NetworkEvents.S2P_CUSTOM_PACKET.register(
                     event ->
                             SwitchboardEvents.RECEIVE_MESSAGE.invoke(
                                     new ReceiveMessageEvent(
@@ -88,7 +88,7 @@ public class ProxyModule implements PluginModule {
                                 && !channel.equals(Message.MessageType.PLAYER_MESSAGE)
                                 && !channel.equals(Message.MessageType.SERVER_STARTED)
                                 && !channel.equals(Message.MessageType.SERVER_STOPPED)) {
-                            message.sender().sendPluginMessage(message);
+                            message.sender().sendPacket(message);
                         }
                     });
         }
