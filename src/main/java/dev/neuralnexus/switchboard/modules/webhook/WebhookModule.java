@@ -8,7 +8,6 @@ package dev.neuralnexus.switchboard.modules.webhook;
 
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
-import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.taterloader.plugin.PluginModule;
 
@@ -29,32 +28,14 @@ public class WebhookModule implements PluginModule {
         }
         STARTED = true;
 
-        // Check if the token and channel mappings are set
-        String token = SwitchboardConfigLoader.config().telegram().token();
-        if (token == null || token.isEmpty()) {
-            Switchboard.logger().info("No Telegram token found in switchboard.conf!");
-            return;
-        }
-        if (SwitchboardConfigLoader.config().telegram().mappings().isEmpty()) {
-            Switchboard.logger().info("No server-channel mappings found in switchboard.conf!");
-            return;
-        }
-
         if (!Switchboard.hasReloaded()) {
             // Register events
             SwitchboardEvents.RECEIVE_MESSAGE.register(
-                    (event) -> {
-                        // Prevents telegram messages from being passed back to telegram
-                        if (!(event.getMessage().sender().server() instanceof TelegramServer)) {
+                    event ->
                             SwitchboardAPIProvider.get()
-                                    .telegramAPI()
-                                    .sendMessage(event.getMessage());
-                        }
-                    });
+                                    .webhookAPI()
+                                    .sendMessage(event.getMessage()));
         }
-
-        // Start the bot
-        SwitchboardAPIProvider.get().telegramAPI().startBot();
     }
 
     @Override
@@ -64,8 +45,5 @@ public class WebhookModule implements PluginModule {
             return;
         }
         STARTED = false;
-
-        // Remove references to objects
-        SwitchboardAPIProvider.get().telegramAPI().removeBot();
     }
 }

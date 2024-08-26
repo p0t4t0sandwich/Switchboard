@@ -9,12 +9,14 @@ package dev.neuralnexus.switchboard.api;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.switchboard.modules.telegram.api.TelegramAPI;
+import dev.neuralnexus.switchboard.modules.webhook.api.WebhookAPI;
 import dev.neuralnexus.switchboard.modules.websocket.api.WebSocketAPI;
 
 /** API wrapper class */
 public class SwitchboardAPI {
     private DiscordAPI discordAPI;
     private TelegramAPI telegramAPI;
+    private WebhookAPI webhookAPI;
     private WebSocketAPI webSocketAPI;
 
     public SwitchboardAPI() {
@@ -23,6 +25,9 @@ public class SwitchboardAPI {
         }
         if (SwitchboardConfigLoader.config().checkModule("telegram")) {
             this.telegramAPI = new TelegramAPI();
+        }
+        if (SwitchboardConfigLoader.config().checkModule("webhook")) {
+            this.webhookAPI = new WebhookAPI();
         }
         if (SwitchboardConfigLoader.config().checkModule("websocket")) {
             this.webSocketAPI = new WebSocketAPI();
@@ -35,7 +40,7 @@ public class SwitchboardAPI {
      * @return The Discord API.
      */
     public DiscordAPI discordAPI() {
-        return discordAPI;
+        return this.discordAPI;
     }
 
     /**
@@ -44,7 +49,16 @@ public class SwitchboardAPI {
      * @return The Telegram API.
      */
     public TelegramAPI telegramAPI() {
-        return telegramAPI;
+        return this.telegramAPI;
+    }
+
+    /**
+     * Get the Webhook API.
+     *
+     * @return The Webhook API.
+     */
+    public WebhookAPI webhookAPI() {
+        return this.webhookAPI;
     }
 
     /**
@@ -53,6 +67,6 @@ public class SwitchboardAPI {
      * @return The WebSocket API.
      */
     public WebSocketAPI webSocketAPI() {
-        return webSocketAPI;
+        return this.webSocketAPI;
     }
 }

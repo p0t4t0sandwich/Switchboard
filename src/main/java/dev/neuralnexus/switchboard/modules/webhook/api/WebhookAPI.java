@@ -8,8 +8,11 @@ package dev.neuralnexus.switchboard.modules.webhook.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
+import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 
 import java.io.BufferedReader;
@@ -17,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,24 +34,28 @@ public class WebhookAPI {
      * @param message The message
      */
     public void sendMessage(Message message) {
-        if (message.channel() != Message.MessageType.PLAYER_MESSAGE) {
+        if (message.channel() != Message.MessageType.PLAYER_MESSAGE
+                && message.channel() != Message.MessageType.PLAYER_LOGIN
+                && message.channel() != Message.MessageType.PLAYER_LOGOUT) {
             return;
         }
         String messageContent = PlaceholderParser.stripSectionSign(message.applyPlaceHolders());
         DiscordEmbed embed = new DiscordEmbed(message.sender().name(), messageContent);
-        DiscordWebhookPayload payload = new DiscordWebhookPayload("Minecraft", new DiscordEmbed[]{embed});
+        DiscordWebhookPayload payload =
+                new DiscordWebhookPayload("Minecraft", new DiscordEmbed[] {embed});
 
         String data_json = gson.toJson(payload);
 
+        WebhookConfig config = SwitchboardConfigLoader.config().webhook();
         try {
-            URL url = new URL();
+            URL url = new URL(config.url());
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
-            con.setRequestMethod("POST");
+            con.setRequestMethod(config.method().toUpperCase());
             con.setRequestProperty("Accept", "application/json");
             con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("User-Agent", "NeuralNexus ServerStatsTracker");
+            con.setRequestProperty("User-Agent", "Switchboard Minecraft Mod");
             OutputStreamWriter osw = new OutputStreamWriter(con.getOutputStream());
             osw.write(data_json);
             osw.flush();
@@ -70,7 +76,12 @@ public class WebhookAPI {
         private final DiscordEmbed[] embeds;
         private final String[] attachments;
 
-        public DiscordWebhookPayload(String username, String avatarUrl, String content, DiscordEmbed[] embeds, String[] attachments) {
+        public DiscordWebhookPayload(
+                String username,
+                String avatarUrl,
+                String content,
+                DiscordEmbed[] embeds,
+                String[] attachments) {
             this.username = username;
             this.avatarUrl = avatarUrl;
             this.content = content;
@@ -83,7 +94,7 @@ public class WebhookAPI {
             this.avatarUrl = "";
             this.content = null;
             this.embeds = embeds;
-            this.attachments = new String[]{};
+            this.attachments = new String[] {};
         }
 
         public Map<Object, Object> toMap() {

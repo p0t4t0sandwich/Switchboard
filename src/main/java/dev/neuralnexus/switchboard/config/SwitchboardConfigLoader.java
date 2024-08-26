@@ -10,13 +10,14 @@ import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
+import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
+import dev.neuralnexus.taterapi.config.ToggleableSetting;
 import dev.neuralnexus.taterapi.logger.Logger;
 import dev.neuralnexus.taterapi.metadata.PlatformData;
 import dev.neuralnexus.taterapi.util.ConfigUtil;
 import dev.neuralnexus.taterlib.TaterLib;
-import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
 
 import io.leangen.geantyref.TypeToken;
 
@@ -43,13 +44,14 @@ public class SwitchboardConfigLoader {
                             + ".conf");
     private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
     private static final TypeToken<Integer> versionType = new TypeToken<Integer>() {};
-    private static final TypeToken<List<ModuleConfig>> moduleType =
-            new TypeToken<List<ModuleConfig>>() {};
+    private static final TypeToken<List<ToggleableSetting>> moduleType =
+            new TypeToken<List<ToggleableSetting>>() {};
     private static final TypeToken<DiscordConfig> discordType = new TypeToken<DiscordConfig>() {};
     private static final TypeToken<TelegramConfig> telegramType =
             new TypeToken<TelegramConfig>() {};
     private static final TypeToken<FormattingConfig> formattingType =
             new TypeToken<FormattingConfig>() {};
+    private static final TypeToken<WebhookConfig> webhookType = new TypeToken<WebhookConfig>() {};
     private static final TypeToken<WebSocketConfig> webSocketType =
             new TypeToken<WebSocketConfig>() {};
     private static SwitchboardConfig config;
@@ -68,17 +70,24 @@ public class SwitchboardConfigLoader {
         ConfigurationNode versionNode = root.node("version");
         int version = versionNode.getInt(1);
 
-        List<ModuleConfig> modules = ConfigUtil.get(root, moduleType, "modules", logger);
+        List<ToggleableSetting> modules = ConfigUtil.get(root, moduleType, "modules", logger);
         DiscordConfig discord = ConfigUtil.get(root, discordType, "discord", logger);
         TelegramConfig telegram = ConfigUtil.get(root, telegramType, "telegram", logger);
         FormattingConfig formatting = ConfigUtil.get(root, formattingType, "formatting", logger);
+        WebhookConfig webhook = ConfigUtil.get(root, webhookType, "webhook", logger);
         WebSocketConfig webSocket = ConfigUtil.get(root, webSocketType, "websocket", logger);
 
         switch (version) {
             case 1:
                 config =
                         new SwitchboardConfig_V1(
-                                version, modules, discord, telegram, formatting, webSocket);
+                                version,
+                                modules,
+                                discord,
+                                telegram,
+                                formatting,
+                                webhook,
+                                webSocket);
                 break;
             default:
                 logger.error("Unknown configuration version: " + version);

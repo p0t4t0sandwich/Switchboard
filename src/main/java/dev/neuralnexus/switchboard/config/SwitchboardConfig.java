@@ -9,8 +9,9 @@ package dev.neuralnexus.switchboard.config;
 import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
 import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
+import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
-import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
+import dev.neuralnexus.taterapi.config.ToggleableSetting;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface SwitchboardConfig {
      *
      * @return The modules in the configuration.
      */
-    List<ModuleConfig> modules();
+    List<ToggleableSetting> modules();
 
     /**
      * Get the Discord configuration.
@@ -43,6 +44,13 @@ public interface SwitchboardConfig {
      * @return The Telegram configuration.
      */
     TelegramConfig telegram();
+
+    /**
+     * Get the Webhook configuration.
+     *
+     * @return The Webhook configuration.
+     */
+    WebhookConfig webhook();
 
     /**
      * Get the WebSocket configuration.

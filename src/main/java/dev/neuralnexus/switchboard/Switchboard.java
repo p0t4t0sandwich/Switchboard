@@ -13,6 +13,7 @@ import dev.neuralnexus.switchboard.modules.discord.DiscordModule;
 import dev.neuralnexus.switchboard.modules.minecraft.MinecraftModule;
 import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
+import dev.neuralnexus.switchboard.modules.webhook.WebhookModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
 import dev.neuralnexus.taterapi.Platform;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
@@ -97,7 +98,7 @@ public class Switchboard implements Plugin {
         statsMap.put(Platform.VELOCITY, 21173);
         metrics =
                 MetricsAdapter.setupMetrics(
-                        loader.plugin(), loader.server(), logger().getLogger(), statsMap);
+                        loader.plugin(), loader.server(), logger.getLogger(), statsMap);
 
         // Config
         SwitchboardConfigLoader.load();
@@ -106,9 +107,7 @@ public class Switchboard implements Plugin {
         SwitchboardAPIProvider.register(new SwitchboardAPI());
 
         if (!RELOADED) {
-            if (metrics != null) {
-                ServerEvents.STOPPED.register(event -> metrics.shutdown());
-            }
+            ServerEvents.STOPPED.register(event -> metrics.shutdown());
 
             // Register modules
             if (SwitchboardConfigLoader.config().checkModule("minecraft")) {
@@ -123,12 +122,17 @@ public class Switchboard implements Plugin {
             if (SwitchboardConfigLoader.config().checkModule("telegram")) {
                 moduleLoader.registerModule(new TelegramModule());
             }
+            if (SwitchboardConfigLoader.config().checkModule("webhook")) {
+                moduleLoader.registerModule(new WebhookModule());
+            }
             if (SwitchboardConfigLoader.config().checkModule("websocket")) {
                 moduleLoader.registerModule(new WebSocketModule());
             }
         }
 
-        logger().info(PROJECT_NAME + " has been started!");
+        moduleLoader.onEnable();
+        logger.info("Starting modules: " + moduleLoader.moduleNames());
+        logger.info(PROJECT_NAME + " has been started!");
     }
 
     @Override
@@ -139,21 +143,16 @@ public class Switchboard implements Plugin {
         // Unregister API
         SwitchboardAPIProvider.unregister();
 
-        logger().info(PROJECT_NAME + " has been stopped!");
+        moduleLoader.onDisable();
+
+        logger.info(PROJECT_NAME + " has been stopped!");
     }
 
     /** Reload */
     public void reload() {
         RELOADED = true;
-
-        // Stop
         onDisable();
-        Loader.instance().pluginModuleLoader(PROJECT_ID).ifPresent(ModuleLoader::onDisable);
-
-        // Start
         onEnable();
-        Loader.instance().pluginModuleLoader(PROJECT_ID).ifPresent(ModuleLoader::onEnable);
-
-        logger().info(PROJECT_NAME + " has been reloaded!");
+        logger.info(PROJECT_NAME + " has been reloaded!");
     }
 }
