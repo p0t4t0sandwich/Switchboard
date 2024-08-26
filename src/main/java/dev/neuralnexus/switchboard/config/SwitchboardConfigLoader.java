@@ -12,12 +12,11 @@ import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
-import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.logger.Logger;
+import dev.neuralnexus.taterapi.metadata.PlatformData;
 import dev.neuralnexus.taterapi.util.ConfigUtil;
 import dev.neuralnexus.taterlib.TaterLib;
 import dev.neuralnexus.taterlib.config.sections.ModuleConfig;
-import dev.neuralnexus.taterloader.Loader;
 
 import io.leangen.geantyref.TypeToken;
 
@@ -33,11 +32,10 @@ import java.util.List;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
-    private static final Logger logger =
-            Loader.instance().logger(Switchboard.PROJECT_ID + "-configloader");
+    private static final Logger logger = Logger.create(Switchboard.PROJECT_ID + "-configloader");
     private static final Path configPath =
             Paths.get(
-                    TaterAPIProvider.platformData().configFolder()
+                    PlatformData.instance().configFolder()
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + File.separator
