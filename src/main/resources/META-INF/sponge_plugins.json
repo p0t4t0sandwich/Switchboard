@@ -6,8 +6,8 @@
   "license": "${license}",
   "plugins": [
     {
-      "id": "${project_id}",
-      "entrypoint": "${group_id}.${project_id}.platforms.Sponge8Plugin",
+      "id": "${name}",
+      "entrypoint": "${group}.${name}.platforms.Sponge8Plugin",
       "name": "${project_name}",
       "description": "${project_description}",
       "version": "${version}",

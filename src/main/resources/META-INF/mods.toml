@@ -5,7 +5,7 @@ license = "${license}"
 issueTrackerURL = "${issue_tracker_url}"
 
 [[mods]]
-modId = "${project_id}"
+modId = "${name}"
 version = "${version}"
 displayName = "${project_name}"
 updateJSONURL = "${update_json_url}"
@@ -17,7 +17,7 @@ displayTest = "IGNORE_SERVER_VERSION"
 description = '''${project_description}'''
 
 # Forge Dependency
-[[dependencies.${ project_id }]]
+[[dependencies.${ name }]]
 modId = "forge"
 mandatory = false
 type = "optional"
@@ -26,7 +26,7 @@ ordering = "NONE"
 side = "BOTH"
 
 # NeoForge Dependency
-[[dependencies.${ project_id }]]
+[[dependencies.${ name }]]
 modId = "neoforge"
 mandatory = false
 type = "optional"
@@ -35,7 +35,7 @@ ordering = "NONE"
 side = "BOTH"
 
 # Minecraft Dependency
-[[dependencies.${ project_id }]]
+[[dependencies.${ name }]]
 modId = "minecraft"
 mandatory = true
 type = "required"
@@ -44,7 +44,7 @@ ordering = "NONE"
 side = "BOTH"
 
 # TaterLib Dependency
-[[dependencies.${ project_id }]]
+[[dependencies.${ name }]]
 modId = "taterlib"
 mandatory = true
 type = "required"

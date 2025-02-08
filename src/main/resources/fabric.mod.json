@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${project_id}",
+  "id": "${name}",
   "version": "${version}",
   "name": "${project_name}",
   "description": "${project_description}",
@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "${group_id}.${project_id}.platforms.FabricPlugin"
+      "${group}.${name}.platforms.FabricPlugin"
     ]
   },
   "mixins": [],

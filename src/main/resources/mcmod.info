@@ -1,6 +1,6 @@
 [
   {
-    "modid": "${project_id}",
+    "modid": "${name}",
     "name": "${project_name}",
     "license": "${license}",
     "description": "${project_description}",

@@ -1,5 +1,5 @@
 {
-  "id": "${project_id}",
+  "id": "${name}",
   "name": "${project_name}",
   "version": "${version}",
   "description": "${project_description}",
@@ -13,5 +13,5 @@
       "optional": false
     }
   ],
-  "main": "${group_id}.${project_id}.platforms.VelocityPlugin"
+  "main": "${group}.${name}.platforms.VelocityPlugin"
 }

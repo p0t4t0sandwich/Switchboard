@@ -27,10 +27,14 @@ replay_pid*
 build
 bin
 target
+run
+libs
 
 # Gradle
 .gradle
 
-# IntelliJ project files
+# IntelliJ
+.idea
 *.iml
-.idea/modules
+*.ipr
+*.iws
