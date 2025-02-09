@@ -6,7 +6,7 @@
 package dev.neuralnexus.switchboard.modules.minecraft;
 
 import dev.neuralnexus.modapi.metadata.MetaAPI;
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
@@ -31,12 +31,12 @@ public class MinecraftModule implements PluginModule {
     @Override
     public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already started!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
 
-        if (!Switchboard.hasReloaded()) {
+        if (!SwitchboardPlugin.hasReloaded()) {
             // Register commands
             CommandEvents.REGISTER_COMMAND.register(
                     event -> event.registerCommand(new SwitchboardCommand(), "tc"));
@@ -120,7 +120,7 @@ public class MinecraftModule implements PluginModule {
     @Override
     public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

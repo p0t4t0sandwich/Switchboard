@@ -7,7 +7,7 @@ package dev.neuralnexus.switchboard.config;
 
 import dev.neuralnexus.modapi.metadata.Logger;
 import dev.neuralnexus.modapi.metadata.MetaAPI;
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
 import dev.neuralnexus.taterapi.config.VersionedConfig;
 
@@ -22,16 +22,16 @@ import java.nio.file.Paths;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
-    private static final Logger logger = Logger.create(Switchboard.PROJECT_ID + "-configloader");
+    private static final Logger logger = Logger.create(SwitchboardPlugin.PROJECT_ID + "-configloader");
     private static final Path configPath =
             Paths.get(
                     MetaAPI.instance().meta().configFolder()
                             + File.separator
-                            + Switchboard.PROJECT_ID
+                            + SwitchboardPlugin.PROJECT_ID
                             + File.separator
-                            + Switchboard.PROJECT_ID
+                            + SwitchboardPlugin.PROJECT_ID
                             + ".conf");
-    private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
+    private static final String defaultConfigPath = "source." + SwitchboardPlugin.PROJECT_ID + ".conf";
     private static HoconConfigurationLoader loader;
     private static SwitchboardConfig config;
 

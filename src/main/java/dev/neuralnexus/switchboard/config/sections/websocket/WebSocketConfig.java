@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.config.sections.websocket;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.modules.websocket.api.EncryptionHandler;
 
@@ -54,7 +54,7 @@ public class WebSocketConfig {
      */
     public String secret() {
         if (secret == null || secret.isEmpty()) {
-            Switchboard.logger().info("Generating new remote secret");
+            SwitchboardPlugin.logger().info("Generating new remote secret");
             secret = EncryptionHandler.generateKey();
             SwitchboardConfigLoader.save();
         }

@@ -4,4 +4,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'switchboard'
+rootProject.name = "switchboard"

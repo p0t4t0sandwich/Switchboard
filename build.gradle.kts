@@ -44,7 +44,7 @@ dependencies {
     implementation("com.neovisionaries:nv-websocket-client:2.14")
 
     compileOnly("dev.neuralnexus:taterapi:2.0.0-SNAPSHOT")
-    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.5")
+    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.21")
 
     compileOnly("org.spongepowered:configurate-hocon:4.1.2")
     compileOnly("com.google.code.gson:gson:2.10.1")
@@ -130,7 +130,7 @@ tasks.named<ShadowJar>("shadowJar") {
     relocate("com.google.common", "dev.neuralnexus.taterlib.lib.guava")
     relocate("com.google.thirdparty", "dev.neuralnexus.taterlib.lib.google.thirdparty")
 
-    minimize() {
+    minimize {
         exclude(dependency("${group}:${name}:${version}"))
     }
 

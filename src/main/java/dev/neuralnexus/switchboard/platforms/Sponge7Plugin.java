@@ -7,20 +7,20 @@ package dev.neuralnexus.switchboard.platforms;
 
 import com.google.inject.Inject;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 import org.spongepowered.api.plugin.Plugin;
 
 /** Sponge entry point. */
 @Plugin(
-        id = Switchboard.PROJECT_ID,
-        name = Switchboard.PROJECT_NAME,
-        version = Switchboard.PROJECT_VERSION,
-        description = Switchboard.PROJECT_DESCRIPTION)
+        id = SwitchboardPlugin.PROJECT_ID,
+        name = SwitchboardPlugin.PROJECT_NAME,
+        version = SwitchboardPlugin.PROJECT_VERSION,
+        description = SwitchboardPlugin.PROJECT_DESCRIPTION)
 public class Sponge7Plugin {
     @Inject
     public Sponge7Plugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 }

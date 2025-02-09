@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.discord;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
@@ -26,7 +26,7 @@ public class DiscordModule implements PluginModule {
     @Override
     public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already started!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
@@ -34,15 +34,15 @@ public class DiscordModule implements PluginModule {
         // Check if the token and channel mappings are set
         String token = SwitchboardConfigLoader.config().discord().token();
         if (token == null || token.isEmpty()) {
-            Switchboard.logger().info("No Discord token found in switchboard.conf!");
+            SwitchboardPlugin.logger().info("No Discord token found in switchboard.conf!");
             return;
         }
         if (SwitchboardConfigLoader.config().discord().mappings().isEmpty()) {
-            Switchboard.logger().info("No server-channel mappings found in switchboard.conf!");
+            SwitchboardPlugin.logger().info("No server-channel mappings found in switchboard.conf!");
             return;
         }
 
-        if (!Switchboard.hasReloaded()) {
+        if (!SwitchboardPlugin.hasReloaded()) {
             // Register events
             SwitchboardEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
@@ -66,7 +66,7 @@ public class DiscordModule implements PluginModule {
     @Override
     public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

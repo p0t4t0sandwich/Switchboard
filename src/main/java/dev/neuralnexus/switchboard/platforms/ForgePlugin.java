@@ -5,20 +5,20 @@
 
 package dev.neuralnexus.switchboard.platforms;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 import net.minecraftforge.fml.common.Mod;
 
 /** Forge entry point. */
 @Mod(
-        value = Switchboard.PROJECT_ID,
-        modid = Switchboard.PROJECT_ID,
+        value = SwitchboardPlugin.PROJECT_ID,
+        modid = SwitchboardPlugin.PROJECT_ID,
         useMetadata = true,
         serverSideOnly = true,
         acceptableRemoteVersions = "*")
 public class ForgePlugin {
     public ForgePlugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 }

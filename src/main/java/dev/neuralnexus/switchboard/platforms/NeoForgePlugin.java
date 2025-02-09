@@ -5,15 +5,15 @@
 
 package dev.neuralnexus.switchboard.platforms;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 import net.neoforged.fml.common.Mod;
 
 /** NeoForge entry point. */
-@Mod(Switchboard.PROJECT_ID)
+@Mod(SwitchboardPlugin.PROJECT_ID)
 public class NeoForgePlugin {
     public NeoForgePlugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 }

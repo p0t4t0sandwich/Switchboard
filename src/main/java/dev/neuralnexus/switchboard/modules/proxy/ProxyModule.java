@@ -6,7 +6,7 @@
 package dev.neuralnexus.switchboard.modules.proxy;
 
 import dev.neuralnexus.modapi.metadata.MetaAPI;
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.api.message.MessageSender;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
@@ -31,12 +31,12 @@ public class ProxyModule implements PluginModule {
     @Override
     public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already started!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
 
-        if (!Switchboard.hasReloaded()) {
+        if (!SwitchboardPlugin.hasReloaded()) {
             // Register player listeners
             if (MetaAPI.instance().isProxy()) {
                 PlayerEvents.SERVER_SWITCH.register(
@@ -92,19 +92,19 @@ public class ProxyModule implements PluginModule {
                     });
         }
 
-        Switchboard.logger().info("Submodule " + id() + " has been started!");
+        SwitchboardPlugin.logger().info("Submodule " + id() + " has been started!");
     }
 
     @Override
     public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;
 
         // Remove references to objects
 
-        Switchboard.logger().info("Submodule " + id() + " has been stopped!");
+        SwitchboardPlugin.logger().info("Submodule " + id() + " has been stopped!");
     }
 }

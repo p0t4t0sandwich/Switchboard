@@ -7,18 +7,18 @@ package dev.neuralnexus.switchboard.platforms;
 
 import cpw.mods.fml.common.Mod;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 /** Legacy Forge entry point. */
 @Mod(
-        modid = Switchboard.PROJECT_ID,
-        name = Switchboard.PROJECT_NAME,
+        modid = SwitchboardPlugin.PROJECT_ID,
+        name = SwitchboardPlugin.PROJECT_NAME,
         useMetadata = true,
         acceptableRemoteVersions = "*",
-        bukkitPlugin = Switchboard.PROJECT_NAME)
+        bukkitPlugin = SwitchboardPlugin.PROJECT_NAME)
 public class LegacyForgePlugin {
     public LegacyForgePlugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 }

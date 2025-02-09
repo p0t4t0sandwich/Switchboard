@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.websocket;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
@@ -25,22 +25,22 @@ public class WebSocketModule implements PluginModule {
     @Override
     public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already started!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
 
         WebSocketConfig config = SwitchboardConfigLoader.config().webSocket();
         if (config.host() == null || config.host().isEmpty()) {
-            Switchboard.logger().info("WebSocket host is not set, skipping start");
+            SwitchboardPlugin.logger().info("WebSocket host is not set, skipping start");
             return;
         }
         if (config.port() == 0) {
-            Switchboard.logger().info("WebSocket port is not set, skipping start");
+            SwitchboardPlugin.logger().info("WebSocket port is not set, skipping start");
             return;
         }
 
-        if (!Switchboard.hasReloaded()) {
+        if (!SwitchboardPlugin.hasReloaded()) {
             // Register events
             SwitchboardEvents.RECEIVE_MESSAGE.register(
                     (event) ->
@@ -63,7 +63,7 @@ public class WebSocketModule implements PluginModule {
     @Override
     public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

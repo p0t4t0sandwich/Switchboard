@@ -10,7 +10,7 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.telegram.ChatChannel;
@@ -67,7 +67,7 @@ public class TelegramAPI {
                             e.printStackTrace();
                         }
                     });
-            Switchboard.logger().info("Telegram bot is ready!");
+            SwitchboardPlugin.logger().info("Telegram bot is ready!");
         }
 
         public void removeListeners() {

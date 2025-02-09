@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.discord.api;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.discord.ChannelMapping;
@@ -68,7 +68,7 @@ public class DiscordAPI {
                 // Add the listener
                 api.addEventListener(this);
             } catch (Exception e) {
-                Switchboard.logger().info("Failed to start Discord Bot!");
+                SwitchboardPlugin.logger().info("Failed to start Discord Bot!");
                 e.printStackTrace();
             }
         }
@@ -80,7 +80,7 @@ public class DiscordAPI {
 
         @Override
         public void onReady(ReadyEvent event) {
-            Switchboard.logger().info("Discord bot is ready!");
+            SwitchboardPlugin.logger().info("Discord bot is ready!");
         }
 
         /**
@@ -140,7 +140,7 @@ public class DiscordAPI {
                 // Get the guild and channel
                 Guild guild = api.getGuildById(channel.guildId());
                 if (guild == null) {
-                    Switchboard.logger()
+                    SwitchboardPlugin.logger()
                             .error(
                                     "Guild not found for server "
                                             + server
@@ -149,7 +149,7 @@ public class DiscordAPI {
                 }
                 TextChannel textChannel = guild.getTextChannelById(channel.channelId());
                 if (textChannel == null) {
-                    Switchboard.logger()
+                    SwitchboardPlugin.logger()
                             .error(
                                     "Channel not found for server "
                                             + server

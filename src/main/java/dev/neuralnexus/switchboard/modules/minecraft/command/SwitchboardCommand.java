@@ -7,7 +7,7 @@ package dev.neuralnexus.switchboard.modules.minecraft.command;
 
 import static dev.neuralnexus.taterapi.placeholder.PlaceholderParser.substituteSectionSign;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
@@ -56,9 +56,9 @@ public class SwitchboardCommand implements Command {
                     return true;
                 }
                 try {
-                    Switchboard.instance().reload();
+                    SwitchboardPlugin.instance().reload();
                     sender.sendMessage(
-                            substituteSectionSign("&aReloaded " + Switchboard.PROJECT_NAME + "!"));
+                            substituteSectionSign("&aReloaded " + SwitchboardPlugin.PROJECT_NAME + "!"));
                 } catch (Exception e) {
                     sender.sendMessage(
                             substituteSectionSign(
@@ -75,7 +75,7 @@ public class SwitchboardCommand implements Command {
                 }
                 sender.sendMessage(
                         substituteSectionSign(
-                                "&aSwitchboard version: " + Switchboard.PROJECT_VERSION));
+                                "&aSwitchboard version: " + SwitchboardPlugin.PROJECT_VERSION));
                 break;
             default:
                 sender.sendMessage(substituteSectionSign(this.usage()));

@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.webhook;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
@@ -22,12 +22,12 @@ public class WebhookModule implements PluginModule {
     @Override
     public void onEnable() {
         if (STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already started!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
 
-        if (!Switchboard.hasReloaded()) {
+        if (!SwitchboardPlugin.hasReloaded()) {
             // Register events
             SwitchboardEvents.RECEIVE_MESSAGE.register(
                     event ->
@@ -40,7 +40,7 @@ public class WebhookModule implements PluginModule {
     @Override
     public void onDisable() {
         if (!STARTED) {
-            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
+            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

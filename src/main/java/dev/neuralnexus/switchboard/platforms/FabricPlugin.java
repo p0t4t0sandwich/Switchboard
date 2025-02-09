@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.platforms;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 import net.fabricmc.api.ModInitializer;
@@ -13,7 +13,7 @@ import net.fabricmc.api.ModInitializer;
 /** Fabric entry point. */
 public class FabricPlugin implements ModInitializer {
     public FabricPlugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 
     @Override

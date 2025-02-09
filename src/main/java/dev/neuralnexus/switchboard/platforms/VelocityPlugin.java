@@ -9,21 +9,21 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 
-import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.SwitchboardPlugin;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
 
 /** Velocity entry point. */
 @Plugin(
-        id = Switchboard.PROJECT_ID,
-        name = Switchboard.PROJECT_NAME,
-        version = Switchboard.PROJECT_VERSION,
-        authors = Switchboard.PROJECT_AUTHORS,
-        description = Switchboard.PROJECT_DESCRIPTION,
-        url = Switchboard.PROJECT_URL,
+        id = SwitchboardPlugin.PROJECT_ID,
+        name = SwitchboardPlugin.PROJECT_NAME,
+        version = SwitchboardPlugin.PROJECT_VERSION,
+        authors = SwitchboardPlugin.PROJECT_AUTHORS,
+        description = SwitchboardPlugin.PROJECT_DESCRIPTION,
+        url = SwitchboardPlugin.PROJECT_URL,
         dependencies = {@Dependency(id = "taterlib")})
 public class VelocityPlugin {
     @Inject
     public VelocityPlugin() {
-        PluginEvents.ENABLED.register(event -> Switchboard.instance().onEnable());
+        PluginEvents.ENABLED.register(event -> SwitchboardPlugin.instance().onEnable());
     }
 }
