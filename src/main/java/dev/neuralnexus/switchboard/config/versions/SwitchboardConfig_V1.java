@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.config.versions;
@@ -25,7 +24,8 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
     @Required
     private int version = 1;
 
-    @Comment("""
+    @Comment(
+            """
             Enable or disable Switchboard's modules
             discord: Enable if you want the server to relay messages to/from Discord
             proxy: Whether the plugin is running in a proxy network
@@ -37,6 +37,7 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
                 Short explanation: The 1.13 update changed the way that Forge initializes and syncs modded data with the server, this causes issues with the way that the proxy works
             """)
     private Map<String, Boolean> modules = new HashMap<>();
+
     {
         modules.put("discord", false);
         modules.put("proxy", false);

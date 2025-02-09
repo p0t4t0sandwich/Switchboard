@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.api.message;
@@ -13,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dev.neuralnexus.taterapi.entity.player.User;
-import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Arrays;
@@ -94,8 +92,7 @@ public class Message {
      * @param channel The channel
      * @param message The message
      */
-    public Message(
-            User sender, MessageType channel, String message, String placeHolderMessage) {
+    public Message(User sender, MessageType channel, String message, String placeHolderMessage) {
         this(new MessageSender(sender), channel, message, placeHolderMessage, new HashMap<>());
     }
 
@@ -157,7 +154,9 @@ public class Message {
     }
 
     /**
-     * @inheritDoc
+     * Getter for the message
+     *
+     * @return The message
      */
     public String message() {
         return this.message;
@@ -223,16 +222,20 @@ public class Message {
      * @return The placeHolderMessage with the placeHolders applied
      */
     public String applyPlaceHolders() {
-        String message = this.placeHolderMessage;
-        PlaceholderParser parser = sender.parsePlaceholders(message);
-        for (String placeHolder : this.placeHolders.keySet()) {
-            parser.parseString(placeHolder, this.placeHolders.get(placeHolder));
-        }
-        return parser.getResult();
+        // TODO: Implement this
+        return this.message;
+        //        String message = this.placeHolderMessage;
+        //        PlaceholderParser parser = sender.parsePlaceholders(message);
+        //        for (String placeHolder : this.placeHolders.keySet()) {
+        //            parser.parseString(placeHolder, this.placeHolders.get(placeHolder));
+        //        }
+        //        return parser.getResult();
     }
 
     /**
-     * @inheritDoc
+     * Getter for the timestamp
+     *
+     * @return The timestamp
      */
     public long getTimestamp() {
         return this.timeStamp;

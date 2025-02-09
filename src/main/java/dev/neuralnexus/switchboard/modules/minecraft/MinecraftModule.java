@@ -1,11 +1,11 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.modules.minecraft;
 
+import dev.neuralnexus.modapi.metadata.MetaAPI;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
@@ -42,7 +42,7 @@ public class MinecraftModule implements PluginModule {
                     event -> event.registerCommand(new SwitchboardCommand(), "tc"));
 
             // Register player listeners
-            if (!MetaAPI.isProxy()) {
+            if (!MetaAPI.instance().isProxy()) {
                 PlayerEvents.ADVANCEMENT_FINISHED.register(
                         SwitchboardPlayerListener::onPlayerAdvancementFinished);
                 PlayerEvents.DEATH.register(SwitchboardPlayerListener::onPlayerDeath);

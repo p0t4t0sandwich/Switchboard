@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.modules.minecraft.command;
@@ -9,6 +8,7 @@ package dev.neuralnexus.switchboard.modules.minecraft.command;
 import static dev.neuralnexus.taterapi.placeholder.PlaceholderParser.substituteSectionSign;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
 
@@ -49,7 +49,7 @@ public class SwitchboardCommand implements Command {
         }
         switch (args[0].toLowerCase()) {
             case "reload":
-                if (!sender.hasPermission(permission() + ".reload")) {
+                if (!TaterAPIProvider.hasPermission(sender, this.permission() + ".reload")) {
                     sender.sendMessage(
                             substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
@@ -67,7 +67,7 @@ public class SwitchboardCommand implements Command {
                 }
                 break;
             case "version":
-                if (!sender.hasPermission(permission() + ".version")) {
+                if (!TaterAPIProvider.hasPermission(sender, this.permission() + ".version")) {
                     sender.sendMessage(
                             substituteSectionSign(
                                     "&cYou do not have permission to use this command."));
@@ -78,7 +78,7 @@ public class SwitchboardCommand implements Command {
                                 "&aSwitchboard version: " + Switchboard.PROJECT_VERSION));
                 break;
             default:
-                sender.sendMessage(substituteSectionSign(usage()));
+                sender.sendMessage(substituteSectionSign(this.usage()));
                 break;
         }
         return true;

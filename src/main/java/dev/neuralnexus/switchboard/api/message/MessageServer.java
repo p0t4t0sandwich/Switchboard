@@ -1,12 +1,11 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.api.message;
 
-import dev.neuralnexus.taterapi.TaterAPIProvider;
+import dev.neuralnexus.modapi.metadata.MetaAPI;
 import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
@@ -24,7 +23,7 @@ public class MessageServer implements SimpleServer {
     public MessageServer(SimpleServer server) {
         this.name = server.name();
         String brand;
-        if (MetaAPI.isProxy()) {
+        if (MetaAPI.instance().isProxy()) {
             brand = "Unknown";
         } else {
             brand = server.brand();

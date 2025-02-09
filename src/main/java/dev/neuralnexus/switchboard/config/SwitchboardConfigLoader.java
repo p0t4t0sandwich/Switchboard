@@ -1,16 +1,15 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.config;
 
 import dev.neuralnexus.modapi.metadata.Logger;
 import dev.neuralnexus.modapi.metadata.MetaAPI;
-import dev.neuralnexus.taterapi.config.VersionedConfig;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
+import dev.neuralnexus.taterapi.config.VersionedConfig;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;

@@ -1,16 +1,16 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.modules.discord.command;
 
+import static dev.neuralnexus.modapi.metadata.impl.util.TextUtil.substituteSectionSign;
+
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
+import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
-
-import static dev.neuralnexus.modapi.metadata.impl.util.TextUtil.substituteSectionSign;
 
 /** Discord Command. */
 public class DiscordCommand implements Command {
@@ -43,7 +43,7 @@ public class DiscordCommand implements Command {
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!sender.hasPermission(permission())) {
+        if (!TaterAPIProvider.hasPermission(sender, this.permission())) {
             sender.sendMessage(
                     substituteSectionSign("&cYou do not have permission to use this command."));
         } else {

@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard;
@@ -19,15 +18,14 @@ import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
 import dev.neuralnexus.switchboard.modules.webhook.WebhookModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
-import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterapi.event.api.ServerEvents;
-import dev.neuralnexus.taterapi.metrics.bstats.BStatsMetrics;
-import dev.neuralnexus.taterapi.metrics.bstats.MetricsAdapter;
-import dev.neuralnexus.taterapi.loader.Loader;
 import dev.neuralnexus.taterapi.event.api.PluginEvents;
+import dev.neuralnexus.taterapi.event.api.ServerEvents;
+import dev.neuralnexus.taterapi.loader.Loader;
 import dev.neuralnexus.taterapi.loader.plugin.ModuleLoader;
 import dev.neuralnexus.taterapi.loader.plugin.Plugin;
 import dev.neuralnexus.taterapi.loader.plugin.impl.ModuleLoaderImpl;
+import dev.neuralnexus.taterapi.metrics.bstats.BStatsMetrics;
+import dev.neuralnexus.taterapi.metrics.bstats.MetricsAdapter;
 
 import java.util.HashMap;
 
@@ -91,7 +89,7 @@ public class Switchboard implements Plugin {
                         + ", with "
                         + api.mappings().toString()
                         + " mappings!");
-        PluginEvent.DISABLED.register(event -> onDisable());
+        PluginEvents.DISABLED.register(event -> onDisable());
 
         Loader loader = Loader.instance();
 

@@ -43,7 +43,7 @@ dependencies {
     implementation("io.javalin:javalin:6.4.0")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
 
-    compileOnly("dev.neuralnexus:taterapi:${project.properties["taterlib_version"]}")
+    compileOnly("dev.neuralnexus:taterapi:2.0.0-SNAPSHOT")
     compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.5")
 
     compileOnly("org.spongepowered:configurate-hocon:4.1.2")

@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2024 Dylan Sperrer - dylan@sperrer.ca
- * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">GPL-3</a>
- * The API is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE-API">MIT</a>
+ * Copyright (c) 2025 Dylan Sperrer - dylan@sperrer.ca
+ * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
 package dev.neuralnexus.switchboard.modules.proxy;
@@ -13,8 +12,6 @@ import dev.neuralnexus.switchboard.api.message.MessageSender;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.event.api.NetworkEvents;
 import dev.neuralnexus.taterapi.event.api.PlayerEvents;
@@ -86,7 +83,7 @@ public class ProxyModule implements PluginModule {
                         Message.MessageType channel = message.channel();
 
                         // Send the message using proxy channels
-                        if (!TaterAPIProvider.platform().isProxy()
+                        if (!MetaAPI.instance().isProxy()
                                 && !channel.equals(Message.MessageType.PLAYER_MESSAGE)
                                 && !channel.equals(Message.MessageType.SERVER_STARTED)
                                 && !channel.equals(Message.MessageType.SERVER_STOPPED)) {
