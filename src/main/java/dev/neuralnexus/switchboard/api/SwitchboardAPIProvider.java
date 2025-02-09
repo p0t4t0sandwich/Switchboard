@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.api;
 
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
+import dev.neuralnexus.switchboard.Switchboard;
 
 /** API Provider */
 public class SwitchboardAPIProvider {
@@ -31,13 +31,14 @@ public class SwitchboardAPIProvider {
     public static void register(SwitchboardAPI instance) {
         if (SwitchboardAPIProvider.instance != null) {
             throw new IllegalStateException(
-                    SwitchboardPlugin.PROJECT_NAME + "API has already been registered!");
+                    Switchboard.PROJECT_NAME + "API has already been registered!");
         }
         SwitchboardAPIProvider.instance = instance;
     }
 
     /** DO NOT USE THIS METHOD, IT IS FOR INTERNAL USE ONLY */
     public static void unregister() {
+        SwitchboardAPI.scheduler().shutdownBackgroundScheduler();
         SwitchboardAPIProvider.instance = null;
     }
 
@@ -47,7 +48,7 @@ public class SwitchboardAPIProvider {
     private static final class NotLoadedException extends IllegalStateException {
         private static final String MESSAGE =
                 "The API hasn't loaded yet, or you don't have the "
-                        + SwitchboardPlugin.PROJECT_NAME
+                        + Switchboard.PROJECT_NAME
                         + " plugin installed.";
 
         NotLoadedException() {

@@ -5,13 +5,12 @@
 
 package dev.neuralnexus.switchboard.modules.discord.api;
 
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.api.Message;
+import dev.neuralnexus.switchboard.api.MessageTypes;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.discord.ChannelMapping;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
-import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -21,6 +20,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -68,7 +68,7 @@ public class DiscordAPI {
                 // Add the listener
                 api.addEventListener(this);
             } catch (Exception e) {
-                SwitchboardPlugin.logger().info("Failed to start Discord Bot!");
+                Switchboard.logger().info("Failed to start Discord Bot!");
                 e.printStackTrace();
             }
         }
@@ -79,8 +79,8 @@ public class DiscordAPI {
         }
 
         @Override
-        public void onReady(ReadyEvent event) {
-            SwitchboardPlugin.logger().info("Discord bot is ready!");
+        public void onReady(@NotNull ReadyEvent event) {
+            Switchboard.logger().info("Discord bot is ready!");
         }
 
         /**
@@ -100,21 +100,14 @@ public class DiscordAPI {
             String guildID = message.getGuild().getId();
             String channelID = message.getChannel().getId();
 
-            // Check if the channel is a server channel
-            Optional<String> server =
-                    SwitchboardConfigLoader.config().discord().findServer(guildID, channelID);
-            if (!server.isPresent()) {
-                return;
-            }
-
-            // Send the message
-            SwitchboardEvents.RECEIVE_MESSAGE.invoke(
-                    new ReceiveMessageEvent(
-                            new Message(
-                                    new DiscordPlayer(message),
-                                    Message.MessageType.PLAYER_MESSAGE,
-                                    content,
-                                    SwitchboardConfigLoader.config().formatting().discord())));
+            // Publish the message
+            Switchboard.bus().publish(
+                    new Message(
+                            guildID + "/" + channelID,
+                            message.getAuthor().getName(),
+                            MessageTypes.MESSAGE,
+                            content
+                    ));
         }
 
         /**
@@ -140,7 +133,7 @@ public class DiscordAPI {
                 // Get the guild and channel
                 Guild guild = api.getGuildById(channel.guildId());
                 if (guild == null) {
-                    SwitchboardPlugin.logger()
+                    Switchboard.logger()
                             .error(
                                     "Guild not found for server "
                                             + server
@@ -149,7 +142,7 @@ public class DiscordAPI {
                 }
                 TextChannel textChannel = guild.getTextChannelById(channel.channelId());
                 if (textChannel == null) {
-                    SwitchboardPlugin.logger()
+                    Switchboard.logger()
                             .error(
                                     "Channel not found for server "
                                             + server

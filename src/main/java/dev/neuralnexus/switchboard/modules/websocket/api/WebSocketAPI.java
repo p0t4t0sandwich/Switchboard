@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.websocket.api;
 
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.api.Message;
 
 /** A class for handling WebSocket API requests. */
 public class WebSocketAPI {

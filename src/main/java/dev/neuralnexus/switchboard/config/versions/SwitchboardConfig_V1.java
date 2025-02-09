@@ -28,6 +28,7 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
             """
             Enable or disable Switchboard's modules
             discord: Enable if you want the server to relay messages to/from Discord
+            minecraft: Enable if you want the server to relay messages to/from Minecraft
             proxy: Whether the plugin is running in a proxy network
                 Set this to true on both ends to enable plugin messaging for some events (player advancements, death messages, and other server-side-only events.)
             telegram: Enable if you want the server to relay messages to/from Telegram

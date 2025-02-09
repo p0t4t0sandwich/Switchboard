@@ -3,11 +3,9 @@
  * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.api.rework.sender;
+package dev.neuralnexus.switchboard.api;
 
-/** Sender abstraction */
+/** The creator of a message */
 public interface Sender {
     String name();
-
-    void send(String message);
 }

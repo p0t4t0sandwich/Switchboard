@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.websocket.api;
 
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.api.Message;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 

@@ -43,12 +43,18 @@ dependencies {
     implementation("io.javalin:javalin:6.4.0")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
 
-    compileOnly("dev.neuralnexus:taterapi:2.0.0-SNAPSHOT")
-    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.21")
+//    compileOnly("dev.neuralnexus:taterapi:2.0.0-SNAPSHOT")
+//    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.21")
 
-    compileOnly("org.spongepowered:configurate-hocon:4.1.2")
-    compileOnly("com.google.code.gson:gson:2.10.1")
-    compileOnly("com.google.guava:guava:33.0.0-jre")
+    implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
+    implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
+//    implementation("com.google.code.gson:gson:2.10.1")
+//    implementation("com.google.guava:guava:33.0.0-jre")
+
+    // EventBus
+    implementation("net.engio:mbassador:1.3.2")
+
+    compileOnly("org.jetbrains:annotations:24.1.0")
 }
 
 tasks.withType<ProcessResources> {
@@ -101,38 +107,38 @@ tasks.named<ShadowJar>("shadowJar") {
         exclude("META-INF/*NOTICE*")
         exclude("META-INF/*kotlin_module")
 
-        exclude(dependency("com.google.code.gson:gson:2.10.1"))
+//        exclude(dependency("com.google.code.gson:gson:2.10.1"))
     }
-    relocate("org.intellij", "${group}.${name}.lib.intellij")
-    relocate("org.jetbrains", "${group}.${name}.lib.jetbrains")
-    relocate("net.dv8tion", "${group}.${name}.lib.dv8tion")
-    relocate("org.apache.commons", "${group}.${name}.lib.commons")
-    relocate("okhttp3", "${group}.${name}.lib.okhttp3")
-    relocate("okio", "${group}.${name}.lib.okio")
-    relocate("kotlin", "${group}.${name}.lib.kotlin")
-    relocate("com.neovisionaries", "${group}.${name}.lib.neovisionaries")
-    relocate("gnu.trove", "${group}.${name}.lib.trove")
-    relocate("com.iwebpp", "${group}.${name}.lib.iwebpp")
-    relocate("com.fasterxml.jackson", "${group}.${name}.lib.jackson")
-    relocate("org.slf4j", "${group}.${name}.lib.slf4j") {
-        exclude("org.slf4j.Logger")
-    }
-
-    relocate("com.pengrad.telegrambot", "${group}.${name}.lib.telegrambot")
-
-    relocate("io.javalin", "${group}.${name}.lib.javalin")
-
-    // TaterLib bundled dependencies
-    relocate("org.spongepowered.configurate", "dev.neuralnexus.taterlib.lib.configurate")
-    relocate("com.typesafe.config", "dev.neuralnexus.taterlib.lib.typesafe.config")
-    relocate("io.leangen.geantyref", "dev.neuralnexus.taterlib.lib.geantyref")
-    relocate("com.google.gson", "dev.neuralnexus.taterlib.lib.gson")
-    relocate("com.google.common", "dev.neuralnexus.taterlib.lib.guava")
-    relocate("com.google.thirdparty", "dev.neuralnexus.taterlib.lib.google.thirdparty")
-
-    minimize {
-        exclude(dependency("${group}:${name}:${version}"))
-    }
+//    relocate("org.intellij", "${group}.${name}.lib.intellij")
+//    relocate("org.jetbrains", "${group}.${name}.lib.jetbrains")
+//    relocate("net.dv8tion", "${group}.${name}.lib.dv8tion")
+//    relocate("org.apache.commons", "${group}.${name}.lib.commons")
+//    relocate("okhttp3", "${group}.${name}.lib.okhttp3")
+//    relocate("okio", "${group}.${name}.lib.okio")
+//    relocate("kotlin", "${group}.${name}.lib.kotlin")
+//    relocate("com.neovisionaries", "${group}.${name}.lib.neovisionaries")
+//    relocate("gnu.trove", "${group}.${name}.lib.trove")
+//    relocate("com.iwebpp", "${group}.${name}.lib.iwebpp")
+//    relocate("com.fasterxml.jackson", "${group}.${name}.lib.jackson")
+//    relocate("org.slf4j", "${group}.${name}.lib.slf4j") {
+//        exclude("org.slf4j.Logger")
+//    }
+//
+//    relocate("com.pengrad.telegrambot", "${group}.${name}.lib.telegrambot")
+//
+//    relocate("io.javalin", "${group}.${name}.lib.javalin")
+//
+//    // TaterLib bundled dependencies
+//    relocate("org.spongepowered.configurate", "dev.neuralnexus.taterlib.lib.configurate")
+//    relocate("com.typesafe.config", "dev.neuralnexus.taterlib.lib.typesafe.config")
+//    relocate("io.leangen.geantyref", "dev.neuralnexus.taterlib.lib.geantyref")
+//    relocate("com.google.gson", "dev.neuralnexus.taterlib.lib.gson")
+//    relocate("com.google.common", "dev.neuralnexus.taterlib.lib.guava")
+//    relocate("com.google.thirdparty", "dev.neuralnexus.taterlib.lib.google.thirdparty")
+//
+//    minimize {
+//        exclude(dependency("${group}:${name}:${version}"))
+//    }
 
     archiveFileName = "${name}-${version}.jar"
 

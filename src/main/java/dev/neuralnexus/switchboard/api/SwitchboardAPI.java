@@ -5,6 +5,7 @@
 
 package dev.neuralnexus.switchboard.api;
 
+import dev.neuralnexus.switchboard.api.impl.SchedulerImpl;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.modules.discord.api.DiscordAPI;
 import dev.neuralnexus.switchboard.modules.telegram.api.TelegramAPI;
@@ -13,12 +14,14 @@ import dev.neuralnexus.switchboard.modules.websocket.api.WebSocketAPI;
 
 /** API wrapper class */
 public class SwitchboardAPI {
+    private static Scheduler scheduler;
     private DiscordAPI discordAPI;
     private TelegramAPI telegramAPI;
     private WebhookAPI webhookAPI;
     private WebSocketAPI webSocketAPI;
 
     public SwitchboardAPI() {
+        scheduler = new SchedulerImpl();
         if (SwitchboardConfigLoader.config().checkModule("discord")) {
             this.discordAPI = new DiscordAPI();
         }
@@ -31,6 +34,15 @@ public class SwitchboardAPI {
         if (SwitchboardConfigLoader.config().checkModule("websocket")) {
             this.webSocketAPI = new WebSocketAPI();
         }
+    }
+
+    /**
+     * Get the Scheduler.
+     *
+     * @return The Scheduler.
+     */
+    public static Scheduler scheduler() {
+        return scheduler;
     }
 
     /**

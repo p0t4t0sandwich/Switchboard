@@ -5,28 +5,19 @@
 
 package dev.neuralnexus.switchboard.modules.discord;
 
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
+import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.switchboard.modules.discord.api.DiscordServer;
-import dev.neuralnexus.switchboard.modules.discord.command.DiscordCommand;
-import dev.neuralnexus.taterapi.event.api.CommandEvents;
-import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 /** Discord module. */
-public class DiscordModule implements PluginModule {
+public class DiscordModule {
     private static boolean STARTED = false;
 
-    @Override
-    public String id() {
-        return "Discord";
-    }
-
-    @Override
     public void onEnable() {
         if (STARTED) {
-            SwitchboardPlugin.logger().info("Submodule " + id() + " has already started!");
+            Switchboard.logger().info("Submodule " + id() + " has already started!");
             return;
         }
         STARTED = true;
@@ -34,15 +25,15 @@ public class DiscordModule implements PluginModule {
         // Check if the token and channel mappings are set
         String token = SwitchboardConfigLoader.config().discord().token();
         if (token == null || token.isEmpty()) {
-            SwitchboardPlugin.logger().info("No Discord token found in switchboard.conf!");
+            Switchboard.logger().info("No Discord token found in switchboard.conf!");
             return;
         }
         if (SwitchboardConfigLoader.config().discord().mappings().isEmpty()) {
-            SwitchboardPlugin.logger().info("No server-channel mappings found in switchboard.conf!");
+            Switchboard.logger().info("No server-channel mappings found in switchboard.conf!");
             return;
         }
 
-        if (!SwitchboardPlugin.hasReloaded()) {
+        if (!Switchboard.hasReloaded()) {
             // Register events
             SwitchboardEvents.RECEIVE_MESSAGE.register(
                     (event) -> {
@@ -53,10 +44,6 @@ public class DiscordModule implements PluginModule {
                                     .sendMessage(event.getMessage());
                         }
                     });
-
-            // Register commands
-            CommandEvents.REGISTER_COMMAND.register(
-                    event -> event.registerCommand(new DiscordCommand()));
         }
 
         // Start the bot
@@ -66,7 +53,7 @@ public class DiscordModule implements PluginModule {
     @Override
     public void onDisable() {
         if (!STARTED) {
-            SwitchboardPlugin.logger().info("Submodule " + id() + " has already stopped!");
+            Switchboard.logger().info("Submodule " + id() + " has already stopped!");
             return;
         }
         STARTED = false;

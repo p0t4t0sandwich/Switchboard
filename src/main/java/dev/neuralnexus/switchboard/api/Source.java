@@ -3,11 +3,9 @@
  * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.api.rework.origin;
+package dev.neuralnexus.switchboard.api;
 
-/** Origin abstraction */
-public interface Origin {
+/** The origin of a message */
+public interface Source {
     String name();
-
-    void broadcast(String message);
 }

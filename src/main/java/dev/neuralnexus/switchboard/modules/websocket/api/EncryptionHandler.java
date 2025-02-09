@@ -5,7 +5,7 @@
 
 package dev.neuralnexus.switchboard.modules.websocket.api;
 
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.api.Packet;
 
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -29,7 +29,7 @@ public class EncryptionHandler {
         cipher = Cipher.getInstance("AES/GCM/NoPadding");
     }
 
-    public byte[] encrypt(Message message) throws GeneralSecurityException {
+    public byte[] encrypt(Packet packet) throws GeneralSecurityException {
         byte[] initializationVector = new byte[IV_LENGTH];
         SecureRandom random = new SecureRandom();
         random.nextBytes(initializationVector);
@@ -37,14 +37,14 @@ public class EncryptionHandler {
                 Cipher.ENCRYPT_MODE,
                 secretKey,
                 new GCMParameterSpec(IV_LENGTH * 8, initializationVector));
-        byte[] encryptedData = cipher.doFinal(message.toByteArray());
+        byte[] encryptedData = cipher.doFinal(packet.toBytes());
         byte[] result = new byte[encryptedData.length + IV_LENGTH];
         System.arraycopy(encryptedData, 0, result, 0, encryptedData.length);
         System.arraycopy(initializationVector, 0, result, encryptedData.length, IV_LENGTH);
         return result;
     }
 
-    public Message decrypt(byte[] cypher) throws GeneralSecurityException {
+    public Packet decrypt(byte[] cypher) throws GeneralSecurityException {
         byte[] initializationVector = new byte[IV_LENGTH];
         byte[] encryptedData = new byte[cypher.length - IV_LENGTH];
         System.arraycopy(cypher, 0, encryptedData, 0, encryptedData.length);
@@ -54,7 +54,7 @@ public class EncryptionHandler {
                 secretKey,
                 new GCMParameterSpec(IV_LENGTH * 8, initializationVector));
         byte[] decryptedData = cipher.doFinal(encryptedData);
-        return Message.fromByteArray(decryptedData);
+        return Packet.fromBytes(decryptedData);
     }
 
     public static String generateKey() {

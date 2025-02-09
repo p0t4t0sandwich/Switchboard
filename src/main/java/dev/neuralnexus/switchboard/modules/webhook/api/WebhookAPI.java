@@ -8,8 +8,8 @@ package dev.neuralnexus.switchboard.modules.webhook.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.api.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
@@ -64,7 +64,7 @@ public class WebhookAPI {
             gson.fromJson(br.readLine(), Map.class);
 
         } catch (IOException e) {
-            SwitchboardPlugin.logger().error("Could not send webhook", e);
+            Switchboard.logger().error("Could not send webhook", e);
         }
     }
 

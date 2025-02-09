@@ -7,11 +7,10 @@ package dev.neuralnexus.switchboard.modules.websocket.api;
 
 import com.neovisionaries.ws.client.*;
 
-import dev.neuralnexus.switchboard.SwitchboardPlugin;
-import dev.neuralnexus.switchboard.api.message.Message;
+import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.api.Message;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterapi.TaterAPIProvider;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -50,14 +49,14 @@ public class WebSocketClient {
                 .runLaterAsync(
                         () -> {
                             try {
-                                SwitchboardPlugin.logger()
+                                Switchboard.logger()
                                         .info(
                                                 "Reconnecting to WebSocket server... Attempt "
                                                         + reconnectAttempts
                                                         + " of "
                                                         + maxReconnectAttempts);
                                 ws.recreate();
-                                SwitchboardPlugin.logger().info("Reconnected to WebSocket server");
+                                Switchboard.logger().info("Reconnected to WebSocket server");
                             } catch (IOException e) {
                                 this.reconnect();
                             }
@@ -75,7 +74,7 @@ public class WebSocketClient {
                 .runLaterAsync(
                         () -> {
                             try {
-                                SwitchboardPlugin.logger()
+                                Switchboard.logger()
                                         .info(
                                                 "Retrying WebSocket server connection... Attempt "
                                                         + reconnectAttempts
@@ -92,7 +91,7 @@ public class WebSocketClient {
                                                                 + identifier);
                                 ws.connect();
                                 this.addListener();
-                                SwitchboardPlugin.logger().info("Connected to WebSocket server");
+                                Switchboard.logger().info("Connected to WebSocket server");
                             } catch (IOException | WebSocketException e) {
                                 this.retryConnect();
                             }
