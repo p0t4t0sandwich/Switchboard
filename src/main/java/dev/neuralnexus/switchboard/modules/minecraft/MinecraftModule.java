@@ -17,7 +17,7 @@ import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.event.api.CommandEvents;
 import dev.neuralnexus.taterapi.event.api.PlayerEvents;
 import dev.neuralnexus.taterapi.event.api.ServerEvents;
-import dev.neuralnexus.taterloader.plugin.PluginModule;
+import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 /** Minecraft module. */
 public class MinecraftModule implements PluginModule {
@@ -42,7 +42,7 @@ public class MinecraftModule implements PluginModule {
                     event -> event.registerCommand(new SwitchboardCommand(), "tc"));
 
             // Register player listeners
-            if (!TaterAPIProvider.platform().isProxy()) {
+            if (!MetaAPI.isProxy()) {
                 PlayerEvents.ADVANCEMENT_FINISHED.register(
                         SwitchboardPlayerListener::onPlayerAdvancementFinished);
                 PlayerEvents.DEATH.register(SwitchboardPlayerListener::onPlayerDeath);

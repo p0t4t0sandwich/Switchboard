@@ -12,7 +12,7 @@ import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterloader.plugin.PluginModule;
+import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 /** A module for WebSocket. */
 public class WebSocketModule implements PluginModule {

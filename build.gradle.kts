@@ -11,9 +11,9 @@ plugins {
 java {
     withSourcesJar()
     withJavadocJar()
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
-    sourceCompatibility = JavaVersion.toVersion(8)
-    targetCompatibility = JavaVersion.toVersion(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    sourceCompatibility = JavaVersion.toVersion(21)
+    targetCompatibility = JavaVersion.toVersion(21)
 }
 
 tasks.withType<JavaCompile> {

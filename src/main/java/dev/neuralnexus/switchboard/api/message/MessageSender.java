@@ -8,13 +8,13 @@ package dev.neuralnexus.switchboard.api.message;
 
 import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.entity.player.Connection;
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.resource.ResourceKey;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.UUID;
 
-public class MessageSender implements SimplePlayer, Connection {
+public class MessageSender implements User, Connection {
     private final String name;
     private final String prefix;
     private final String suffix;
@@ -68,7 +68,7 @@ public class MessageSender implements SimplePlayer, Connection {
      * @param player The player
      * @param server The server name
      */
-    public MessageSender(SimplePlayer player, SimpleServer server) {
+    public MessageSender(User player, SimpleServer server) {
         this(
                 player.name(),
                 player.prefix(),
@@ -83,7 +83,7 @@ public class MessageSender implements SimplePlayer, Connection {
      *
      * @param player The player
      */
-    public MessageSender(SimplePlayer player) {
+    public MessageSender(User player) {
         this(
                 player.name(),
                 player.prefix(),
@@ -125,11 +125,6 @@ public class MessageSender implements SimplePlayer, Connection {
     @Override
     public UUID uuid() {
         return this.uuid;
-    }
-
-    @Override
-    public boolean hasPermission(int permissionLevel) {
-        return false;
     }
 
     @Override

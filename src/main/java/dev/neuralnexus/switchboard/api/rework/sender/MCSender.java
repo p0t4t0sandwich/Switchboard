@@ -6,12 +6,12 @@
 
 package dev.neuralnexus.switchboard.api.rework.sender;
 
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 
 public class MCSender implements Sender {
-    private final SimplePlayer player;
+    private final User player;
 
-    public MCSender(SimplePlayer player) {
+    public MCSender(User player) {
         this.player = player;
     }
 

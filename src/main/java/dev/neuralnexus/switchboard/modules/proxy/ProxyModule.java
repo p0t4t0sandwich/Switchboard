@@ -6,6 +6,7 @@
 
 package dev.neuralnexus.switchboard.modules.proxy;
 
+import dev.neuralnexus.modapi.metadata.MetaAPI;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.api.message.MessageSender;
@@ -13,10 +14,11 @@ import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.event.api.NetworkEvents;
 import dev.neuralnexus.taterapi.event.api.PlayerEvents;
-import dev.neuralnexus.taterloader.plugin.PluginModule;
+import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 import java.util.HashMap;
 
@@ -39,10 +41,10 @@ public class ProxyModule implements PluginModule {
 
         if (!Switchboard.hasReloaded()) {
             // Register player listeners
-            if (TaterAPIProvider.platform().isProxy()) {
+            if (MetaAPI.instance().isProxy()) {
                 PlayerEvents.SERVER_SWITCH.register(
                         event -> {
-                            SimplePlayer player = event.player();
+                            User player = event.player();
 
                             // Construct and send two messages
                             SwitchboardEvents.RECEIVE_MESSAGE.invoke(

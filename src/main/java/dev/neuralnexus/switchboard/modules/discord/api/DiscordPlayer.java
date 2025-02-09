@@ -6,15 +6,14 @@
 
 package dev.neuralnexus.switchboard.modules.discord.api;
 
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import net.dv8tion.jda.api.entities.User;
 
 import java.util.UUID;
 
-/** Discord implementation of {@link SimplePlayer}. */
-public class DiscordPlayer implements SimplePlayer {
+/** Discord implementation of {@link dev.neuralnexus.taterapi.entity.player.User}. */
+public class DiscordPlayer implements dev.neuralnexus.taterapi.entity.player.User {
     private final User user;
     private final String name;
     private final String displayName;

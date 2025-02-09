@@ -11,7 +11,7 @@ import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 import dev.neuralnexus.switchboard.modules.telegram.api.TelegramServer;
-import dev.neuralnexus.taterloader.plugin.PluginModule;
+import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 /** Telegram module. */
 public class TelegramModule implements PluginModule {

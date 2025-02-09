@@ -6,91 +6,89 @@
 
 package dev.neuralnexus.switchboard.config;
 
+import dev.neuralnexus.modapi.metadata.Logger;
+import dev.neuralnexus.modapi.metadata.MetaAPI;
+import dev.neuralnexus.taterapi.config.VersionedConfig;
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
-import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
-import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
-import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
-import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
-import dev.neuralnexus.taterapi.config.ToggleableSetting;
-import dev.neuralnexus.taterapi.logger.Logger;
-import dev.neuralnexus.taterapi.metadata.PlatformData;
-import dev.neuralnexus.taterapi.util.ConfigUtil;
-import dev.neuralnexus.taterlib.TaterLib;
-
-import io.leangen.geantyref.TypeToken;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
-import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
     private static final Logger logger = Logger.create(Switchboard.PROJECT_ID + "-configloader");
     private static final Path configPath =
             Paths.get(
-                    PlatformData.instance().configFolder()
+                    MetaAPI.instance().meta().configFolder()
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + ".conf");
     private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
-    private static final TypeToken<Integer> versionType = new TypeToken<Integer>() {};
-    private static final TypeToken<List<ToggleableSetting>> moduleType =
-            new TypeToken<List<ToggleableSetting>>() {};
-    private static final TypeToken<DiscordConfig> discordType = new TypeToken<DiscordConfig>() {};
-    private static final TypeToken<TelegramConfig> telegramType =
-            new TypeToken<TelegramConfig>() {};
-    private static final TypeToken<FormattingConfig> formattingType =
-            new TypeToken<FormattingConfig>() {};
-    private static final TypeToken<WebhookConfig> webhookType = new TypeToken<WebhookConfig>() {};
-    private static final TypeToken<WebSocketConfig> webSocketType =
-            new TypeToken<WebSocketConfig>() {};
+    private static HoconConfigurationLoader loader;
     private static SwitchboardConfig config;
 
     /** Load the configuration from the file. */
     public static void load() {
-        ConfigUtil.copyDefaults(Switchboard.class, configPath, defaultConfigPath, logger);
-
-        final HoconConfigurationLoader loader =
-                HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root = ConfigUtil.getRoot(loader, logger);
-        if (root == null) {
+        loader = HoconConfigurationLoader.builder().path(configPath).build();
+        CommentedConfigurationNode node = null;
+        try {
+            node = loader.load();
+        } catch (ConfigurateException e) {
+            logger.error("An error occurred while loading the configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                logger.error("Caused by: ", e.getCause());
+            }
+        }
+        if (node == null) {
             return;
         }
 
-        ConfigurationNode versionNode = root.node("version");
-        int version = versionNode.getInt(1);
-
-        List<ToggleableSetting> modules = ConfigUtil.get(root, moduleType, "modules", logger);
-        DiscordConfig discord = ConfigUtil.get(root, discordType, "discord", logger);
-        TelegramConfig telegram = ConfigUtil.get(root, telegramType, "telegram", logger);
-        FormattingConfig formatting = ConfigUtil.get(root, formattingType, "formatting", logger);
-        WebhookConfig webhook = ConfigUtil.get(root, webhookType, "webhook", logger);
-        WebSocketConfig webSocket = ConfigUtil.get(root, webSocketType, "websocket", logger);
-
+        int version = VersionedConfig.tryGetVersion(node, logger);
         switch (version) {
             case 1:
-                config =
-                        new SwitchboardConfig_V1(
-                                version,
-                                modules,
-                                discord,
-                                telegram,
-                                formatting,
-                                webhook,
-                                webSocket);
+                try {
+                    config = node.get(SwitchboardConfig_V1.class);
+                } catch (SerializationException e) {
+                    logger.error(
+                            "An error occurred while loading the modules configuration: "
+                                    + e.getMessage());
+                    if (e.getCause() != null) {
+                        logger.error("Caused by: ", e.getCause());
+                    }
+                }
                 break;
             default:
-                logger.error("Unknown configuration version: " + version);
+                logger.error(
+                        "Unknown configuration version: " + version + ", defaulting to version 1");
+                config = new SwitchboardConfig_V1();
+                try {
+                    node.set(SwitchboardConfig_V1.class, config);
+                } catch (SerializationException e) {
+                    logger.error(
+                            "An error occurred while updating the configuration: "
+                                    + e.getMessage());
+                    if (e.getCause() != null) {
+                        logger.error("Caused by: ", e.getCause());
+                    }
+                }
+        }
+
+        try {
+            loader.save(node);
+        } catch (ConfigurateException e) {
+            logger.error("An error occurred while saving this configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                logger.error("Caused by: ", e.getCause());
+            }
         }
     }
 
@@ -104,27 +102,58 @@ public class SwitchboardConfigLoader {
         if (config == null) {
             return;
         }
-        final HoconConfigurationLoader loader =
-                HoconConfigurationLoader.builder().path(configPath).build();
-        CommentedConfigurationNode root = ConfigUtil.getRoot(loader, logger);
-        if (root == null) {
+        if (loader == null) {
+            return;
+        }
+        CommentedConfigurationNode node = null;
+        try {
+            node = loader.load();
+        } catch (ConfigurateException e) {
+            logger.error("An error occurred while loading the configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                logger.error("Caused by: ", e.getCause());
+            }
+        }
+        if (node == null) {
             return;
         }
 
-        ConfigUtil.set(root, versionType, "version", config.version(), logger);
-        ConfigUtil.set(root, moduleType, "modules", config.modules(), logger);
-        ConfigUtil.set(root, discordType, "discord", config.discord(), logger);
-        ConfigUtil.set(root, telegramType, "telegram", config.telegram(), logger);
-        ConfigUtil.set(root, formattingType, "formatting", config.formatting(), logger);
-        ConfigUtil.set(root, webSocketType, "websocket", config.webSocket(), logger);
+        switch (config.version()) {
+            case 1:
+                try {
+                    node.set(SwitchboardConfig_V1.class, config);
+                } catch (SerializationException e) {
+                    logger.error(
+                            "An error occurred while updating the configuration: "
+                                    + e.getMessage());
+                    if (e.getCause() != null) {
+                        logger.error("Caused by: ", e.getCause());
+                    }
+                }
+                break;
+            default:
+                logger.error(
+                        "Unknown configuration version: "
+                                + config.version()
+                                + ", defaulting to version 1");
+                try {
+                    node.set(SwitchboardConfig_V1.class, config);
+                } catch (SerializationException e) {
+                    logger.error(
+                            "An error occurred while updating the configuration: "
+                                    + e.getMessage());
+                    if (e.getCause() != null) {
+                        logger.error("Caused by: ", e.getCause());
+                    }
+                }
+        }
 
         try {
-            loader.save(root);
+            loader.save(node);
         } catch (ConfigurateException e) {
-            TaterLib.logger()
-                    .error("An error occurred while saving this configuration: " + e.getMessage());
+            logger.error("An error occurred while saving this configuration: " + e.getMessage());
             if (e.getCause() != null) {
-                e.getCause().printStackTrace();
+                logger.error("Caused by: ", e.getCause());
             }
         }
     }

@@ -12,7 +12,7 @@ import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.placeholder.PlaceholderParser;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
@@ -79,7 +79,7 @@ public class Message {
      * @param message The message
      */
     public Message(
-            SimplePlayer sender,
+            User sender,
             MessageType channel,
             String message,
             String placeHolderMessage,
@@ -95,7 +95,7 @@ public class Message {
      * @param message The message
      */
     public Message(
-            SimplePlayer sender, MessageType channel, String message, String placeHolderMessage) {
+            User sender, MessageType channel, String message, String placeHolderMessage) {
         this(new MessageSender(sender), channel, message, placeHolderMessage, new HashMap<>());
     }
 

@@ -6,11 +6,11 @@
 
 package dev.neuralnexus.switchboard.modules.discord.command;
 
-import static dev.neuralnexus.taterapi.util.TextUtil.substituteSectionSign;
-
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.taterapi.command.Command;
 import dev.neuralnexus.taterapi.command.CommandSender;
+
+import static dev.neuralnexus.modapi.metadata.impl.util.TextUtil.substituteSectionSign;
 
 /** Discord Command. */
 public class DiscordCommand implements Command {

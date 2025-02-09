@@ -6,6 +6,10 @@
 
 package dev.neuralnexus.switchboard;
 
+import dev.neuralnexus.modapi.metadata.Logger;
+import dev.neuralnexus.modapi.metadata.MetaAPI;
+import dev.neuralnexus.modapi.metadata.Platform;
+import dev.neuralnexus.modapi.metadata.Platforms;
 import dev.neuralnexus.switchboard.api.SwitchboardAPI;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
@@ -15,17 +19,15 @@ import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
 import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
 import dev.neuralnexus.switchboard.modules.webhook.WebhookModule;
 import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
-import dev.neuralnexus.taterapi.Platform;
 import dev.neuralnexus.taterapi.TaterAPIProvider;
 import dev.neuralnexus.taterapi.event.api.ServerEvents;
-import dev.neuralnexus.taterapi.logger.Logger;
 import dev.neuralnexus.taterapi.metrics.bstats.BStatsMetrics;
 import dev.neuralnexus.taterapi.metrics.bstats.MetricsAdapter;
-import dev.neuralnexus.taterloader.Loader;
-import dev.neuralnexus.taterloader.event.api.PluginEvents;
-import dev.neuralnexus.taterloader.plugin.ModuleLoader;
-import dev.neuralnexus.taterloader.plugin.Plugin;
-import dev.neuralnexus.taterloader.plugin.impl.ModuleLoaderImpl;
+import dev.neuralnexus.taterapi.loader.Loader;
+import dev.neuralnexus.taterapi.event.api.PluginEvents;
+import dev.neuralnexus.taterapi.loader.plugin.ModuleLoader;
+import dev.neuralnexus.taterapi.loader.plugin.Plugin;
+import dev.neuralnexus.taterapi.loader.plugin.impl.ModuleLoaderImpl;
 
 import java.util.HashMap;
 
@@ -33,7 +35,7 @@ import java.util.HashMap;
 public class Switchboard implements Plugin {
     public static final String PROJECT_NAME = "Switchboard";
     public static final String PROJECT_ID = "switchboard";
-    public static final String PROJECT_VERSION = "1.0.4-SNAPSHOT";
+    public static final String PROJECT_VERSION = "2.0.0-SNAPSHOT";
     public static final String PROJECT_AUTHORS = "p0t4t0sandwich";
     public static final String PROJECT_DESCRIPTION =
             "A simple, cross API plugin that bridges communication between servers, using built-in Proxy methods, Discord channels and TCP sockets.";
@@ -79,23 +81,26 @@ public class Switchboard implements Plugin {
 
     @Override
     public void onEnable() {
+        MetaAPI api = MetaAPI.instance();
         logger.info(
-                Switchboard.PROJECT_NAME
+                PROJECT_NAME
                         + " is running on "
-                        + TaterAPIProvider.platform()
+                        + api.platform().asString()
                         + " "
-                        + TaterAPIProvider.minecraftVersion()
-                        + "!");
-        PluginEvents.DISABLED.register(event -> onDisable());
+                        + api.version().asString()
+                        + ", with "
+                        + api.mappings().toString()
+                        + " mappings!");
+        PluginEvent.DISABLED.register(event -> onDisable());
 
         Loader loader = Loader.instance();
 
         // Set up bStats
         HashMap<Platform, Integer> statsMap = new HashMap<>();
-        statsMap.put(Platform.BUKKIT, 21170);
-        statsMap.put(Platform.BUNGEECORD, 21171);
-        statsMap.put(Platform.SPONGE, 21172);
-        statsMap.put(Platform.VELOCITY, 21173);
+        statsMap.put(Platforms.BUKKIT, 21170);
+        statsMap.put(Platforms.BUNGEECORD, 21171);
+        statsMap.put(Platforms.SPONGE, 21172);
+        statsMap.put(Platforms.VELOCITY, 21173);
         metrics =
                 MetricsAdapter.setupMetrics(
                         loader.plugin(), loader.server(), logger.getLogger(), statsMap);
@@ -151,8 +156,8 @@ public class Switchboard implements Plugin {
     /** Reload */
     public void reload() {
         RELOADED = true;
-        onDisable();
-        onEnable();
+        this.onDisable();
+        this.onEnable();
         logger.info(PROJECT_NAME + " has been reloaded!");
     }
 }

@@ -7,7 +7,7 @@
 package dev.neuralnexus.switchboard.api.message;
 
 import dev.neuralnexus.taterapi.TaterAPIProvider;
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Collections;
@@ -24,8 +24,7 @@ public class MessageServer implements SimpleServer {
     public MessageServer(SimpleServer server) {
         this.name = server.name();
         String brand;
-        if (TaterAPIProvider.platform().isVelocityBased()
-                || TaterAPIProvider.platform().isBungeeCordBased()) {
+        if (MetaAPI.isProxy()) {
             brand = "Unknown";
         } else {
             brand = server.brand();
@@ -44,7 +43,7 @@ public class MessageServer implements SimpleServer {
     }
 
     @Override
-    public List<SimplePlayer> onlinePlayers() {
+    public List<User> onlinePlayers() {
         return Collections.emptyList();
     }
 

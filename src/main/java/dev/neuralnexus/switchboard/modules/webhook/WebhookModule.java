@@ -9,7 +9,7 @@ package dev.neuralnexus.switchboard.modules.webhook;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterloader.plugin.PluginModule;
+import dev.neuralnexus.taterapi.loader.plugin.PluginModule;
 
 /** Webhook module. */
 public class WebhookModule implements PluginModule {

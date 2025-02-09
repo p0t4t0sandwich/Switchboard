@@ -11,9 +11,8 @@ import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
 import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
-import dev.neuralnexus.taterapi.config.ToggleableSetting;
 
-import java.util.List;
+import java.util.Map;
 
 /** A class for Switchboard configuration. */
 public interface SwitchboardConfig {
@@ -29,7 +28,7 @@ public interface SwitchboardConfig {
      *
      * @return The modules in the configuration.
      */
-    List<ToggleableSetting> modules();
+    Map<String, Boolean> modules();
 
     /**
      * Get the Discord configuration.
@@ -73,10 +72,6 @@ public interface SwitchboardConfig {
      * @return Whether the module should be applied.
      */
     default boolean checkModule(String moduleName) {
-        return modules().stream()
-                .anyMatch(
-                        moduleConfig ->
-                                moduleConfig.name().equalsIgnoreCase(moduleName)
-                                        && moduleConfig.enabled());
+        return this.modules().getOrDefault(moduleName, false);
     }
 }

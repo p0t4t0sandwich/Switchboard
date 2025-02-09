@@ -6,7 +6,7 @@
 
 package dev.neuralnexus.switchboard.modules.discord.api;
 
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class DiscordServer implements SimpleServer {
     }
 
     @Override
-    public List<SimplePlayer> onlinePlayers() {
+    public List<User> onlinePlayers() {
         return Collections.emptyList();
     }
 

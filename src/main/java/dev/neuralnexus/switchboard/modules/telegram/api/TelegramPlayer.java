@@ -9,13 +9,12 @@ package dev.neuralnexus.switchboard.modules.telegram.api;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.User;
 
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
 import dev.neuralnexus.taterapi.server.SimpleServer;
 
 import java.util.UUID;
 
 /** Telegram player. */
-public class TelegramPlayer implements SimplePlayer {
+public class TelegramPlayer implements dev.neuralnexus.taterapi.entity.player.User {
     private final User user;
     private final String name;
     private final String displayName;

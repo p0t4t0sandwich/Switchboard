@@ -10,7 +10,7 @@ import dev.neuralnexus.switchboard.api.message.Message;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
 import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
-import dev.neuralnexus.taterapi.entity.player.SimplePlayer;
+import dev.neuralnexus.taterapi.entity.player.User;
 import dev.neuralnexus.taterapi.event.player.*;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public interface SwitchboardPlayerListener {
      * @param event The event.
      */
     static void onPlayerAdvancementFinished(PlayerAdvancementEvent.AdvancementFinished event) {
-        SimplePlayer player = event.player();
+        User player = event.player();
         String advancement = event.advancement();
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("advancement", advancement);
@@ -43,7 +43,7 @@ public interface SwitchboardPlayerListener {
      * @param event The event.
      */
     static void onPlayerDeath(PlayerDeathEvent event) {
-        SimplePlayer player = event.player();
+        User player = event.player();
         String deathMessage = event.deathMessage();
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("deathmessage", deathMessage);
@@ -63,7 +63,7 @@ public interface SwitchboardPlayerListener {
      * @param event The event.
      */
     static void onPlayerLogin(PlayerLoginEvent event) {
-        SimplePlayer player = event.player();
+        User player = event.player();
         SwitchboardEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
@@ -80,7 +80,7 @@ public interface SwitchboardPlayerListener {
      * @param event The event.
      */
     static void onPlayerLogout(PlayerLogoutEvent event) {
-        SimplePlayer player = event.player();
+        User player = event.player();
         SwitchboardEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(
                         new Message(
@@ -97,7 +97,7 @@ public interface SwitchboardPlayerListener {
      * @param event The event.
      */
     static void onPlayerMessage(PlayerMessageEvent event) {
-        SimplePlayer player = event.player();
+        User player = event.player();
         String message = event.message();
         SwitchboardEvents.RECEIVE_MESSAGE.invoke(
                 new ReceiveMessageEvent(

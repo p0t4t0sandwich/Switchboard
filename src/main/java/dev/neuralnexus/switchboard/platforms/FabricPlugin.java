@@ -7,7 +7,7 @@
 package dev.neuralnexus.switchboard.platforms;
 
 import dev.neuralnexus.switchboard.Switchboard;
-import dev.neuralnexus.taterloader.event.api.PluginEvents;
+import dev.neuralnexus.taterapi.loader.event.api.PluginEvents;
 
 import net.fabricmc.api.ModInitializer;
 
