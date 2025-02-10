@@ -53,9 +53,9 @@ public class SchedulerImpl implements Scheduler {
                             new ForkJoinWorkerThread(pool) {
                                 protected void onTermination(Throwable throwable) {
                                     if (throwable != null) {
-                                        logger.warn("{} died", this.getName(), throwable);
+                                        logger.warn(this.getName() + " died", throwable);
                                     } else {
-                                        logger.debug("{} shutdown", this.getName());
+                                        logger.debug(this.getName() + " shutdown");
                                     }
                                     super.onTermination(throwable);
                                 }
@@ -65,7 +65,7 @@ public class SchedulerImpl implements Scheduler {
                     return worker;
                 },
                 (thread, throwable) ->
-                        logger.error("Caught exception in thread {}", thread, throwable),
+                        logger.error("Caught exception in thread " + thread, throwable),
                 true);
     }
 }

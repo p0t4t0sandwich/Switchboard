@@ -58,7 +58,7 @@ public class DiscordAPI {
                 api.addEventListener(this);
                 api.addEventListener(new DiscordSource());
             } catch (Exception e) {
-                Switchboard.logger().info("Failed to start Discord Bot!", e);
+                Switchboard.logger().error("Failed to start Discord Bot!", e);
             }
         }
 

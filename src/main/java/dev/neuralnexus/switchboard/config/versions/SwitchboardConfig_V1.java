@@ -12,6 +12,7 @@ import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
 import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** A class for Switchboard configuration. */
+@ConfigSerializable
 public class SwitchboardConfig_V1 implements SwitchboardConfig {
     @Comment("Config version, DO NOT CHANGE THIS")
     @Required
@@ -34,9 +36,8 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
             telegram: Enable if you want the server to relay messages to/from Telegram
             webhook: Send messages as webhook/POST/GET request to some configured endpoint
             websocket: Remote WebSocket configuration (for servers that you can't run behind a proxy)
-                Fun fact: if you're having issues running Forge 1.13+ behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
-                Short explanation: The 1.13 update changed the way that Forge initializes and syncs modded data with the server, this causes issues with the way that the proxy works
-            """)
+                Fun fact: if you're having issues running Forge 1.13-1.20.1 behind a proxy, check out Ambassador: https://github.com/adde0109/Ambassador
+                Short explanation: The 1.13 update changed the way that Forge initializes and syncs modded data with the server, this causes issues with the way that the proxy works""")
     private Map<String, Boolean> modules = new HashMap<>();
 
     {
@@ -47,11 +48,11 @@ public class SwitchboardConfig_V1 implements SwitchboardConfig {
         modules.put("websocket", false);
     }
 
-    private DiscordConfig discord;
-    private TelegramConfig telegram;
-    private WebhookConfig webhook;
-    private WebSocketConfig webSocket;
-    private FormattingConfig formatting;
+    private DiscordConfig discord = new DiscordConfig();
+    private TelegramConfig telegram = new TelegramConfig();
+    private WebhookConfig webhook = new WebhookConfig();
+    private WebSocketConfig webSocket = new WebSocketConfig();
+    private FormattingConfig formatting = new FormattingConfig();
 
     @Override
     public int version() {

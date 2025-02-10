@@ -5,7 +5,8 @@
 
 package dev.neuralnexus.switchboard.config.versions;
 
-import org.slf4j.Logger;
+import dev.neuralnexus.switchboard.logger.Logger;
+
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
@@ -37,9 +38,7 @@ public class VersionedConfig {
                 logger.error("Failed to load the configuration version");
             }
         } catch (Exception e) {
-            logger.error(
-                    "An error occurred while loading the configuration version: {}",
-                    e.getMessage());
+            logger.error("An error occurred while loading the configuration version:", e);
             if (e.getCause() != null) {
                 logger.error("Caused by: ", e.getCause());
             }

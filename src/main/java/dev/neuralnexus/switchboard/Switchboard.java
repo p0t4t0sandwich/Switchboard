@@ -10,19 +10,19 @@ import dev.neuralnexus.switchboard.api.SwitchboardAPI;
 import dev.neuralnexus.switchboard.config.SwitchboardConfig;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
 import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
+import dev.neuralnexus.switchboard.logger.Logger;
 
 import net.engio.mbassy.bus.MBassador;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.engio.mbassy.bus.error.IPublicationErrorHandler;
 
 /** Main class for Switchboard. */
 public class Switchboard {
     private static final Switchboard instance = new Switchboard();
-    private static final MBassador<Message> bus = new MBassador<>();
+    private static final MBassador<Message> bus =
+            new MBassador<>(new IPublicationErrorHandler.ConsoleLogger());
     public static final String PROJECT_NAME = "Switchboard";
     public static final String PROJECT_ID = "switchboard";
-    private static final Logger logger = LoggerFactory.getLogger(PROJECT_ID);
+    private static final Logger logger = Logger.create(PROJECT_ID);
     private static boolean RELOADED = false;
 
     /**

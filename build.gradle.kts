@@ -34,8 +34,8 @@ dependencies {
         exclude(module = "opus-java")
     }
     implementation("club.minnced:discord-webhooks:0.8.4")
-    implementation("org.slf4j:slf4j-api:1.7.32")
-    implementation("org.slf4j:slf4j-simple:1.7.32")
+//    implementation("org.slf4j:slf4j-api:2.0.13")
+//    implementation("org.slf4j:slf4j-simple:2.0.13")
 
     // Telegram
     implementation("com.github.pengrad:java-telegram-bot-api:7.1.0")
@@ -47,7 +47,6 @@ dependencies {
 //    compileOnly("dev.neuralnexus:taterapi:2.0.0-SNAPSHOT")
 //    compileOnly("dev.neuralnexus:entrypoint-spoof:0.1.21")
 
-    implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
     implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
 //    implementation("com.google.code.gson:gson:2.10.1")
 //    implementation("com.google.guava:guava:33.0.0-jre")
@@ -141,8 +140,6 @@ tasks.named<ShadowJar>("shadowJar") {
 //        exclude(dependency("${group}:${name}:${version}"))
 //    }
 
-    archiveFileName = "${name}-${version}.jar"
-
     manifest {
         attributes(
             mapOf(
@@ -151,7 +148,8 @@ tasks.named<ShadowJar>("shadowJar") {
                 "Specification-Vendor" to "NeualNexus",
                 "Implementation-Version" to version,
                 "Implementation-Vendor" to "NeualNexus",
-                "Implementation-Timestamp" to Instant.now().toString()
+                "Implementation-Timestamp" to Instant.now().toString(),
+                "Main-Class" to "dev.neuralnexus.switchboard.Main"
             )
         )
     }

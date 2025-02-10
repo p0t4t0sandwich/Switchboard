@@ -5,9 +5,10 @@
 
 package dev.neuralnexus.switchboard.api;
 
+import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.logger.Logger;
+
 import org.jetbrains.annotations.ApiStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
@@ -16,7 +17,7 @@ import java.util.function.Supplier;
 
 /** Scheduler abstraction */
 public interface Scheduler {
-    Logger logger = LoggerFactory.getLogger("scheduler");
+    Logger logger = Logger.create(Switchboard.PROJECT_ID + "-scheduler");
 
     @ApiStatus.Internal
     ForkJoinPool pool();

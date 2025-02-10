@@ -50,9 +50,10 @@ public class WebSocketClient {
                             try {
                                 Switchboard.logger()
                                         .info(
-                                                "Reconnecting to WebSocket server... Attempt {} of "
-                                                        + maxReconnectAttempts,
-                                                reconnectAttempts);
+                                                "Reconnecting to WebSocket server... Attempt "
+                                                        + reconnectAttempts
+                                                        + " of "
+                                                        + maxReconnectAttempts);
                                 ws.recreate();
                                 Switchboard.logger().info("Reconnected to WebSocket server");
                             } catch (IOException e) {
