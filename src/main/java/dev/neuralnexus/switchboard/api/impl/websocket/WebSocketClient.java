@@ -3,14 +3,13 @@
  * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.modules.websocket.api;
+package dev.neuralnexus.switchboard.api.impl.websocket;
 
 import com.neovisionaries.ws.client.*;
 
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.api.Message;
-import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
-import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
+import dev.neuralnexus.switchboard.api.SwitchboardAPI;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -45,16 +44,15 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        TaterAPIProvider.scheduler()
+        SwitchboardAPI.scheduler()
                 .runLaterAsync(
                         () -> {
                             try {
                                 Switchboard.logger()
                                         .info(
-                                                "Reconnecting to WebSocket server... Attempt "
-                                                        + reconnectAttempts
-                                                        + " of "
-                                                        + maxReconnectAttempts);
+                                                "Reconnecting to WebSocket server... Attempt {} of "
+                                                        + maxReconnectAttempts,
+                                                reconnectAttempts);
                                 ws.recreate();
                                 Switchboard.logger().info("Reconnected to WebSocket server");
                             } catch (IOException e) {
@@ -70,7 +68,7 @@ public class WebSocketClient {
         if (reconnectAttempts >= maxReconnectAttempts) {
             return;
         }
-        TaterAPIProvider.scheduler()
+        SwitchboardAPI.scheduler()
                 .runLaterAsync(
                         () -> {
                             try {
@@ -170,23 +168,23 @@ public class WebSocketClient {
         if (ws == null) {
             return;
         }
-        if (message.isRemote()) {
-            return;
-        }
-        try {
-            ws.sendBinary(encryptionHandler.encrypt(message));
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
+        //        if (message.isRemote()) {
+        //            return;
+        //        }
+        //        try {
+        //            ws.sendBinary(encryptionHandler.encrypt(message));
+        //        } catch (GeneralSecurityException e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     public void receiveMessage(byte[] content) {
-        try {
-            Message message = encryptionHandler.decrypt(content);
-            message.setRemote(true);
-            SwitchboardEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(message));
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
+        //        try {
+        //            Message message = encryptionHandler.decrypt(content);
+        //            message.setRemote(true);
+        //            SwitchboardEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(message));
+        //        } catch (GeneralSecurityException e) {
+        //            e.printStackTrace();
+        //        }
     }
 }

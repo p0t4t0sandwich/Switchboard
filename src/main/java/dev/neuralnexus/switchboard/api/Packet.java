@@ -10,6 +10,7 @@ import java.util.UUID;
 
 /**
  * A wrapped message ready for transport
+ *
  * @param version The version of the packet
  * @param source The source of the message
  * @param sink The sink of the message
@@ -18,12 +19,31 @@ import java.util.UUID;
  * @param type The type of the message
  * @param content The content of the message
  */
-public record Packet(int version, String source, String sink, String sender,
-                     UUID id, String type, String content) {
+public record Packet(
+        int version,
+        String source,
+        String sink,
+        String sender,
+        UUID id,
+        String type,
+        String content) {
 
     public byte[] toBytes() {
-        ByteBuffer buffer = ByteBuffer.allocate(4 + 4 + source.length() + 4 + sink.length() + 4 + sender.length() + 16 + 4 + type.length() + 4 + content.length());
-        buffer.putInt(version);
+        ByteBuffer buffer =
+                ByteBuffer.allocate(
+                        1
+                                + 4
+                                + source.length()
+                                + 4
+                                + sink.length()
+                                + 4
+                                + sender.length()
+                                + 16
+                                + 4
+                                + type.length()
+                                + 4
+                                + content.length());
+        buffer.put((byte) version);
         buffer.putInt(source.length());
         buffer.put(source.getBytes());
         buffer.putInt(sink.length());
@@ -41,7 +61,7 @@ public record Packet(int version, String source, String sink, String sender,
 
     public static Packet fromBytes(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        int version = buffer.getInt();
+        int version = buffer.get();
         byte[] sourceBytes = new byte[buffer.getInt()];
         buffer.get(sourceBytes);
         String source = new String(sourceBytes);

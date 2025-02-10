@@ -6,8 +6,8 @@
 package dev.neuralnexus.switchboard.config.sections.websocket;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.api.impl.websocket.EncryptionHandler;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
-import dev.neuralnexus.switchboard.modules.websocket.api.EncryptionHandler;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;

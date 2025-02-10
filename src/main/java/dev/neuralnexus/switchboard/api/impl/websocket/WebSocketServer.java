@@ -3,18 +3,15 @@
  * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.modules.websocket.api;
+package dev.neuralnexus.switchboard.api.impl.websocket;
 
 import dev.neuralnexus.switchboard.api.Message;
-import dev.neuralnexus.switchboard.event.ReceiveMessageEvent;
-import dev.neuralnexus.switchboard.event.api.SwitchboardEvents;
 
 import io.javalin.Javalin;
 import io.javalin.websocket.WsBinaryMessageContext;
 import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsConnectContext;
 
-import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,13 +65,13 @@ public class WebSocketServer {
      * @param ctx The context to use.
      */
     public void receiveMessage(WsBinaryMessageContext ctx) {
-        try {
-            Message message = encryptionHandler.decrypt(ctx.data());
-            message.setRemote(true);
-            SwitchboardEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(message));
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
+        //        try {
+        //            Message message = encryptionHandler.decrypt(ctx.data());
+        //            message.setRemote(true);
+        //            SwitchboardEvents.RECEIVE_MESSAGE.invoke(new ReceiveMessageEvent(message));
+        //        } catch (GeneralSecurityException e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     /**
@@ -102,18 +99,19 @@ public class WebSocketServer {
      * @param message The message to send.
      */
     public void sendMessage(Message message) {
-        if (message.isRemote()) {
-            return;
-        }
-        clients.values().stream()
-                .filter(ctx -> ctx.session.isOpen())
-                .forEach(
-                        session -> {
-                            try {
-                                session.send(ByteBuffer.wrap(encryptionHandler.encrypt(message)));
-                            } catch (GeneralSecurityException e) {
-                                e.printStackTrace();
-                            }
-                        });
+        //        if (message.isRemote()) {
+        //            return;
+        //        }
+        //        clients.values().stream()
+        //                .filter(ctx -> ctx.session.isOpen())
+        //                .forEach(
+        //                        session -> {
+        //                            try {
+        //
+        // session.send(ByteBuffer.wrap(encryptionHandler.encrypt(message)));
+        //                            } catch (GeneralSecurityException e) {
+        //                                e.printStackTrace();
+        //                            }
+        //                        });
     }
 }

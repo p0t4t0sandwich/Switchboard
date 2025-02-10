@@ -7,9 +7,7 @@ package dev.neuralnexus.switchboard.api;
 
 import java.util.UUID;
 
-/**
- * Message abstraction
- */
+/** Message abstraction */
 public record Message(String source, String sender, String type, String content) {
     public int version() {
         return 1;

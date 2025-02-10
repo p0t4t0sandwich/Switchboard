@@ -7,17 +7,12 @@ package dev.neuralnexus.switchboard;
 
 import dev.neuralnexus.switchboard.api.Message;
 import dev.neuralnexus.switchboard.api.SwitchboardAPI;
-import dev.neuralnexus.switchboard.api.SwitchboardAPIProvider;
 import dev.neuralnexus.switchboard.config.SwitchboardConfig;
 import dev.neuralnexus.switchboard.config.SwitchboardConfigLoader;
-import dev.neuralnexus.switchboard.modules.discord.DiscordModule;
-import dev.neuralnexus.switchboard.modules.minecraft.MinecraftModule;
-import dev.neuralnexus.switchboard.modules.proxy.ProxyModule;
-import dev.neuralnexus.switchboard.modules.telegram.TelegramModule;
-import dev.neuralnexus.switchboard.modules.webhook.WebhookModule;
-import dev.neuralnexus.switchboard.modules.websocket.WebSocketModule;
+import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
 
 import net.engio.mbassy.bus.MBassador;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,28 +57,30 @@ public class Switchboard {
         SwitchboardConfigLoader.load();
 
         // Register API
-        SwitchboardAPIProvider.register(new SwitchboardAPI());
-
-        // EventBus
+        new SwitchboardAPI();
 
         if (!RELOADED) {
             SwitchboardConfig config = SwitchboardConfigLoader.config();
-
-            // Register modules
             if (config.checkModule("discord")) {
-                moduleLoader.registerModule(new DiscordModule());
-            }
-            if (config.checkModule("proxy")) {
-                moduleLoader.registerModule(new ProxyModule());
-            }
-            if (config.checkModule("telegram")) {
-                moduleLoader.registerModule(new TelegramModule());
-            }
-            if (config.checkModule("webhook")) {
-                moduleLoader.registerModule(new WebhookModule());
-            }
-            if (config.checkModule("websocket")) {
-                moduleLoader.registerModule(new WebSocketModule());
+                String token = SwitchboardConfigLoader.config().discord().token();
+                if (token == null || token.isEmpty()) {
+                    throw new RuntimeException("No Discord token found in switchboard.conf!");
+                }
+                SwitchboardAPI.instance().discordAPI().startBot();
+            } else if (config.checkModule("telegram")) {
+                String token = SwitchboardConfigLoader.config().telegram().token();
+                if (token == null || token.isEmpty()) {
+                    throw new RuntimeException("No Telegram token found in switchboard.conf!");
+                }
+                SwitchboardAPI.instance().telegramAPI().startBot();
+            } else if (config.checkModule("websocket")) {
+                WebSocketConfig wsConfig = config.webSocket();
+                if (wsConfig.host() == null || wsConfig.host().isEmpty()) {
+                    throw new RuntimeException("No WebSocket host found in switchboard.conf!");
+                }
+                if (wsConfig.port() == 0) {
+                    throw new RuntimeException("No WebSocket port found in switchboard.conf!");
+                }
             }
         }
 
@@ -92,10 +89,19 @@ public class Switchboard {
 
     public void onDisable() {
         // Remove references to objects
+        SwitchboardConfig config = SwitchboardConfigLoader.config();
+        if (config.checkModule("discord")) {
+            SwitchboardAPI.instance().discordAPI().removeBot();
+        } else if (config.checkModule("telegram")) {
+            SwitchboardAPI.instance().telegramAPI().removeBot();
+        } else if (config.checkModule("websocket")) {
+            SwitchboardAPI.instance().webSocketAPI().stopWebSocket();
+        }
+
         SwitchboardConfigLoader.unload();
 
         // Unregister API
-        SwitchboardAPIProvider.unregister();
+        SwitchboardAPI.unregister();
 
         logger.info(PROJECT_NAME + " has been stopped!");
     }

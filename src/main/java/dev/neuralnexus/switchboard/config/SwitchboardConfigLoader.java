@@ -5,12 +5,12 @@
 
 package dev.neuralnexus.switchboard.config;
 
-import dev.neuralnexus.modapi.metadata.Logger;
-import dev.neuralnexus.modapi.metadata.MetaAPI;
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
-import dev.neuralnexus.taterapi.config.VersionedConfig;
+import dev.neuralnexus.switchboard.config.versions.VersionedConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -22,21 +22,33 @@ import java.nio.file.Paths;
 
 /** A class for loading Switchboard configuration. */
 public class SwitchboardConfigLoader {
-    private static final Logger logger = Logger.create(Switchboard.PROJECT_ID + "-configloader");
-    private static final Path configPath =
-            Paths.get(
-                    MetaAPI.instance().meta().configFolder()
+    private static final Logger logger =
+            LoggerFactory.getLogger(Switchboard.PROJECT_ID + "-configloader");
+    private static Path configPath =
+            Path.of(
+                    Paths.get(".").toAbsolutePath().normalize()
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + File.separator
                             + Switchboard.PROJECT_ID
                             + ".conf");
-    private static final String defaultConfigPath = "source." + Switchboard.PROJECT_ID + ".conf";
     private static HoconConfigurationLoader loader;
     private static SwitchboardConfig config;
 
+    public static void setBasePath(Path path) {
+        configPath =
+                Path.of(
+                        path
+                                + File.separator
+                                + Switchboard.PROJECT_ID
+                                + File.separator
+                                + Switchboard.PROJECT_ID
+                                + ".conf");
+    }
+
     /** Load the configuration from the file. */
     public static void load() {
+
         loader = HoconConfigurationLoader.builder().path(configPath).build();
         CommentedConfigurationNode node = null;
         try {

@@ -3,7 +3,7 @@
  * The project is Licensed under <a href="https://github.com/p0t4t0sandwich/Switchboard/blob/dev/LICENSE">MIT</a>
  */
 
-package dev.neuralnexus.switchboard.modules.websocket.api;
+package dev.neuralnexus.switchboard.api.impl.websocket;
 
 import dev.neuralnexus.switchboard.api.Message;
 
