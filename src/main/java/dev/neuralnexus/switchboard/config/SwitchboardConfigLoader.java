@@ -7,9 +7,11 @@ package dev.neuralnexus.switchboard.config;
 
 import dev.neuralnexus.switchboard.Switchboard;
 import dev.neuralnexus.switchboard.config.serializers.InterfaceSerializer;
+import dev.neuralnexus.switchboard.config.transformations.ConfigTransform;
+import dev.neuralnexus.switchboard.config.transformations.RelayTransform;
 import dev.neuralnexus.switchboard.config.versions.DiscordConfig_V1;
 import dev.neuralnexus.switchboard.config.versions.Relay_V1;
-import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
+import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V2;
 import dev.neuralnexus.switchboard.config.versions.VersionedConfig;
 import dev.neuralnexus.switchboard.logger.Logger;
 
@@ -102,9 +104,9 @@ public final class SwitchboardConfigLoader {
 
         int version = VersionedConfig.tryGetVersion(node, logger);
         switch (version) {
-            case 1:
+            case 2:
                 try {
-                    config = node.get(SwitchboardConfig_V1.class);
+                    config = node.get(SwitchboardConfig_V2.class);
                 } catch (SerializationException e) {
                     logger.error(
                             "An error occurred while loading the modules configuration: "
@@ -116,10 +118,10 @@ public final class SwitchboardConfigLoader {
                 break;
             default:
                 logger.error(
-                        "Unknown configuration version: " + version + ", defaulting to version 1");
-                config = new SwitchboardConfig_V1();
+                        "Unknown configuration version: " + version + ", defaulting to version 2");
+                config = new SwitchboardConfig_V2();
                 try {
-                    node.set(SwitchboardConfig_V1.class, config);
+                    node.set(SwitchboardConfig_V2.class, config);
                 } catch (SerializationException e) {
                     logger.error(
                             "An error occurred while updating the configuration: "
@@ -130,6 +132,14 @@ public final class SwitchboardConfigLoader {
                 }
         }
 
+        try {
+            ConfigTransform.updateNode(node);
+        } catch (ConfigurateException e) {
+            logger.error("An error occurred while updating the configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                logger.error("Caused by: ", e.getCause());
+            }
+        }
         saveNode(node, configPath.resolve(Switchboard.PROJECT_ID + ".conf"));
     }
 
@@ -171,6 +181,14 @@ public final class SwitchboardConfigLoader {
                 }
         }
 
+        try {
+            RelayTransform.updateNode(node);
+        } catch (ConfigurateException e) {
+            logger.error("An error occurred while updating the configuration: " + e.getMessage());
+            if (e.getCause() != null) {
+                logger.error("Caused by: ", e.getCause());
+            }
+        }
         saveNode(node, relayPath);
 
         return relay;
@@ -240,7 +258,7 @@ public final class SwitchboardConfigLoader {
         switch (config.version()) {
             case 1:
                 try {
-                    node.set(SwitchboardConfig_V1.class, config);
+                    node.set(SwitchboardConfig_V2.class, config);
                 } catch (SerializationException e) {
                     logger.error(
                             "An error occurred while updating the configuration: "
@@ -256,7 +274,7 @@ public final class SwitchboardConfigLoader {
                                 + config.version()
                                 + ", defaulting to version 1");
                 try {
-                    node.set(SwitchboardConfig_V1.class, config);
+                    node.set(SwitchboardConfig_V2.class, config);
                 } catch (SerializationException e) {
                     logger.error(
                             "An error occurred while updating the configuration: "

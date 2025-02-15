@@ -5,6 +5,8 @@
 
 package dev.neuralnexus.switchboard.config;
 
+import java.util.Optional;
+
 /** Defines the config for a source or a sink */
 public interface Interface<T> {
     /**
@@ -30,6 +32,20 @@ public interface Interface<T> {
      * @return The configuration of the interface
      */
     T config();
+
+    /**
+     * Get the configuration of the interface as a specific type
+     *
+     * @param clazz The class of the configuration
+     * @param <V> The type of the configuration
+     * @return The configuration of the interface as a specific type
+     */
+    default <V> Optional<V> getConfig(Class<V> clazz) {
+        if (clazz.isInstance(this.config())) {
+            return Optional.of(clazz.cast(this.config()));
+        }
+        return Optional.empty();
+    }
 
     enum Mode {
         BOTH("both"),

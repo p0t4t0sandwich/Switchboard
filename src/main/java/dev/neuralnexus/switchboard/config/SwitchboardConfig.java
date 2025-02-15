@@ -5,14 +5,6 @@
 
 package dev.neuralnexus.switchboard.config;
 
-import dev.neuralnexus.switchboard.config.sections.discord.DiscordConfig;
-import dev.neuralnexus.switchboard.config.sections.formatting.FormattingConfig;
-import dev.neuralnexus.switchboard.config.sections.telegram.TelegramConfig;
-import dev.neuralnexus.switchboard.config.sections.webhook.WebhookConfig;
-import dev.neuralnexus.switchboard.config.sections.websocket.WebSocketConfig;
-
-import java.util.Map;
-
 /** A class for Switchboard configuration. */
 public interface SwitchboardConfig {
     /**
@@ -21,56 +13,4 @@ public interface SwitchboardConfig {
      * @return The version of the configuration.
      */
     int version();
-
-    /**
-     * Get the modules in the configuration.
-     *
-     * @return The modules in the configuration.
-     */
-    Map<String, Boolean> modules();
-
-    /**
-     * Get the Discord configuration.
-     *
-     * @return The Discord configuration.
-     */
-    DiscordConfig discord();
-
-    /**
-     * Get the Telegram configuration.
-     *
-     * @return The Telegram configuration.
-     */
-    TelegramConfig telegram();
-
-    /**
-     * Get the Webhook configuration.
-     *
-     * @return The Webhook configuration.
-     */
-    WebhookConfig webhook();
-
-    /**
-     * Get the WebSocket configuration.
-     *
-     * @return The WebSocket configuration.
-     */
-    WebSocketConfig webSocket();
-
-    /**
-     * Get the message formatting configuration.
-     *
-     * @return The message formatting configuration.
-     */
-    FormattingConfig formatting();
-
-    /**
-     * Check if a module is enabled in the configuration.
-     *
-     * @param moduleName The name of the module.
-     * @return Whether the module should be applied.
-     */
-    default boolean checkModule(String moduleName) {
-        return this.modules().getOrDefault(moduleName, false);
-    }
 }
