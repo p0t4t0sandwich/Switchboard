@@ -22,7 +22,7 @@ public class Relay_V1 implements Relay {
     private int version = 1;
 
     @Comment("List of defined Sources and Sinks")
-    private List<Interface<?>> interfaces = List.of();
+    private List<Interface_V1<?>> interfaces = List.of();
 
     @Comment("Defined channels mapped as SourceName:SinkName")
     private Map<String, String> channels = Map.of();
@@ -34,7 +34,7 @@ public class Relay_V1 implements Relay {
 
     @Override
     public List<Interface<?>> interfaces() {
-        return this.interfaces;
+        return List.copyOf(this.interfaces);
     }
 
     @Override

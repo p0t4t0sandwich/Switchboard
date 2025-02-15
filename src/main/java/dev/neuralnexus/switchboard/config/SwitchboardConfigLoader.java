@@ -6,6 +6,8 @@
 package dev.neuralnexus.switchboard.config;
 
 import dev.neuralnexus.switchboard.Switchboard;
+import dev.neuralnexus.switchboard.config.serializers.InterfaceSerializer;
+import dev.neuralnexus.switchboard.config.versions.DiscordConfig_V1;
 import dev.neuralnexus.switchboard.config.versions.Relay_V1;
 import dev.neuralnexus.switchboard.config.versions.SwitchboardConfig_V1;
 import dev.neuralnexus.switchboard.config.versions.VersionedConfig;
@@ -21,7 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** A class for loading Switchboard configuration. */
 @SuppressWarnings("SwitchStatementWithTooFewBranches")
@@ -31,13 +35,39 @@ public final class SwitchboardConfigLoader {
             Paths.get(".").toAbsolutePath().normalize().resolve(Switchboard.PROJECT_ID);
     private static SwitchboardConfig config;
     private static List<Relay> relays = new ArrayList<>();
+    private static final Map<String, Class<?>> typeRegistry = new HashMap<>();
+
+    static {
+        typeRegistry.put("discord", DiscordConfig_V1.class);
+    }
+
+    public static void registerType(String type, Class<?> clazz) {
+        typeRegistry.put(type, clazz);
+    }
+
+    public static Class<?> getType(String type) {
+        return typeRegistry.get(type);
+    }
 
     public static void setBasePath(Path path) {
         configPath = path.resolve(Switchboard.PROJECT_ID);
     }
 
+    private static HoconConfigurationLoader createLoader(Path path) {
+        return HoconConfigurationLoader.builder()
+                .path(path)
+                .defaultOptions(
+                        opts ->
+                                opts.serializers(
+                                        build ->
+                                                build.register(
+                                                        Interface.class,
+                                                        InterfaceSerializer.INSTANCE)))
+                .build();
+    }
+
     private static CommentedConfigurationNode loadNode(Path path) {
-        HoconConfigurationLoader loader = HoconConfigurationLoader.builder().path(path).build();
+        HoconConfigurationLoader loader = createLoader(path);
         CommentedConfigurationNode node = null;
         try {
             node = loader.load();
@@ -51,7 +81,7 @@ public final class SwitchboardConfigLoader {
     }
 
     private static void saveNode(CommentedConfigurationNode node, Path path) {
-        HoconConfigurationLoader loader = HoconConfigurationLoader.builder().path(path).build();
+        HoconConfigurationLoader loader = createLoader(path);
         try {
             loader.save(node);
         } catch (ConfigurateException e) {

@@ -28,6 +28,13 @@ public class Interface_V1<T> implements Interface<T> {
     @Comment("The configuration for this type of interface")
     private T config;
 
+    public Interface_V1(String typeStr, String nameStr, Mode mode, T config) {
+        this.name = nameStr;
+        this.type = typeStr;
+        this.mode = mode;
+        this.config = config;
+    }
+
     @Override
     public String name() {
         return this.name;

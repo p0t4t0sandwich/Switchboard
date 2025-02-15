@@ -41,5 +41,10 @@ public interface Interface<T> {
         Mode(String mode) {
             this.mode = mode;
         }
+
+        @Override
+        public String toString() {
+            return this.mode;
+        }
     }
 }

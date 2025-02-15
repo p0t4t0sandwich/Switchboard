@@ -8,6 +8,7 @@ package dev.neuralnexus.switchboard.config.versions;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
+import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 @ConfigSerializable
 public class DiscordConfig_V1 {
@@ -17,11 +18,13 @@ public class DiscordConfig_V1 {
 
     @Comment("The Discord guild ID (otherwise known as server ID)")
     @Required
+    @Setting("guildId")
     private String guildId;
 
     @Comment(
             "The Discord channel ID (should be a text channel in most cases, threads and forums might work to various degrees)")
     @Required
+    @Setting("channelId")
     private String channelId;
 
     public String token() {
